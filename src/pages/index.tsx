@@ -1,13 +1,24 @@
 import React from 'react'
 import Head from 'next/head'
 
-import { Container } from '../styles/home'
+import { Wrapper, Container, BackgroundSvg } from '../styles/pages/home'
+import Header from '../components/Header'
+import Introduction from '../components/Home/Introduction'
+import SomeFlavors from '../components/Home/SomeFlavors'
 export default function Home() {
     return (
-        <Container>
+        <Wrapper>
             <Head>
                 <title>Home</title>
             </Head>
-        </Container>
+            <main>
+                <BackgroundSvg />
+                <Header activePage="/" />
+                <Container>
+                    <Introduction />
+                    <SomeFlavors />
+                </Container>
+            </main>
+        </Wrapper>
     )
 }
