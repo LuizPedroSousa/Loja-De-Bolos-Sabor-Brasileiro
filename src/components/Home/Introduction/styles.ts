@@ -12,10 +12,10 @@ export const Section = styled.section`
     display: flex;
     flex-direction: column;
 
-    @media ${({ theme: { bp } }) => bp.md} {
+    @media ${({ theme: { bp } }) => bp['3md']} {
         display: grid;
         grid-template-columns: max-content max-content;
-        grid-template-rows: 1fr 1fr;
+        grid-template-rows: 1fr max-content;
         grid-template-areas:
             'search carousel'
             'contact carousel';
@@ -48,8 +48,12 @@ export const SearchLocals = styled.div`
     }
 
     @media ${({ theme: { bp } }) => bp.sm} {
+        span {
+            font-size: ${({ theme: { fontSize } }) => fontSize['10xl']};
+        }
         h2 {
-            font-size: ${({ theme: { fontSize } }) => fontSize['4xl']};
+            line-height: 48px;
+            font-size: ${({ theme: { fontSize } }) => fontSize['5xl']};
         }
     }
 

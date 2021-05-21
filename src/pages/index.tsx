@@ -5,7 +5,24 @@ import { Wrapper, Container, BackgroundSvg } from '../styles/pages/home'
 import Header from '../components/Header'
 import Introduction from '../components/Home/Introduction'
 import SomeFlavors from '../components/Home/SomeFlavors'
-export default function Home() {
+import { GetStaticProps } from 'next'
+import api from '../services/api'
+
+type BestCake = {
+    id: string
+    price: string
+    name: string
+    description: string
+    photo: {
+        url: string
+    }
+}
+
+interface HomeProps {
+    bestCakes: BestCake[]
+}
+
+export default function Home({ bestCakes }: HomeProps) {
     return (
         <Wrapper>
             <Head>
@@ -16,9 +33,26 @@ export default function Home() {
                 <Header activePage="/" />
                 <Container>
                     <Introduction />
-                    <SomeFlavors />
+                    <SomeFlavors bestCakes={bestCakes} />
                 </Container>
             </main>
         </Wrapper>
     )
+}
+
+export const getStaticProps: GetStaticProps = async () => {
+    const { data } = await api.get('/best-cakes', {
+        params: {
+            _sort: 'inserted_at',
+            _limit: 2,
+            _order: 'desc'
+        }
+    })
+
+    return {
+        props: {
+            bestCakes: data
+        },
+        revalidate: 60 * 60 * 5
+    }
 }
