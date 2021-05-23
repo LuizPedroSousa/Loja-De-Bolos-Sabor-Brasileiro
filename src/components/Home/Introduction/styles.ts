@@ -90,7 +90,7 @@ export const SearchLocals = styled.div`
         margin-left: 5rem;
     }
 `
-export const InputGroup = styled.form`
+export const Form = styled.form`
     height: 5rem;
     width: 100%;
     padding: 0.688rem;

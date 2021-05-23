@@ -7,6 +7,7 @@ import Introduction from '../components/Home/Introduction'
 import SomeFlavors from '../components/Home/SomeFlavors'
 import { GetStaticProps } from 'next'
 import api from '../services/api'
+import ScheduleOrder from '../components/Home/ScheduleOrder'
 
 type BestCake = {
     id: string
@@ -34,6 +35,7 @@ export default function Home({ bestCakes }: HomeProps) {
                 <Container>
                     <Introduction />
                     <SomeFlavors bestCakes={bestCakes} />
+                    <ScheduleOrder />
                 </Container>
             </main>
         </Wrapper>

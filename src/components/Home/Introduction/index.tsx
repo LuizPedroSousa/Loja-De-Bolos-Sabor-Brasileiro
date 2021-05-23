@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { Fragment, useMemo, useState } from 'react'
 import Image from 'next/image'
 
 import { FaMapMarkerAlt, FaWhatsapp } from 'react-icons/fa'
@@ -8,7 +8,7 @@ import ArrowRight from '../../../../public/images/arrow-right-carousel.svg'
 import {
     Section,
     SearchLocals,
-    InputGroup,
+    Form,
     LocalContact,
     CarouselOverlay,
     CarouselItem,
@@ -91,13 +91,13 @@ const Introduction: React.FC = () => {
                     de entrega
                 </h2>
 
-                <InputGroup>
+                <Form>
                     <input
                         placeholder="Veja se entregamos em sua casa"
                         type="text"
                     />
                     <button>Go</button>
-                </InputGroup>
+                </Form>
             </SearchLocals>
             <LocalContact>
                 <a href="#">
@@ -115,24 +115,25 @@ const Introduction: React.FC = () => {
                 <CarouselContent>
                     {items.map(
                         ({ src, alt, height, width, className }, index) => (
-                            <CarouselItem
-                                className={
-                                    currentCarouselIndex === index
-                                        ? 'active'
-                                        : ''
-                                }
-                                key={index}
-                            >
+                            <Fragment key={index}>
                                 {currentCarouselIndex === index && (
-                                    <Image
-                                        className={className}
-                                        src={src}
-                                        alt={alt}
-                                        width={width}
-                                        height={height}
-                                    />
+                                    <CarouselItem
+                                        className={
+                                            currentCarouselIndex === index
+                                                ? 'active'
+                                                : ''
+                                        }
+                                    >
+                                        <Image
+                                            className={className}
+                                            src={src}
+                                            alt={alt}
+                                            width={width}
+                                            height={height}
+                                        />
+                                    </CarouselItem>
                                 )}
-                            </CarouselItem>
+                            </Fragment>
                         )
                     )}
 

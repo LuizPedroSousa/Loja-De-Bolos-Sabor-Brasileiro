@@ -5,7 +5,7 @@ import BackgroundDotsBottom from '../../../../public/images/best-cakes-backgroun
 import { shade } from 'polished'
 
 export const Section = styled.section`
-    height: 59.5rem;
+    height: max-content;
     padding-top: 3.75rem;
     margin-top: 4rem;
     background-color: ${({ theme: { colors } }) => colors.bg};
