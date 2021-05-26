@@ -102,13 +102,16 @@ export const Content = styled.div`
 
 export const Form = styled.form`
     display: flex;
-    width: 80%;
+    width: 100%;
     margin-left: auto;
     align-items: center;
     justify-content: space-between;
     padding: relative;
     position: relative;
     flex-direction: column;
+    @media ${({ theme: { bp } }) => bp.sm} {
+        width: 80%;
+    }
     @media ${({ theme: { bp } }) => bp.l} {
         margin: 0;
     }

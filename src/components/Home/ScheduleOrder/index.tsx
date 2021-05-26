@@ -13,7 +13,6 @@ import {
     InputGroup,
     ScheduleContainer,
     Strawberry,
-    StrawBerryOverlay,
     TimeContent,
     DotsBottom,
     DotsRight
