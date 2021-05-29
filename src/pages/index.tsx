@@ -9,8 +9,9 @@ import { GetStaticProps } from 'next'
 import api from '../services/api'
 import ScheduleOrder from '../components/Home/ScheduleOrder'
 import OurServices from '../components/Home/OurServices'
+import ExploreOurFlavors from '../components/Home/ExploreOurFlavors'
 
-type BestCake = {
+type Cake = {
     id: string
     price: string
     name: string
@@ -21,14 +22,15 @@ type BestCake = {
 }
 
 interface HomeProps {
-    bestCakes: BestCake[]
+    bestCakes: Cake[]
+    cakes: Cake[]
 }
 
-export default function Home({ bestCakes }: HomeProps) {
+export default function Home({ bestCakes, cakes }: HomeProps) {
     return (
         <Wrapper>
             <Head>
-                <title>Home</title>
+                <title>Home | Sabor Brasileiro</title>
             </Head>
             <main>
                 <BackgroundSvg />
@@ -38,6 +40,7 @@ export default function Home({ bestCakes }: HomeProps) {
                     <SomeFlavors bestCakes={bestCakes} />
                     <ScheduleOrder />
                     <OurServices />
+                    <ExploreOurFlavors cakes={cakes} />
                 </Container>
             </main>
         </Wrapper>
@@ -45,7 +48,14 @@ export default function Home({ bestCakes }: HomeProps) {
 }
 
 export const getStaticProps: GetStaticProps = async () => {
-    const { data } = await api.get('/best-cakes', {
+    const cakes = await api.get('/cakes', {
+        params: {
+            _sort: 'inserted_at',
+            _limit: 6,
+            _order: 'desc'
+        }
+    })
+    const bestCakes = await api.get('/best-cakes', {
         params: {
             _sort: 'inserted_at',
             _limit: 2,
@@ -55,7 +65,8 @@ export const getStaticProps: GetStaticProps = async () => {
 
     return {
         props: {
-            bestCakes: data
+            bestCakes: bestCakes.data,
+            cakes: cakes.data
         },
         revalidate: 60 * 60 * 5
     }

@@ -1,19 +1,12 @@
-import React, { useMemo, useState } from 'react'
+import React, { useMemo } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 
-import Hamburger from '../AnimatedSvgs/Hamburger'
-import { AiOutlineShoppingCart } from 'react-icons/ai'
-import {
-    Container,
-    Logo,
-    HamburgerButton,
-    Nav,
-    LinkList,
-    Cart,
-    CartMobal
-} from './styles'
-import { useMotionValue, useTransform, useViewportScroll } from 'framer-motion'
+import { Container, Logo, Nav } from './styles'
+
+import useBreakPoint from '../../hooks/useBreakPoint'
+import ItemsDesktop from './ItemsDesktop'
+import ItemsMobal from './ItemsMobal'
 
 export type ActiveHrefType = '/' | '/bolos' | '/contato' | '/encomendar'
 
@@ -27,7 +20,7 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ activePage }) => {
-    const { scrollY } = useViewportScroll()
+    const { l } = useBreakPoint()
     const { navigationLinks } = useMemo(() => {
         const navigationLinks: INavigationLinks[] = [
             { href: '/', label: 'Home' },
@@ -37,10 +30,6 @@ const Header: React.FC<HeaderProps> = ({ activePage }) => {
         ]
         return { navigationLinks }
     }, [])
-
-    const [hasViewMenu, setHasViewMenu] = useState<boolean>(false)
-
-    const toggleViewMenu = () => setHasViewMenu(!hasViewMenu)
 
     // navbar
     // let prevScrollPos = scrollY.get()
@@ -71,40 +60,19 @@ const Header: React.FC<HeaderProps> = ({ activePage }) => {
                     />
                 </Logo>
             </Link>
-            <Nav hasViewMenu={hasViewMenu}>
-                <HamburgerButton type="button" onClick={toggleViewMenu}>
-                    <span>
-                        <Hamburger />
-                    </span>
-                </HamburgerButton>
-                <ul role="list">
-                    {navigationLinks.map(({ href, label }, index) => (
-                        <LinkList
-                            hasActivePage={activePage === href}
-                            key={index}
-                        >
-                            <Link href={href}>
-                                <a>{label}</a>
-                            </Link>
-                        </LinkList>
-                    ))}
-                    <CartMobal numberOfItems={0}>
-                        <button type="button" name="Meu carrinho">
-                            <span>
-                                <AiOutlineShoppingCart size={40} />
-                            </span>
-                        </button>
-                    </CartMobal>
-                </ul>
+            <Nav>
+                {l ? (
+                    <ItemsDesktop
+                        activePage={activePage}
+                        navigationLinks={navigationLinks}
+                    />
+                ) : (
+                    <ItemsMobal
+                        activePage={activePage}
+                        navigationLinks={navigationLinks}
+                    />
+                )}
             </Nav>
-            <Cart numberOfItems={0}>
-                <label htmlFor="cart">Meu carrinho</label>
-                <button id="cart" type="button" name="Meu carrinho">
-                    <span>
-                        <AiOutlineShoppingCart size={70} />
-                    </span>
-                </button>
-            </Cart>
         </Container>
     )
 }

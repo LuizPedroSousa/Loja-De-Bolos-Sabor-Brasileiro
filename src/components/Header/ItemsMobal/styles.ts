@@ -1,47 +1,34 @@
 import styled from 'styled-components'
+import { Button } from '@material-ui/core'
 import { lighten } from 'polished'
-import { motion } from 'framer-motion'
+interface CartProps {
+    numberofitems: number
+}
 
 interface LinkListProps {
     hasActivePage: boolean
 }
 
-export const Container = styled(motion.header)`
-    width: 100%;
+export const HamburgerButton = styled(Button)`
+    width: 5rem;
+    height: 4rem;
+    padding: 1rem;
+    background: inherit;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
-    position: relative;
-    top: 0;
-    left: 0;
-    z-index: 1000;
-    padding: 1.25rem;
-    transition: 0.25s;
-
-    @media ${({ theme: { bp } }) => bp.l} {
-        padding: 1.25rem 3.438rem;
-    }
-`
-
-export const Nav = styled.nav`
-    @media ${({ theme: { bp } }) => bp.l} {
-        width: 100%;
+    .MuiButton-label {
         display: flex;
-        align-items: center;
         justify-content: center;
+        align-items: center;
+        width: 2rem;
+        height: 2rem;
     }
-`
-
-export const Logo = styled.a`
-    cursor: pointer;
-    position: relative;
-    img {
-        width: 5rem;
-    }
-    @media ${({ theme: { bp } }) => bp.l} {
-        bottom: 0.5rem;
-        img {
-            width: 9rem;
+    :hover {
+        .MuiButton-label {
+            svg {
+                fill: shade(0.2, ${({ theme: { colors } }) => colors.white});
+            }
         }
     }
 `
@@ -88,5 +75,39 @@ export const LinkList = styled.li<LinkListProps>`
 
     button {
         padding: 1rem 0;
+    }
+`
+
+export const CartMobal = styled(Button)<CartProps>`
+    width: 100%;
+    height: 4rem;
+
+    &,
+    button {
+        display: flex;
+        padding: 0.5rem 0;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .MuiButton-label {
+        font-size: 0;
+        position: relative;
+        ::after {
+            position: absolute;
+            content: '${({ numberofitems }) => String(numberofitems)}';
+            bottom: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font: 400 ${({ theme: { fontSize } }) => fontSize.sm} Poppins,
+                sans-serif;
+            color: ${({ theme: { colors } }) => colors.blue[700]};
+            left: 6rem;
+            width: 1rem;
+            height: 1rem;
+            border-radius: 50%;
+            background-color: ${({ theme: { colors } }) => colors.yellow[400]};
+        }
     }
 `
