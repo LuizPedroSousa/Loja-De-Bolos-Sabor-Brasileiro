@@ -10,6 +10,7 @@ import api from '../services/api'
 import ScheduleOrder from '../components/Home/ScheduleOrder'
 import OurServices from '../components/Home/OurServices'
 import ExploreOurFlavors from '../components/Home/ExploreOurFlavors'
+import BestConfectioners from '../components/Home/BestConfectioners'
 
 type Cake = {
     id: string
@@ -21,12 +22,25 @@ type Cake = {
     }
 }
 
+type BestConfectioner = {
+    id: string
+    name: string
+    photo: {
+        url: string
+    }
+}
+
 interface HomeProps {
     bestCakes: Cake[]
+    bestConfectioners: BestConfectioner[]
     cakes: Cake[]
 }
 
-export default function Home({ bestCakes, cakes }: HomeProps) {
+export default function Home({
+    bestCakes,
+    bestConfectioners,
+    cakes
+}: HomeProps) {
     return (
         <Wrapper>
             <Head>
@@ -41,6 +55,7 @@ export default function Home({ bestCakes, cakes }: HomeProps) {
                     <ScheduleOrder />
                     <OurServices />
                     <ExploreOurFlavors cakes={cakes} />
+                    <BestConfectioners bestConfectioners={bestConfectioners} />
                 </Container>
             </main>
         </Wrapper>
@@ -63,9 +78,17 @@ export const getStaticProps: GetStaticProps = async () => {
         }
     })
 
+    const bestConfectioners = await api.get('/best-confectioners', {
+        params: {
+            _sort: 'inserted_at',
+            _order: 'desc'
+        }
+    })
+
     return {
         props: {
             bestCakes: bestCakes.data,
+            bestConfectioners: bestConfectioners.data,
             cakes: cakes.data
         },
         revalidate: 60 * 60 * 5

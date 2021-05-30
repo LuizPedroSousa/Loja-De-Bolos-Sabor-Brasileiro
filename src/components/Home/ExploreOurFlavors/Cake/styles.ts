@@ -56,7 +56,7 @@ export const Container = styled(motion.div)`
     }
 
     @media ${({ theme: { bp } }) => bp['3md']} {
-        height: 25.5rem;
+        height: 26.5rem;
     }
 `
 
@@ -74,6 +74,9 @@ export const CakeInfo = styled.div`
 
     @media ${({ theme: { bp } }) => bp.xs} {
         height: 10rem;
+    }
+    @media ${({ theme: { bp } }) => bp.l} {
+        height: 11rem;
     }
 `
 

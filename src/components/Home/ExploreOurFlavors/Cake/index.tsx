@@ -1,9 +1,8 @@
 import { motion } from 'framer-motion'
 import Image from 'next/image'
 import React, { useEffect, useRef } from 'react'
-import { createRipples } from 'react-ripples'
-import { useTheme } from 'styled-components'
 import useBreakPoint from '../../../../hooks/useBreakPoint'
+import Ripple from '../../../Ripple'
 import { Container, CakeInfo, Header, Footer } from './styles'
 
 interface CakeCardProps {
@@ -25,14 +24,6 @@ const Cake: React.FC<CakeCardProps> = ({
     const descriptionRef = useRef<HTMLParagraphElement>(null)
 
     const { xs, sm, md } = useBreakPoint()
-    const {
-        colors: { orange }
-    } = useTheme()
-
-    const MyRipples = createRipples({
-        color: orange[500],
-        during: 2200
-    })
 
     useEffect(() => {
         setMaxDescriptionLength()
@@ -66,9 +57,8 @@ const Cake: React.FC<CakeCardProps> = ({
         <Container
             whileHover={{
                 boxShadow: [
-                    '0 2.8px 2.2px rgba(0, 0, 0, 0.034)',
-                    '0 22.3px 17.9px rgba(0, 0, 0, 0.072)',
-                    '0 41.8px 33.4px rgba(0, 0, 0, 0.086)'
+                    '0px 2px 4px rgba(0, 0, 0, 0.04),',
+                    ' 0px 8px 16px rgba(0, 0, 0, 0.32)'
                 ],
                 transition: { duration: 0.5 },
                 scale: [1, 1.1],
@@ -98,7 +88,7 @@ const Cake: React.FC<CakeCardProps> = ({
                         type="button"
                         name="Adicionar"
                     >
-                        <MyRipples>Adicionar ao carrinho</MyRipples>
+                        <Ripple>Adicionar ao carrinho</Ripple>
                     </motion.button>
                 </Footer>
             </CakeInfo>

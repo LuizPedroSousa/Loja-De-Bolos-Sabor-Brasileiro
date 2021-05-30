@@ -53,6 +53,7 @@ const light = {
         '3md': '(min-width: 74.625rem)', // 1194px
         l: '(min-width: 80em)', // 1280px
         xl: '(min-width: 96em)', // 1536px
+        '2xl': '(min-width: 120em)', // 1920px
         portrait: '(orientation: portrait)'
     }
 }
