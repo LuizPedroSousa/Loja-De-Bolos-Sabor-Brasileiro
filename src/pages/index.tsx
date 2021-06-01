@@ -11,6 +11,7 @@ import ScheduleOrder from '../components/Home/ScheduleOrder'
 import OurServices from '../components/Home/OurServices'
 import ExploreOurFlavors from '../components/Home/ExploreOurFlavors'
 import BestConfectioners from '../components/Home/BestConfectioners'
+import Footer from '../components/Footer'
 
 type Cake = {
     id: string
@@ -56,6 +57,7 @@ export default function Home({
                     <OurServices />
                     <ExploreOurFlavors cakes={cakes} />
                     <BestConfectioners bestConfectioners={bestConfectioners} />
+                    <Footer />
                 </Container>
             </main>
         </Wrapper>
@@ -70,6 +72,7 @@ export const getStaticProps: GetStaticProps = async () => {
             _order: 'desc'
         }
     })
+
     const bestCakes = await api.get('/best-cakes', {
         params: {
             _sort: 'inserted_at',
@@ -81,6 +84,7 @@ export const getStaticProps: GetStaticProps = async () => {
     const bestConfectioners = await api.get('/best-confectioners', {
         params: {
             _sort: 'inserted_at',
+            _limit: 4,
             _order: 'desc'
         }
     })

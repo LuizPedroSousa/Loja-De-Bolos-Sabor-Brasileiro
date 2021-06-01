@@ -1,6 +1,8 @@
+import React from 'react'
 import { createGlobalStyle } from 'styled-components'
+import { GlobalStyles as BaseStyles } from 'twin.macro'
 
-export default createGlobalStyle`
+const CustomStyles = createGlobalStyle`
     *{
         padding: 0;
         margin: 0;
@@ -32,3 +34,14 @@ export default createGlobalStyle`
         }
     }
 `
+
+const GlobalStyles: React.FC = () => {
+    return (
+        <>
+            <CustomStyles />
+            <BaseStyles />
+        </>
+    )
+}
+
+export default GlobalStyles

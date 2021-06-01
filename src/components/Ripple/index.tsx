@@ -2,12 +2,16 @@ import React from 'react'
 import { createRipples } from 'react-ripples'
 import { useTheme } from 'styled-components'
 
-const Ripple: React.FC = ({ children }) => {
+interface RippleProps {
+    color?: string
+}
+const Ripple: React.FC<RippleProps> = ({ color, children }) => {
     const {
         colors: { orange }
     } = useTheme()
+
     const MyRipples = createRipples({
-        color: orange[500],
+        color: color || orange[500],
         during: 2200
     })
 

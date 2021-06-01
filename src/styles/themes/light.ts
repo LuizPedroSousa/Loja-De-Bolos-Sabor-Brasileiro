@@ -8,13 +8,16 @@ const light = {
             '400': '#707070'
         },
         beige: {
-            400: '#FFEDDE'
+            400: '#FFEDDE',
+            500: '#FDD8B9'
         },
         orange: {
+            100: '#FFC08B',
             500: '#F6934B',
             700: '#ED854A'
         },
         blue: {
+            '100': '#8A8FB9',
             '700': '#2E266F'
         },
         red: {
