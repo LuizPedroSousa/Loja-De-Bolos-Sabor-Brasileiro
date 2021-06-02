@@ -73,9 +73,9 @@ const Footer: React.FC = () => {
         ]
 
         const socialContact: SocialContact[] = [
-            { href: '', icon: <AiFillFacebook size={20} /> },
-            { href: '', icon: <AiFillInstagram size={20} /> },
-            { href: '', icon: <FaWhatsappSquare size={20} /> }
+            { href: '#', icon: <AiFillFacebook size={20} /> },
+            { href: '#', icon: <AiFillInstagram size={20} /> },
+            { href: '#', icon: <FaWhatsappSquare size={20} /> }
         ]
         return { socialContact, contactList }
     }, [])

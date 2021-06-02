@@ -12,6 +12,7 @@ import OurServices from '../components/Home/OurServices'
 import ExploreOurFlavors from '../components/Home/ExploreOurFlavors'
 import BestConfectioners from '../components/Home/BestConfectioners'
 import Footer from '../components/Footer'
+import SeeDelivery from '../components/Home/SeeDelivery'
 
 type Cake = {
     id: string
@@ -57,6 +58,7 @@ export default function Home({
                     <OurServices />
                     <ExploreOurFlavors cakes={cakes} />
                     <BestConfectioners bestConfectioners={bestConfectioners} />
+                    <SeeDelivery />
                     <Footer />
                 </Container>
             </main>
