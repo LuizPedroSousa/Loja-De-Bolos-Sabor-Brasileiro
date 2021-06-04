@@ -1,27 +1,33 @@
 import styled from 'styled-components'
 import { shade } from 'polished'
 import { motion } from 'framer-motion'
+import tw, { theme } from 'twin.macro'
 
 export const Container = styled(motion.div)`
-    position: relative;
+    ${tw`
+        relative shadow-md-bg
+        cursor-pointer overflow-hidden
+        hover:shadow-xl
+        rounded-3xl
+    `};
     & + & {
-        margin-top: 1.75rem;
+        ${tw`
+            mt-7 md:m-0
+        `};
     }
-    box-shadow: 0px 4px 4px rgba(235, 241, 245, 0.5);
     img {
-        height: 100%;
-        width: 100%;
         transition: 0.25s;
         border-radius: 1.563rem;
+        ${tw`
+            w-full h-full
+        `};
+
         border-bottom-left-radius: 20%;
         border-bottom-right-radius: 20%;
+
         transition: 0.25s;
     }
     height: 20%;
-
-    cursor: pointer;
-    border-radius: 1.563rem;
-    overflow: hidden;
 
     :hover {
         img {
@@ -49,10 +55,7 @@ export const Container = styled(motion.div)`
 
     @media ${({ theme: { bp } }) => bp.md} {
         height: 30.5rem;
-        width: auto;
-        & + & {
-            margin: 0;
-        }
+        ${tw`w-auto`};
     }
 
     @media ${({ theme: { bp } }) => bp['3md']} {
@@ -61,72 +64,55 @@ export const Container = styled(motion.div)`
 `
 
 export const CakeInfo = styled.div`
-    height: 9rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    width: 100%;
-    background-color: ${({ theme: { colors } }) => colors.white};
-    position: absolute;
-    box-shadow: 0px 4px 4px rgba(235, 241, 245, 0.5);
-    bottom: 0;
-
-    @media ${({ theme: { bp } }) => bp.xs} {
-        height: 10rem;
-    }
-    @media ${({ theme: { bp } }) => bp.l} {
-        height: 11rem;
-    }
+    ${tw`
+        flex flex-col items-start
+        justify-center w-full absolute bg-white
+        shadow-md-bg h-36
+        bottom-0 xs:h-40 l:h-44
+    `};
 `
 
 export const Header = styled.header`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 1rem;
-    width: 100%;
+    ${tw`
+        flex justify-between
+        items-center px-4 w-full
+    `};
+
     p {
-        font-size: ${({ theme: { fontSize } }) => fontSize['2xl']};
-        color: ${({ theme: { colors } }) => colors.blue[700]};
-        font-weight: 500;
+        ${tw`
+            text-2xl text-blue-700
+            font-medium
+        `};
     }
     strong {
-        font-size: calc(${({ theme: { fontSize } }) => fontSize['2xl']});
-        color: ${({ theme: { colors } }) => colors.orange[500]};
+        ${tw`
+            text-2xl text-orange-500
+        `};
     }
 `
 
 export const Footer = styled.footer`
-    margin-top: 1rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    padding-left: 1rem;
+    ${tw`
+        mt-4 flex justify-between
+        items-center w-full pl-4
+    `};
     p {
+        ${tw`w-max`};
         width: max-content;
     }
     button {
         border-top-left-radius: 6.25rem;
         border-bottom-left-radius: 6.25rem;
-        width: 20rem;
-        color: ${({ theme: { colors } }) => colors.orange[500]};
-        font: 400 ${({ theme: { fontSize } }) => fontSize.sm} Poppins,
-            sans-serif;
-        background-color: ${({ theme: { colors } }) => colors.beige[400]};
+        ${tw`
+            w-80 text-orange-500 font-sans font-normal text-sm
+            bg-beige-400 overflow-hidden
+            flex items-center justify-center
+            outline-none focus:ring-2
+        `};
         height: 2.813rem;
-        overflow: hidden;
-        div {
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100%;
-        }
+
         :hover {
-            background-color: ${({ theme: { colors } }) =>
-                shade(0.05, colors.beige[400])};
+            background-color: ${shade(0.05, theme`colors.beige.400`)};
         }
     }
 

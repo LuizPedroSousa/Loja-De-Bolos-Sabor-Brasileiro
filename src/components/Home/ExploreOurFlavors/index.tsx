@@ -34,17 +34,9 @@ const ExploreOurFlavors: React.FC<ExploreOurFlavorsProps> = ({ cakes }) => {
                 </p>
             </Title>
             <Cakes>
-                {cakes.map(
-                    ({ id, description, name, photo: { url }, price }) => (
-                        <Cake
-                            key={id}
-                            description={description}
-                            name={name}
-                            image={{ src: url, alt: name }}
-                            price={price}
-                        />
-                    )
-                )}
+                {cakes.map(cake => (
+                    <Cake key={cake.id} cake={cake} />
+                ))}
             </Cakes>
         </Section>
     )

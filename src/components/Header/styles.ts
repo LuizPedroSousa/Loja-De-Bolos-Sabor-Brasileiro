@@ -1,72 +1,61 @@
 import styled from 'styled-components'
 import { lighten } from 'polished'
 import { motion } from 'framer-motion'
+import tw from 'twin.macro'
 
 interface LinkListProps {
     hasActivePage: boolean
 }
 
 export const Container = styled(motion.header)`
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    position: relative;
-    top: 0;
-    left: 0;
+    ${tw`
+        w-full flex justify-between
+        items-center relative top-0
+        left-0 p-5 md:px-0 md:mx-auto
+    `};
     z-index: 1000;
-    padding: 1.25rem;
     transition: 0.25s;
 
+    @media ${({ theme: { bp } }) => bp.md} {
+        max-width: 94%;
+    }
+
     @media ${({ theme: { bp } }) => bp.l} {
-        padding: 1.25rem 3.438rem;
+        max-width: 88%;
+        padding: 1.25rem 0;
     }
 `
 
 export const Nav = styled.nav`
-    @media ${({ theme: { bp } }) => bp.l} {
-        width: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
+    ${tw`
+        l:w-full l:flex
+        l:items-center l:justify-center
+    `};
 `
 
 export const Logo = styled.a`
-    cursor: pointer;
-    position: relative;
+    ${tw`cursor-pointer relative l:bottom-2`};
     img {
-        width: 5rem;
-    }
-    @media ${({ theme: { bp } }) => bp.l} {
-        bottom: 0.5rem;
-        img {
-            width: 9rem;
-        }
+        ${tw`w-20 l:w-36`};
     }
 `
 
 export const LinkList = styled.li<LinkListProps>`
-    width: 100%;
-    height: 3rem;
+    ${tw`
+        w-full h-12 flex items-center
+        justify-center
+    `};
     background-color: shade(0.8, ${({ theme: { colors } }) => colors.bg});
-    display: flex;
-    align-items: center;
-    justify-content: center;
     a {
-        padding: 1rem 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: relative;
-        text-align: center;
+        ${tw`
+            py-4 flex items-center
+            justify-center relative
+            text-center h-full text-blue-700
+            no-underline text-md font-medium
+            hover:underline
+        `};
         width: 90%;
         transition: 0.25s;
-        height: 100%;
-        color: ${({ theme: { colors } }) => colors.blue[700]};
-        text-decoration: none;
-        font-size: ${({ theme: { fontSize } }) => fontSize.md};
-        font-weight: 500;
         ::after {
             ${({ hasActivePage, theme: { colors } }) =>
                 hasActivePage &&
@@ -82,11 +71,10 @@ export const LinkList = styled.li<LinkListProps>`
         }
         :hover {
             color: ${({ theme: { colors } }) => lighten(0.2, colors.blue[700])};
-            text-decoration: underline;
         }
     }
 
     button {
-        padding: 1rem 0;
+        ${tw`py-4`};
     }
 `

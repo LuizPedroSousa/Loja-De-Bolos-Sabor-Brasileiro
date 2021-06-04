@@ -1,18 +1,13 @@
 import styled from 'styled-components'
+import tw, { theme } from 'twin.macro'
 
 export const Section = styled.section`
-    width: 100%;
-    margin-top: 4rem;
-    background-color: ${({ theme: { colors } }) => colors.beige[400]};
-    padding: 2rem;
-    position: relative;
+    ${tw`
+        w-full
+        mt-16
+        bg-beige-400 relative p-8
+    `};
     z-index: 2;
-    background-image: radial-gradient(
-        ${({ theme: { colors } }) => colors.gray[100]} 1.8px,
-        transparent 0
-    );
-    background-size: 2.375rem 3.063rem;
-    background-position: 0.813rem 0.313rem;
 
     @media ${({ theme: { bp } }) => bp.xs} {
         padding-left: 1.165rem;
@@ -24,65 +19,69 @@ export const Section = styled.section`
     }
 
     @media ${({ theme: { bp } }) => bp.md} {
-        padding: 4rem 1.875rem;
+        padding: 4rem 0;
     }
 
     @media ${({ theme: { bp } }) => bp['3md']} {
         margin-top: 11rem;
-        padding: 4rem 3.5rem;
+        padding: 4rem 0;
     }
 
     @media ${({ theme: { bp } }) => bp.l} {
-        padding: 4rem 4.688rem;
+        ${tw`
+            pb-0 pt-16
+        `};
     }
-    @media ${({ theme: { bp } }) => bp['2xl']} {
-        padding: 4rem 8.438rem;
+`
+
+export const Content = styled.div`
+    ${tw`
+        w-full md:mx-auto
+    `};
+    background-image: radial-gradient(
+        ${({ theme: { colors } }) => colors.gray[100]} 1.8px,
+        transparent 0
+    );
+    background-size: 2.375rem 3.063rem;
+    background-position: 0.813rem 0.313rem;
+
+    @media ${({ theme: { bp } }) => bp.md} {
+        max-width: 88%;
     }
 `
 
 export const Title = styled.strong`
-    font-weight: 500;
-    font-size: calc(${({ theme: { fontSize } }) => fontSize['4xl']} - 0.2rem);
+    font-size: calc(${theme`fontSize.4xl`} - 0.2rem);
     line-height: 2.5rem;
-    color: ${({ theme: { colors } }) => colors.blue[700]};
-    position: relative;
-    text-transform: capitalize;
+    ${tw`
+        font-medium
+        relative text-blue-700
+        capitalize xs:text-4xl xs:-left-6
+        sm:text-5xl
+        md:top-32 md:left-8 md-3:left-12
+    `};
 
     ::after {
         content: '';
-        background-color: ${({ theme: { colors } }) => colors.orange[500]};
-        position: absolute;
-        left: -1.25rem;
-        top: 0;
+        ${tw`
+            absolute bg-orange-500 -left-5
+            top-0 h-full sm:-left-8 md-3:-left-12
+        `};
         width: 0.8rem;
-        height: 100%;
-    }
-
-    @media ${({ theme: { bp } }) => bp.xs} {
-        font-size: ${({ theme: { fontSize } }) => fontSize['4xl']};
-        left: 1.5rem;
     }
 
     @media ${({ theme: { bp } }) => bp.sm} {
-        ::after {
-            left: -2rem;
-        }
-        font-size: ${({ theme: { fontSize } }) => fontSize['5xl']};
         line-height: 3.875rem;
     }
 
     @media ${({ theme: { bp } }) => bp.md} {
-        top: 8rem;
-        left: 2rem;
         ::after {
             width: 1.2rem;
         }
     }
 
     @media ${({ theme: { bp } }) => bp['3md']} {
-        left: 3rem;
         ::after {
-            left: -3rem;
             width: 1.563rem;
         }
     }
@@ -90,68 +89,46 @@ export const Title = styled.strong`
 
 export const Cake = styled.div`
     position: absolute;
-    top: 5rem;
-    width: 9rem;
-    z-index: -1;
-    right: 0;
-
-    @media ${({ theme: { bp } }) => bp.xs} {
-        top: 2rem;
-    }
+    ${tw`
+        absolute top-20 w-36 right-0
+        xs:top-8 sm:-top-12 md:left-0
+        md-3:-top-28 z-0
+    `};
 
     @media ${({ theme: { bp } }) => bp.sm} {
         width: 16.125rem;
-        top: -3rem;
-    }
-
-    @media ${({ theme: { bp } }) => bp.md} {
-        left: 0;
     }
 
     @media ${({ theme: { bp } }) => bp['3md']} {
         width: 24.313rem;
-        top: -7rem;
     }
 `
 
 export const Confectioners = styled.div`
-    margin-top: 6rem;
-    width: 100%;
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-column-gap: 1rem;
+    ${tw`
+        mt-24 w-full grid grid-cols-1
+        px-4 mb-16 gap-x-32 gap-y-4
+        xs:grid-cols-2 xs:p-0
+        sm:mt-32 sm:gap-y-9
+    `};
     grid-area: auto;
-    grid-row-gap: 8rem;
-    padding: 0 1rem;
-    margin-bottom: 4rem;
-
-    @media ${({ theme: { bp } }) => bp.xs} {
-        grid-template-columns: 1fr 1fr;
-        padding: 0;
-    }
 
     @media ${({ theme: { bp } }) => bp.sm} {
         padding: 0 2.438rem;
-        margin-top: 8rem;
-        grid-column-gap: 2.25rem;
     }
 
     @media ${({ theme: { bp } }) => bp.md} {
-        padding: 0;
         grid-column-gap: 1.125rem;
-        grid-template-columns: 1fr 1.25rem 1fr 1.875rem 1fr 1.25rem 1fr;
+        grid-template-columns: 1fr 1.25rem 1fr 1.25rem 1fr 1.25rem 1fr;
         grid-template-rows: 16.375rem 15.375rem;
-        grid-row-gap: 0;
-        margin-top: 1.5rem;
-        margin-bottom: 0;
-        grid-column-gap: 0;
         grid-template-areas:
             '. . . . first . second'
             'third . four . . . .';
+        ${tw`p-0 gap-0 mt-6 mb-0`};
     }
 
     @media ${({ theme: { bp } }) => bp['3md']} {
-        grid-template-rows: 20.75rem 18.375rem;
+        grid-template-rows: 20.75rem 19.375rem;
         grid-template-columns: 1fr 1.25rem 1fr 3.5rem 1fr 1.25rem 1fr;
     }
 
@@ -169,23 +146,22 @@ export const Confectioners = styled.div`
 `
 
 export const Coffee = styled.div`
-    position: absolute;
-    bottom: -5rem;
-    left: 0;
-    width: 10rem;
+    ${tw`
+        absolute left-0 -bottom-20 w-40
+        sm:-bottom-9 md:right-0 md:left-auto
+        2xl:-bottom-48
+    `};
 
     @media ${({ theme: { bp } }) => bp.sm} {
-        bottom: -9rem;
         width: 16.875rem;
     }
 
-    @media ${({ theme: { bp } }) => bp.md} {
-        right: 0;
-        left: auto;
+    @media ${({ theme: { bp } }) => bp.l} {
+        width: 24.313rem;
+        bottom: -11.25rem;
     }
 
     @media ${({ theme: { bp } }) => bp['2xl']} {
-        bottom: -12rem;
-        width: 26.688rem;
+        width: 38.438rem;
     }
 `

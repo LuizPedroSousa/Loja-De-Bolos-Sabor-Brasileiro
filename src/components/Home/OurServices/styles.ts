@@ -1,12 +1,15 @@
 import styled from 'styled-components'
+import tw, { theme } from 'twin.macro'
 
 export const Section = styled.section`
+    ${tw`
+        w-full px-6 relative
+        pb-8 md:pl-0 md:pb-0 md:pr-8
+        md:mx-auto
+    `};
     height: max-content;
-    width: 100%;
-    padding: 0 1.5rem;
     padding-top: 5.125rem;
-    position: relative;
-    padding-bottom: 2rem;
+
     @media ${({ theme: { bp } }) => bp.xs} {
         padding-top: 6.125rem;
     }
@@ -14,52 +17,48 @@ export const Section = styled.section`
     @media ${({ theme: { bp } }) => bp.sm} {
         padding-left: 2.875rem;
     }
-    @media ${({ theme: { bp } }) => bp.md} {
-        padding-left: 0;
-        padding-bottom: 0;
-        padding-right: 2rem;
-    }
 
-    @media ${({ theme: { bp } }) => bp.l} {
-        /* padding-left: 5.5rem; */
+    @media ${({ theme: { bp } }) => bp.md} {
+        max-width: 88%;
+        ${tw`px-0`};
     }
 `
 
 export const Title = styled.div`
+    ${tw`
+        md:flex items-center justify-between
+    `};
     strong {
-        color: ${({ theme: { colors } }) => colors.blue[700]};
-        font-size: ${({ theme: { fontSize } }) => fontSize['4xl']};
-        position: relative;
-        font-weight: 500;
+        ${tw`
+            text-blue-700 text-4xl relative
+            ml-4
+            font-medium md:ml-8 md-3:text-5xl l:ml-8
+
+        `};
         ::after {
             content: '';
-            height: 100%;
-            width: 0.75rem;
-            left: -1rem;
-            top: 0;
-            background-color: ${({ theme: { colors } }) => colors.orange[500]};
-            position: absolute;
+            ${tw`
+                h-full w-3 -left-4
+                top-0 bg-orange-500 absolute
+                sm:-left-6 md:-ml-4 l:-left-10
+            `};
         }
     }
 
     p {
-        margin-top: 1rem;
+        ${tw`mt-4`};
         max-width: 29rem;
     }
 
     @media ${({ theme: { bp } }) => bp.sm} {
         strong {
-            ::after {
-                left: -1.5rem;
-            }
+            margin-left: 1.5rem;
         }
     }
+
     @media ${({ theme: { bp } }) => bp.md} {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding-left: 2.875rem;
         strong {
+            margin-left: 2.5rem;
             ::after {
                 width: 1.2rem;
                 top: 50%;
@@ -69,47 +68,46 @@ export const Title = styled.div`
         }
     }
 
-    @media ${({ theme: { bp } }) => bp.l} {
+    @media ${({ theme: { bp } }) => bp['3md']} {
         strong {
             ::after {
-                left: -2.5rem;
+                width: 1.563rem;
             }
-            font-size: 3rem;
+        }
+    }
+
+    @media ${({ theme: { bp } }) => bp.l} {
+        p {
+            max-width: 38.063rem;
+        }
+        strong {
+            margin-left: 3.5rem;
         }
     }
 `
 
 export const Content = styled.div`
-    margin-top: 2rem;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    ${tw`
+        mt-8 grid grid-cols-2 items-center
+        justify-center justify-items-center gap-4
+        bg-bg overflow-hidden
+        md:justify-items-start md:pt-12 md:pr-12 md:pl-6 md:pb-8 md-3:mt-12
+        l:px-6
+    `};
     grid-template-rows: repeat(2, max-content) 1fr;
-    align-items: center;
-    background: ${({ theme: { colors } }) => colors.bg};
-    justify-content: center;
-    justify-items: center;
-    grid-gap: 1rem;
     grid-template-areas:
         'eat place-to-eat'
         'opening-at  cutlery'
         'delivery delivery';
 
-    overflow: hidden;
     strong {
-        font-size: ${({ theme: { fontSize } }) => fontSize.md};
-        font-weight: 500;
-        color: ${({ theme: { colors } }) => colors.blue[700]};
-        text-transform: capitalize;
-    }
-
-    @media ${({ theme: { bp } }) => bp.xs} {
-        strong {
-            font-size: ${({ theme: { fontSize } }) => fontSize['2xl']};
-        }
+        ${tw`
+            text-md font-medium text-blue-700
+            capitalize xs:text-2xl
+        `};
     }
 
     @media ${({ theme: { bp } }) => bp.md} {
-        justify-items: baseline;
         grid-template-columns: repeat(2, max-content) 0.5rem 1fr;
         grid-template-rows: repeat(2, max-content);
         grid-template-areas:
@@ -121,15 +119,7 @@ export const Content = styled.div`
         );
 
         background-size: 2.375rem 3.063rem;
-        background-position: 0.813rem 0.313rem;
-        padding-left: 2.875rem;
-        margin-top: 0;
-        padding-top: 3rem;
-        padding-bottom: 2rem;
-    }
-
-    @media ${({ theme: { bp } }) => bp['2md']} {
-        background-position: 0.5rem 0.313rem;
+        background-position: 1.5rem 2.5rem;
     }
 
     @media ${({ theme: { bp } }) => bp['3md']} {
@@ -140,27 +130,31 @@ export const Content = styled.div`
     }
 
     @media ${({ theme: { bp } }) => bp.l} {
+        background-position: 1.5rem 3.5rem;
         grid-template-columns: max-content 1rem max-content 1.5rem 1fr;
     }
 `
 
 export const PlaceToEat = styled.div`
-    display: flex;
-    align-items: flex-start;
-    flex-direction: column;
-    justify-content: center;
+    ${tw`
+        flex items-start flex-col
+        justify-center w-full relative
+        xs:w-max xs:ml-auto md:w-full
+        md:justify-start md:mr-0
+    `};
     grid-area: place-to-eat;
-    width: 100%;
-    position: relative;
     strong:nth-of-type(2) {
-        position: relative;
+        ${tw`
+            relative
+        `};
         ::after {
             content: '';
-            position: absolute;
+            ${tw`
+                absolute bg-orange-500
+                left-16
+            `};
             top: 48%;
             transform: translateY(50%);
-            left: 4rem;
-            background-color: ${({ theme: { colors } }) => colors.orange[500]};
             width: 5.25rem;
             height: 3px;
         }
@@ -180,78 +174,62 @@ export const PlaceToEat = styled.div`
                 transform: translateX(50%);
             }
         }
-        width: max-content;
-        margin-left: auto;
-    }
-
-    @media ${({ theme: { bp } }) => bp.md} {
-        justify-content: flex-start;
-        width: 100%;
-        div {
-            margin-left: 2rem;
-        }
-    }
-
-    @media ${({ theme: { bp } }) => bp.l} {
-        div {
-            margin-left: 5rem;
-        }
     }
 `
 
 export const OpeningAt = styled.div`
     grid-area: opening-at;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    position: relative;
-    justify-content: center;
+    ${tw`
+        w-full flex flex-col
+        items-start relative
+        justify-center md:w-max
+    `};
 
     strong:nth-of-type(2) {
-        position: relative;
-        margin-left: 3rem;
+        ${tw`
+            relative ml-12
+        `};
         ::after {
             content: '';
-            position: absolute;
+            ${tw`absolute bg-orange-500`};
             top: 48%;
             transform: translateY(50%);
             left: -80%;
-            background-color: ${({ theme: { colors } }) => colors.orange[500]};
             width: 70%;
             height: 3px;
         }
     }
     p {
         max-width: 12.438rem;
-        margin-top: 0.125rem;
+        ${tw`mt-0.5`};
     }
 
-    @media ${({ theme: { bp } }) => bp.md} {
-        width: max-content;
-        margin-right: 4.5rem;
+    @media ${({ theme: { bp } }) => bp.l} {
+        strong:nth-of-type(2) {
+            ::after {
+                left: -54%;
+                width: 48%;
+            }
+        }
     }
 `
 
 export const Cutlery = styled.span`
     height: 9.5rem;
-    width: 100%;
-    background-color: ${({ theme: { colors } }) => colors.beige[400]};
-    display: flex;
-    padding: 2rem;
+    ${tw`
+        bg-beige-400
+        w-full flex p-8 items-center
+        justify-center xs:ml-auto
+    `};
     grid-area: cutlery;
-    align-items: center;
-    justify-content: center;
     svg {
-        width: 5rem;
+        ${tw`
+            w-20 xs:w-36
+        `};
     }
 
     @media ${({ theme: { bp } }) => bp.xs} {
         height: 14.188rem;
-        margin-left: auto;
-        svg {
-            width: 9rem;
-        }
     }
 
     // 624px
@@ -268,19 +246,19 @@ export const Cutlery = styled.span`
     }
 
     @media ${({ theme: { bp } }) => bp.md} {
-        width: 15.125rem;
-        height: 15.125rem;
+        width: 13.125rem;
+        height: 13.125rem;
         padding: 3.5rem;
     }
 
     @media ${({ theme: { bp } }) => bp['3md']} {
-        width: 19.375rem;
-        height: 19.375rem;
+        width: 17.375rem;
+        height: 17.375rem;
     }
 
     @media ${({ theme: { bp } }) => bp.l} {
-        width: 20.375rem;
-        height: 20.375rem;
+        width: 18.375rem;
+        height: 18.375rem;
     }
 
     @media ${({ theme: { bp } }) => bp.xl} {
@@ -291,92 +269,73 @@ export const Cutlery = styled.span`
 export const Eat = styled(Cutlery)`
     grid-area: eat;
 
-    @media ${({ theme: { bp } }) => bp.xs} {
-        margin-left: 0;
-        margin-right: auto;
-    }
+    ${tw`
+        xs:ml-0 xs:mr-auto md:mr-auto border-beige-400
+    `};
 
     @media ${({ theme: { bp } }) => bp.md} {
-        margin-right: auto;
-        border: 5px solid ${({ theme: { colors } }) => colors.beige[400]};
+        border-width: 5px;
     }
 `
 
 export const Delivery = styled.div`
-    padding: 6rem 0;
+    ${tw`
+        py-24 bg-beige-400
+        flex items-center justify-center
+        flex-col w-full
+        sm:py-36 md:w-full md:h-full md:p-0 md:m-0
+    `};
     grid-area: delivery;
-    max-width: 96%;
-    background-color: ${({ theme: { colors } }) => colors.beige[400]};
     height: max-content;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    width: 100%;
     span {
-        width: 8rem;
+        ${tw`
+            w-32 xs:w-36
+        `};
     }
     strong {
-        margin-top: 1rem;
-        font-size: calc(
-            ${({ theme: { fontSize } }) => fontSize['2xl']} - 0.2rem
-        );
+        font-size: calc(${theme`fontSize.2xl`} - 0.2rem);
+        ${tw`
+            mt-4 xs:text-2xl
+        `};
     }
     p {
-        margin-top: 1rem;
+        ${tw`
+            mt-4 relative
+        `};
         max-width: 12.438rem;
-        position: relative;
         ::after {
             content: '';
-            bottom: -1rem;
+            ${tw`
+                -bottom-4 absolute bg-orange-500
+            `};
             left: 48%;
             transform: translateX(-50%);
-            position: absolute;
             width: 90%;
             height: 3px;
-            background-color: ${({ theme: { colors } }) => colors.orange[500]};
-        }
-    }
-
-    @media ${({ theme: { bp } }) => bp.xs} {
-        span {
-            width: 9rem;
-        }
-        strong {
-            margin-top: 1rem;
-            font-size: ${({ theme: { fontSize } }) => fontSize['2xl']};
         }
     }
 
     @media ${({ theme: { bp } }) => bp.sm} {
-        padding: 9rem 0;
-        width: 95%;
         span {
             width: 10.344rem;
         }
     }
-
-    @media ${({ theme: { bp } }) => bp.md} {
-        width: 100%;
-        height: 100%;
-        margin: 0;
-        padding: 0;
-    }
 `
 export const ArrowRight = styled.span`
-    position: absolute;
-    background-color: ${({ theme: { colors } }) => colors.orange[500]};
+    ${tw`
+        absolute bg-orange-500 w-16
+        cursor-pointer -right-8 xs:-right-12
+        md:-right-28
+    `};
     height: 3px;
-    width: 4rem;
     top: 2.4rem;
-    right: -2rem;
-    cursor: pointer;
 
     &:before,
     &:after {
         content: '';
-        background-color: ${({ theme: { colors } }) => colors.orange[500]};
-        position: absolute;
+        ${tw`
+            bg-orange-500 absolute
+        `};
         height: 3px;
         width: 15px;
     }
@@ -397,7 +356,6 @@ export const ArrowRight = styled.span`
         top: 48%;
         transform: translateY(-50%);
         width: 52%;
-        right: -3rem;
     }
 
     // 550px
@@ -408,43 +366,44 @@ export const ArrowRight = styled.span`
     // 624px
     @media (min-width: 39rem) {
         width: 75%;
-        right: -5rem;
+        ${tw`
+            -right-20
+        `};
     }
 
     @media ${({ theme: { bp } }) => bp.sm} {
         width: 80%;
-        right: -5rem;
     }
 
     @media ${({ theme: { bp } }) => bp.md} {
-        width: 84%;
-        right: -7rem;
+        width: 67%;
     }
 
     @media ${({ theme: { bp } }) => bp['3md']} {
-        width: 14.5rem;
-        right: -11rem;
+        width: 13.5rem;
+        ${tw`-right-44`};
     }
 
     @media ${({ theme: { bp } }) => bp.l} {
-        width: 98%;
-        right: -9rem;
+        width: 15.5rem;
+        ${tw`
+            -right-48
+        `};
     }
 `
 
 export const ArrowLeft = styled.span`
-    position: absolute;
-    background-color: ${({ theme: { colors } }) => colors.orange[500]};
+    ${tw`
+        absolute bg-orange-500 cursor-pointer
+        -left-10 xs:-left-12 sm:-left-60
+    `};
     height: 3px;
-    cursor: pointer;
     width: 2.2rem;
-    left: -2.5rem;
     top: 2.4rem;
     &:before,
     &:after {
         content: '';
-        background-color: ${({ theme: { colors } }) => colors.orange[500]};
-        position: absolute;
+        ${tw`bg-orange-500 absolute`};
         height: 3px;
         width: 15px;
     }
@@ -465,19 +424,18 @@ export const ArrowLeft = styled.span`
         top: 47%;
         transform: translateY(-50%);
         width: 21%;
-        left: -3rem;
     }
 
     // 550px
     @media (min-width: 34.375em) {
         width: 43%;
-        left: -6rem;
+        ${tw`-left-24`};
     }
 
     // 624px
     @media (min-width: 39rem) {
         width: 76%;
-        left: -10rem;
+        ${tw`-left-40`};
     }
 
     @media ${({ theme: { bp } }) => bp.sm} {
@@ -487,11 +445,16 @@ export const ArrowLeft = styled.span`
 
     @media ${({ theme: { bp } }) => bp.md} {
         width: 27%;
-        left: -4.5rem;
+        left: -4rem;
     }
 
     @media ${({ theme: { bp } }) => bp['3md']} {
-        width: 31%;
-        left: -6.5rem;
+        width: 29%;
+        left: -5.5rem;
+    }
+
+    @media ${({ theme: { bp } }) => bp.l} {
+        width: 29%;
+        left: -6rem;
     }
 `

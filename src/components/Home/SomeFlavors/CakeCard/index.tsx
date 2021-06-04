@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import Image from 'next/image'
 
 import { Container, CakeInfo, Header, Footer, AddToCard } from './styles'
 import { FaMapMarkerAlt } from 'react-icons/fa'
+import useCustomRipple from '../../../../hooks/useCustomRipple'
 
 interface CakeCardProps {
     image: {
@@ -19,12 +20,12 @@ const CakeCard: React.FC<CakeCardProps> = ({
     description,
     price
 }) => {
+    const addToCardRef = useRef<HTMLButtonElement>(null)
+    useCustomRipple([{ ref: addToCardRef }])
     return (
         <Container
             whileHover={{
-                boxShadow: '1px 10px 22px 5px rgba(0, 0, 0, 0.5)',
-                scale: [1, 1.1],
-                transition: { duration: 0.5 },
+                scale: [1, 0.98, 1.05],
                 zIndex: 10
             }}
         >
@@ -43,10 +44,11 @@ const CakeCard: React.FC<CakeCardProps> = ({
                     </a>
                     <AddToCard
                         price={price}
+                        ref={addToCardRef}
                         whileHover={{
-                            scale: [1, 0.9],
+                            scale: [1, 0.98],
                             transition: { duration: 0.25 },
-                            x: 10
+                            x: 5
                         }}
                         type="button"
                         name="Adicionar"

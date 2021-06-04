@@ -20,7 +20,7 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ activePage }) => {
-    const { l } = useBreakPoint()
+    const { l, md } = useBreakPoint()
     const { navigationLinks } = useMemo(() => {
         const navigationLinks: INavigationLinks[] = [
             { href: '/', label: 'Home' },
@@ -61,12 +61,13 @@ const Header: React.FC<HeaderProps> = ({ activePage }) => {
                 </Logo>
             </Link>
             <Nav>
-                {l ? (
+                {l && (
                     <ItemsDesktop
                         activePage={activePage}
                         navigationLinks={navigationLinks}
                     />
-                ) : (
+                )}
+                {md && !l && (
                     <ItemsMobal
                         activePage={activePage}
                         navigationLinks={navigationLinks}

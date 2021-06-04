@@ -2,7 +2,7 @@ import Image from 'next/image'
 import React from 'react'
 import ConfectionerCard from './ConfectionerCard'
 
-import { Section, Title, Confectioners, Cake, Coffee } from './styles'
+import { Section, Content, Title, Confectioners, Cake, Coffee } from './styles'
 
 type BestConfectioner = {
     id: string
@@ -21,11 +21,6 @@ const BestConfectioners: React.FC<BestConfectionersProps> = ({
 }) => {
     return (
         <Section>
-            <Title>
-                Nossos melhores
-                <br />
-                confeiteiros
-            </Title>
             <Cake>
                 <Image
                     width={1116}
@@ -35,18 +30,26 @@ const BestConfectioners: React.FC<BestConfectionersProps> = ({
                     alt="Bolo caseiro"
                 />
             </Cake>
-            <Confectioners>
-                {bestConfectioners.map(confectioner => (
-                    <ConfectionerCard
-                        key={confectioner.id}
-                        confectioner={confectioner}
-                    />
-                ))}
-            </Confectioners>
+            <Content>
+                <Title>
+                    Nossos melhores
+                    <br />
+                    confeiteiros
+                </Title>
+
+                <Confectioners>
+                    {bestConfectioners.map(confectioner => (
+                        <ConfectionerCard
+                            key={confectioner.id}
+                            confectioner={confectioner}
+                        />
+                    ))}
+                </Confectioners>
+            </Content>
             <Coffee>
                 <Image
-                    width={1230}
-                    height={1040}
+                    width={615}
+                    height={557}
                     objectFit="cover"
                     src="/images/coffee.png"
                     alt="Xícara de Café"

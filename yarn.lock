@@ -5496,6 +5496,11 @@ react-transition-group@^4.0.0, react-transition-group@^4.4.0:
     loose-envify "^1.4.0"
     prop-types "^15.6.2"
 
+react-use-ripple@^1.5.2:
+  version "1.5.2"
+  resolved "https://registry.yarnpkg.com/react-use-ripple/-/react-use-ripple-1.5.2.tgz#f42600a0c7729510c3dbba74e0c86ed6c55fd88e"
+  integrity sha512-pK7PLEaEGJ4xCM5acxW+ua7ba0lqxbhNzBHzEw+MoD0yVFT3r8SkfkG6aSpiEm4iLZO9HOeSnUz+1k7YVuYX5w==
+
 react@17.0.2:
   version "17.0.2"
   resolved "https://registry.yarnpkg.com/react/-/react-17.0.2.tgz#d0b5cc516d29eb3eee383f75b62864cfb6800037"

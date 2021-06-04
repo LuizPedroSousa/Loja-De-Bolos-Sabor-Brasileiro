@@ -1,6 +1,6 @@
 import React from 'react'
 import { createGlobalStyle } from 'styled-components'
-import { GlobalStyles as BaseStyles } from 'twin.macro'
+import tw, { GlobalStyles as BaseStyles } from 'twin.macro'
 
 const CustomStyles = createGlobalStyle`
     *{
@@ -10,6 +10,9 @@ const CustomStyles = createGlobalStyle`
     }
 
     body {
+        .MuiPickersToolbarText-toolbarTxt {
+            ${tw`text-white`};
+        }
         background-color: ${({ theme: { colors } }) => colors.bg};
         font: 400 ${({ theme: { fontSize } }) =>
             fontSize.sm} Poppins, sans-serif;

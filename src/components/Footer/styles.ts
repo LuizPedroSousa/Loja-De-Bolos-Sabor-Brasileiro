@@ -4,31 +4,30 @@ import tw, { theme } from 'twin.macro'
 export const Container = styled.footer`
     padding-top: 1rem;
     height: max-content;
-    ${tw`mt-16 bg-beige-400 w-full md:grid grid-cols-2 gap-y-6`};
+    ${tw`mt-16 bg-beige-400 w-full`};
+`
 
+export const Content = styled.div`
+    ${tw`
+        w-full
+        h-full
+        md:mx-auto md:grid md:grid-cols-2 grid-rows-2 md:gap-y-6
+    `};
     @media ${({ theme: { bp } }) => bp.md} {
-        grid-template-rows: 1fr 1fr;
         grid-template-areas:
             'newsletter .'
             'newsletter references'
             'contact references'
             '. .'
             'social social';
+        max-width: 88%;
     }
 `
 
 export const Newsletter = styled.div`
-    ${tw`w-full sm:flex flex-col items-start justify-between`};
+    ${tw`w-full sm:flex flex-col items-start justify-between md:px-0`};
     grid-area: newsletter;
     padding: 0 1.313rem;
-
-    @media ${({ theme: { bp } }) => bp.md} {
-        padding-left: 4.375rem;
-        padding-right: 0;
-    }
-    @media ${({ theme: { bp } }) => bp['3md']} {
-        padding-left: 4.75rem;
-    }
 `
 
 export const Logo = styled.div`
@@ -102,7 +101,7 @@ export const InputGroup = styled.div`
 `
 
 export const Contact = styled.div`
-    ${tw`flex flex-col mt-6 text-sm md:mt-0 `};
+    ${tw`flex flex-col mt-6 text-sm md:mt-0 md:px-0 `};
     padding: 0 1.313rem;
     grid-area: contact;
     p {
@@ -135,14 +134,6 @@ export const Contact = styled.div`
                 text-decoration: underline;
             }
         }
-    }
-
-    @media ${({ theme: { bp } }) => bp.md} {
-        padding-left: 4.375rem;
-        padding-right: 0;
-    }
-    @media ${({ theme: { bp } }) => bp['3md']} {
-        padding-left: 4.75rem;
     }
 
     @media ${({ theme: { bp } }) => bp.l} {

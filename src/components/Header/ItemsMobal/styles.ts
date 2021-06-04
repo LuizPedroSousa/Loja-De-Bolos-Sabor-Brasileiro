@@ -1,29 +1,17 @@
 import styled from 'styled-components'
-import { Button } from '@material-ui/core'
 import { lighten } from 'polished'
-interface CartProps {
-    numberofitems: number
-}
+import tw, { theme } from 'twin.macro'
 
 interface LinkListProps {
     hasActivePage: boolean
 }
 
-export const HamburgerButton = styled(Button)`
-    width: 5rem;
-    height: 4rem;
-    padding: 1rem;
-    background: inherit;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    .MuiButton-label {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 2rem;
-        height: 2rem;
-    }
+export const HamburgerButton = styled.button`
+    ${tw`
+        w-20 h-16 p-6 bg-transparent
+        flex items-center justify-center
+    `};
+
     :hover {
         .MuiButton-label {
             svg {
@@ -34,80 +22,67 @@ export const HamburgerButton = styled(Button)`
 `
 
 export const LinkList = styled.li<LinkListProps>`
-    width: 100%;
-    height: 3rem;
-    background-color: shade(0.8, ${({ theme: { colors } }) => colors.bg});
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    ${tw`
+        w-full h-16
+        flex items-center justify-center
+    `};
     a {
-        padding: 1rem 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: relative;
-        text-align: center;
-        width: 90%;
+        ${tw`
+            py-4 flex items-center
+            relative justify-center
+            text-center h-full text-blue-700
+            no-underline
+            w-full text-md font-medium
+            hover:underline
+        `};
+
         transition: 0.25s;
-        height: 100%;
-        color: ${({ theme: { colors } }) => colors.blue[700]};
-        text-decoration: none;
-        font-size: ${({ theme: { fontSize } }) => fontSize.md};
-        font-weight: 500;
         ::after {
-            ${({ hasActivePage, theme: { colors } }) =>
+            ${({ hasActivePage }) =>
                 hasActivePage &&
                 `
                 content: '';
                 position: absolute;
-                bottom: 0;
+                bottom: 0.25rem;
+                background: ${theme`colors.orange.500`};
                 width: 0.625rem;
                 height: 0.625rem;
-                background-color: ${colors.orange[500]};
                 border-radius: 50%;
             `};
         }
         :hover {
-            color: ${({ theme: { colors } }) => lighten(0.2, colors.blue[700])};
-            text-decoration: underline;
+            color: ${lighten(0.2, theme`colors.blue.700`)};
         }
-    }
-
-    button {
-        padding: 1rem 0;
     }
 `
 
-export const CartMobal = styled(Button)<CartProps>`
-    width: 100%;
-    height: 4rem;
-
-    &,
-    button {
-        display: flex;
-        padding: 0.5rem 0;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .MuiButton-label {
-        font-size: 0;
-        position: relative;
-        ::after {
-            position: absolute;
-            content: '${({ numberofitems }) => String(numberofitems)}';
-            bottom: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font: 400 ${({ theme: { fontSize } }) => fontSize.sm} Poppins,
-                sans-serif;
-            color: ${({ theme: { colors } }) => colors.blue[700]};
-            left: 6rem;
-            width: 1rem;
-            height: 1rem;
-            border-radius: 50%;
-            background-color: ${({ theme: { colors } }) => colors.yellow[400]};
+export const CartMobal = styled.button`
+    ${tw`
+        w-full
+        flex flex-col items-center justify-center
+        py-1.5 mt-4 text-md font-medium text-blue-700
+    `};
+    span {
+        ${tw`
+            text-orange-500
+            flex items-center justify-center relative
+        `};
+        p {
+            ${tw`
+                absolute left-0 bottom-0 rounded-full
+                w-4 h-4 bg-yellow-400
+                flex items-center
+                justify-center
+                text-gray-400
+            `};
         }
     }
+`
+
+export const ExitButton = styled.button`
+    ${tw`
+        w-16 flex ml-auto bg-orange-500 rounded-xl
+        text-white items-center py-4 justify-center h-16
+        outline-none focus:ring-2
+    `};
 `

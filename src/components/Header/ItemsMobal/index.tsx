@@ -1,18 +1,22 @@
-import {
-    createStyles,
-    Divider,
-    List,
-    ListItem,
-    makeStyles,
-    SwipeableDrawer,
-    Theme
-} from '@material-ui/core'
+import React, { useRef } from 'react'
 import Link from 'next/link'
-import React, { useState } from 'react'
 import { AiOutlineShoppingCart } from 'react-icons/ai'
 import Hamburger from '../../AnimatedSvgs/Hamburger'
 import { IoMdExit } from 'react-icons/io'
-import { CartMobal, HamburgerButton, LinkList } from './styles'
+import { CartMobal, ExitButton, HamburgerButton, LinkList } from './styles'
+import {
+    Drawer,
+    DrawerContent,
+    DrawerHeader,
+    DrawerOverlay,
+    useDisclosure,
+    Divider,
+    List,
+    ListItem,
+    DrawerBody
+} from '@chakra-ui/react'
+import useCustomRipple from '../../../hooks/useCustomRipple'
+import useCart from '../../../hooks/useCart'
 
 export type ActiveHrefType = '/' | '/bolos' | '/contato' | '/encomendar'
 
@@ -30,82 +34,61 @@ const ItemsMobal: React.FC<ItemsMobalProps> = ({
     navigationLinks,
     activePage
 }) => {
-    const [hasViewMenu, setHasViewMenu] = useState<boolean>(false)
+    const { isOpen, onOpen, onClose } = useDisclosure()
+    const cartRef = useRef<HTMLButtonElement>(null)
+    const linkRef = useRef<HTMLAnchorElement>(null)
+    const exitRef = useRef<HTMLButtonElement>(null)
 
-    const toggleViewMenu = () => setHasViewMenu(!hasViewMenu)
+    useCustomRipple([{ ref: cartRef }, { ref: linkRef }, { ref: exitRef }])
+    const { itemsLength } = useCart()
 
-    const useStyles = makeStyles((theme: Theme) =>
-        createStyles({
-            drawerPaper: {
-                zIndex: 1200,
-                width: 240,
-                [theme.breakpoints.up('sm')]: {
-                    width: 350
-                },
-                [theme.breakpoints.up('md')]: {
-                    width: 400
-                }
-            },
-            exitButton: {
-                justifyContent: 'flex-end',
-                height: 60,
-                width: '100%'
-            }
-        })
-    )
-
-    const classes = useStyles()
     return (
         <>
-            <HamburgerButton type="button" onClick={toggleViewMenu}>
+            <HamburgerButton type="button" onClick={onOpen}>
                 <span>
                     <Hamburger />
                 </span>
             </HamburgerButton>
-            <SwipeableDrawer
-                onOpen={toggleViewMenu}
-                onClose={toggleViewMenu}
-                open={hasViewMenu}
-                classes={{
-                    paper: classes.drawerPaper
-                }}
-            >
-                <List>
-                    <ListItem
-                        onClick={toggleViewMenu}
-                        classes={{ button: classes.exitButton }}
-                        button
-                    >
-                        <IoMdExit size={38} />
-                    </ListItem>
-                </List>
-                <Divider />
-                <List>
-                    {navigationLinks.map(({ href, label }, index) => (
-                        <ListItem button key={index}>
-                            <LinkList
-                                key={index}
-                                hasActivePage={activePage === href}
-                            >
-                                <Link href={href}>
-                                    <a>{label}</a>
-                                </Link>
-                            </LinkList>
-                        </ListItem>
-                    ))}
-                </List>
-                <Divider />
-                <List>
-                    <CartMobal
-                        color="primary"
-                        name="Meu Carrinho"
-                        numberofitems={0}
-                    >
-                        <AiOutlineShoppingCart size={40} />
-                        Meu carrinho
-                    </CartMobal>
-                </List>
-            </SwipeableDrawer>
+            <Drawer isOpen={isOpen} onClose={onClose}>
+                <DrawerOverlay />
+                <DrawerContent bg="white">
+                    <DrawerHeader align="end">
+                        <ExitButton ref={exitRef} onClick={onClose}>
+                            <IoMdExit size={38} />
+                        </ExitButton>
+                    </DrawerHeader>
+                    <Divider />
+                    <DrawerBody px="0" mt="2">
+                        <List>
+                            {navigationLinks.map(({ href, label }, index) => (
+                                <LinkList
+                                    key={index}
+                                    hasActivePage={activePage === href}
+                                >
+                                    <Link href={href}>
+                                        <a ref={linkRef}>{label}</a>
+                                    </Link>
+                                </LinkList>
+                            ))}
+
+                            <ListItem>
+                                <CartMobal
+                                    color="primary"
+                                    type="button"
+                                    name="Meu Carrinho"
+                                    ref={cartRef}
+                                >
+                                    <span>
+                                        <AiOutlineShoppingCart size={40} />
+                                        <p>{itemsLength}</p>
+                                    </span>
+                                    Meu carrinho
+                                </CartMobal>
+                            </ListItem>
+                        </List>
+                    </DrawerBody>
+                </DrawerContent>
+            </Drawer>
         </>
     )
 }

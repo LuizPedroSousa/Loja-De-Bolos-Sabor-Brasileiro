@@ -1,26 +1,29 @@
 import styled from 'styled-components'
-import { transparentize } from 'polished'
+import { shade, transparentize } from 'polished'
 import { motion } from 'framer-motion'
+import tw, { theme } from 'twin.macro'
 
 interface AddToCardProps {
     price: string
 }
 
 export const Container = styled(motion.div)`
-    width: 100%;
+    ${tw`
+        w-full overflow-hidden relative
+        shadow-sm rounded-3xl cursor-pointer
+        transition-none
+        hover:shadow-2xl
+        xs:w-96 xs:h-96
+    `};
+
     height: 20.875rem;
-    overflow: hidden;
-    position: relative;
     z-index: 5;
-    box-shadow: none;
-    border-radius: 1.25rem;
     img {
-        height: 100%;
-        width: 100%;
+        ${tw`w-full h-full`};
         transition: 0.25s;
     }
     & + & {
-        margin-top: 2rem;
+        ${tw`mt-8 xs:mt-0`};
     }
 
     :hover {
@@ -29,16 +32,10 @@ export const Container = styled(motion.div)`
         }
     }
 
-    @media ${({ theme: { bp } }) => bp.xs} {
-        width: 24rem;
-        height: 24rem;
-    }
-
     @media ${({ theme: { bp } }) => bp.md} {
         width: 24.875rem;
         height: 24.875rem;
         & + & {
-            margin-top: 0;
             margin-left: 1.063rem;
         }
     }
@@ -53,17 +50,12 @@ export const Container = styled(motion.div)`
 `
 
 export const CakeInfo = styled.div`
-    background-color: ${({ theme: { colors } }) =>
-        transparentize(0.3, colors.orange[500])};
-    position: absolute;
+    ${tw`
+        absolute pl-2 w-full bottom-0
+        flex flex-col items-center justify-center
+    `};
+    background-color: ${transparentize(0.3, theme`colors.orange.500`)};
     height: 12.224rem;
-    padding-left: 0.5rem;
-    width: 100%;
-    bottom: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
 
     @media ${({ theme: { bp } }) => bp.xs} {
         padding-left: 1.875rem;
@@ -71,51 +63,54 @@ export const CakeInfo = styled.div`
 `
 
 export const Header = styled.div`
-    width: 100%;
+    ${tw`
+        w-full
+    `};
     strong {
-        font-size: ${({ theme: { fontSize } }) => fontSize['2xl']};
-        color: ${({ theme: { colors } }) => colors.white};
+        ${tw`
+            text-2xl text-white
+        `};
     }
     p {
-        color: ${({ theme: { colors } }) => colors.white};
+        ${tw`
+            text-white
+        `};
         max-width: 18.063rem;
     }
 `
 
 export const Footer = styled.div`
-    display: flex;
-    width: 100%;
-    margin-top: 1rem;
-    justify-content: space-between;
+    ${tw`
+        flex w-full
+        mt-4 justify-between
+    `};
     a {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: ${({ theme: { colors } }) => colors.white};
-        text-decoration: none;
+        ${tw`
+            flex items-center
+            justify-center
+            text-white no-underline hover:underline
+        `};
         transition: 0.25s;
-        :hover {
-            text-decoration: underline;
-        }
     }
 `
 
 export const AddToCard = styled(motion.button)<AddToCardProps>`
-    background-color: ${({ theme: { colors } }) => colors.white};
-    color: ${({ theme: { colors } }) => colors.brown[500]};
+    ${tw`
+        bg-white text-brown-500
+        font-normal font-sans py-2 px-4
+        relative outline-none focus:ring-2
+        shadow-md hover:shadow-lg
+    `};
     border-top-left-radius: 6.25rem;
-    font-weight: 400;
-    font-family: Poppins, sans-serif;
     border-bottom-left-radius: 6.25rem;
-    padding: 0.5rem 1rem;
-    position: relative;
     ::after {
-        position: absolute;
-        top: -1.45rem;
-        color: ${({ theme: { colors } }) => colors.white};
-        font: 700 ${({ theme: { fontSize } }) => fontSize.md} Poppins,
-            sans-serif;
-        left: 0.5rem;
         content: 'R$ ${({ price }) => price}';
+        ${tw`
+            absolute -top-6 text-white font-sans
+            font-bold text-md left-2
+        `};
+    }
+    :hover {
+        background-color: ${shade(0.1, theme`colors.white`)};
     }
 `

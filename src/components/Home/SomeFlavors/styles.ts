@@ -3,62 +3,63 @@ import styled from 'styled-components'
 import BackgroundDotsTop from '../../../../public/images/best-cakes-background-top.svg'
 import BackgroundDotsBottom from '../../../../public/images/best-cakes-background-bottom.svg'
 import { shade } from 'polished'
+import tw, { theme } from 'twin.macro'
 
 export const Section = styled.section`
-    height: max-content;
     padding-top: 3.75rem;
-    margin-top: 4rem;
-    background-color: ${({ theme: { colors } }) => colors.bg};
-    width: 100%;
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    @media ${({ theme: { bp } }) => bp.l} {
-        padding-right: 9.813rem;
-    }
+    ${tw`
+        mt-16 bg-bg w-full flex items-center
+        flex-col md:pb-16 l:pb-20
+    `};
 `
 
 export const TitleContainer = styled.div`
-    padding: 0 1.5rem;
-    width: 100%;
+    ${tw`
+        w-full mx-6
+        flex flex-col justify-center items-center
+        sm:items-start
+        md:justify-between
+        md:items-start
+        md:mx-auto
+        md-3:flex-row md-3:items-center
+    `};
+
+    max-width: 88%;
     @media ${({ theme: { bp } }) => bp.md} {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        padding-left: 5.5rem;
+        max-width: 94%;
         margin-top: 0.8rem;
+    }
+
+    @media ${({ theme: { bp } }) => bp.l} {
+        max-width: 88%;
     }
 `
 
 export const Title = styled.h2`
-    font: 500 calc(${({ theme: { fontSize } }) => fontSize['4xl']} - 0.2rem)
-            Poppins,
-        sans-serif;
+    ${tw`
+        font-medium font-sans
+        text-blue-700 relative
+        capitalize
+        ml-1
+        sm:text-4xl sm:ml-4
+        md:ml-12
+        l:ml-8
+        md:text-5xl
+    `};
+    font-size: calc(${theme`fontSize.4xl`} - 0.25rem);
     line-height: 40px;
-    color: ${({ theme: { colors } }) => colors.blue[700]};
-    position: relative;
 
     ::after {
         content: '';
-        position: absolute;
-        background-color: ${({ theme: { colors } }) => colors.orange[500]};
-        left: -1rem;
-        top: 0;
-        height: 100%;
-        width: 0.75rem;
-    }
-
-    @media ${({ theme: { bp } }) => bp.sm} {
-        font-size: ${({ theme: { fontSize } }) => fontSize['4xl']};
+        ${tw`absolute bg-orange-500 -left-4 top-0 h-full w-3`};
     }
 
     @media ${({ theme: { bp } }) => bp.md} {
         line-height: 62px;
         ::after {
-            left: -3.625rem;
+            ${tw`-left-12`};
             width: 1.563rem;
         }
-        font-size: ${({ theme: { fontSize } }) => fontSize['5xl']};
     }
 
     @media ${({ theme: { bp } }) => bp.l} {
@@ -69,21 +70,21 @@ export const Title = styled.h2`
 `
 
 export const Description = styled.p`
-    margin-top: 1rem;
+    ${tw`
+        mt-4
+         md:flex md:mt-0 md:justify-between md:items-center
+    `};
     max-width: 29rem;
     @media ${({ theme: { bp } }) => bp.sm} {
         margin-top: 1.938rem;
     }
     @media ${({ theme: { bp } }) => bp.md} {
-        margin: 0;
-        display: flex;
-        justify-content: space-between;
         max-width: 23.063rem;
-        align-items: center;
     }
 
     @media ${({ theme: { bp } }) => bp.l} {
         max-width: 36.188rem;
+        ${tw`mt-0`};
     }
 
     @media ${({ theme: { bp } }) => bp.xl} {
@@ -92,77 +93,76 @@ export const Description = styled.p`
 `
 
 export const CakesContainer = styled.div`
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
+    ${tw`
+        w-full flex items-center
+        justify-center flex-col
+        px-0
+        md:flex-row md:justify-between
+        md:pr-8
+        md-3:mr-auto md-3:px-0
+    `};
     @media ${({ theme: { bp } }) => bp.md} {
-        flex-direction: row;
-        padding-right: 2.625rem;
         margin-top: 3.625rem;
+    }
 
-        justify-content: space-between;
+    @media ${({ theme: { bp } }) => bp['3md']} {
+        max-width: 94%;
+    }
+
+    @media ${({ theme: { bp } }) => bp.l} {
+        max-width: 91%;
     }
 `
 
 export const Cakes = styled.div`
-    padding: 0 1rem;
+    ${tw`
+        px-4 relative
+        md:flex md:items-center
+        md:justify-start md:pl-0
+    `};
     margin-top: 3.253rem;
-    position: relative;
-    @media ${({ theme: { bp } }) => bp.md} {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding-left: 0;
-    }
 `
 
 export const BackgroundTop = styled(BackgroundDotsTop as any)`
-    width: 18rem;
-    position: absolute;
-    z-index: 0;
-    top: -1rem;
+    ${tw`
+        w-72 absolute
+        z-0 -top-4
+        md:-left-2
+    `};
     left: 0.2rem;
     @media ${({ theme: { bp } }) => bp.md} {
         top: -3.2rem;
-        left: -0.5rem;
     }
 `
 
 export const BackgroundBottom = styled(BackgroundDotsBottom as any)`
-    bottom: -2rem;
-    height: 20rem;
-    z-index: 0;
+    ${tw`
+        -bottom-8 absolute
+        h-80
+        w-60 z-0
+        md:-bottom-16 md:-right-8
+    `};
     right: 0.2rem;
-    width: 15rem;
-    position: absolute;
-    @media ${({ theme: { bp } }) => bp.md} {
-        bottom: -4rem;
-        right: -2rem;
-    }
 `
 
 export const SeeMore = styled.a`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    ${tw`
+        flex flex-col items-center
+        text-orange-500 font-medium cursor-pointer
+
+    `};
     margin-top: 3.125rem;
-    color: ${({ theme: { colors } }) => colors.orange[500]};
-    font-weight: 500;
-    cursor: pointer;
     transition: 0.25s;
     span {
-        margin-bottom: 0.25rem;
+        ${tw`mb-1`}
     }
 
     :hover {
         span {
             svg {
-                fill: ${({ theme: { colors } }) =>
-                    shade(0.2, colors.orange[500])};
+                fill: ${shade(0.2, theme`colors.orange.500`)};
             }
         }
-        color: ${({ theme: { colors } }) => shade(0.2, colors.orange[500])};
+        color: ${shade(0.2, theme`colors.orange.500`)};
     }
 `

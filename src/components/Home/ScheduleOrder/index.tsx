@@ -1,4 +1,4 @@
-import React, { FormEvent, useState } from 'react'
+import React, { FormEvent, useRef, useState } from 'react'
 import { DatePicker, TimePicker } from '@material-ui/pickers'
 import Image from 'next/image'
 
@@ -17,6 +17,7 @@ import {
     DotsBottom,
     DotsRight
 } from './styles'
+import useCustomRipple from '../../../hooks/useCustomRipple'
 
 const ScheduleOrder: React.FC = () => {
     const handleScheduleOrder = (e: FormEvent) => {
@@ -26,14 +27,19 @@ const ScheduleOrder: React.FC = () => {
     const [date, setDate] = useState(new Date())
     const [time, setTime] = useState(new Date())
 
+    const goRef = useRef<HTMLButtonElement>(null)
+
+    useCustomRipple([{ ref: goRef }])
+
     return (
         <Section>
             <Strawberry>
                 <Image
+                    objectFit="cover"
                     src="/images/strawberry.png"
                     alt="Morango"
-                    width={1477}
-                    height={1557}
+                    width={3068}
+                    height={2126}
                 />
             </Strawberry>
             <Content>
@@ -41,7 +47,9 @@ const ScheduleOrder: React.FC = () => {
                     <strong>Agendar encomenda</strong>
                     <InputGroup>
                         <input placeholder="seu endereço" type="text" />
-                        <button type="submit">Go</button>
+                        <button type="submit" name="enviar" ref={goRef}>
+                            Go
+                        </button>
                     </InputGroup>
                     <ScheduleContainer>
                         <DateContent>
@@ -69,6 +77,7 @@ const ScheduleOrder: React.FC = () => {
             <ChocolateOverlay>
                 <Chocolate>
                     <Image
+                        objectFit="cover"
                         src="/images/chocolate.png"
                         alt="Chocolate"
                         width={1569}

@@ -2,26 +2,30 @@ import { motion } from 'framer-motion'
 import Image from 'next/image'
 import React, { useEffect, useRef } from 'react'
 import useBreakPoint from '../../../../hooks/useBreakPoint'
-import Ripple from '../../../Ripple'
+import useCart from '../../../../hooks/useCart'
+import useCustomRipple from '../../../../hooks/useCustomRipple'
 import { Container, CakeInfo, Header, Footer } from './styles'
 
-interface CakeCardProps {
-    image: {
-        src: string
-        alt: string
-    }
+type CakeType = {
+    id: string
+    price: string
     name: string
     description: string
-    price: string
+    photo: {
+        url: string
+    }
 }
 
-const Cake: React.FC<CakeCardProps> = ({
-    image: { src, alt },
-    description,
-    name,
-    price
-}) => {
+interface CakeCardProps {
+    cake: CakeType
+}
+
+const Cake: React.FC<CakeCardProps> = ({ cake }) => {
     const descriptionRef = useRef<HTMLParagraphElement>(null)
+    const addToCardRef = useRef<HTMLButtonElement>(null)
+    useCustomRipple([{ ref: addToCardRef }])
+
+    const { addToCard } = useCart()
 
     const { xs, sm, md } = useBreakPoint()
 
@@ -56,10 +60,6 @@ const Cake: React.FC<CakeCardProps> = ({
     return (
         <Container
             whileHover={{
-                boxShadow: [
-                    '0px 2px 4px rgba(0, 0, 0, 0.04),',
-                    ' 0px 8px 16px rgba(0, 0, 0, 0.32)'
-                ],
                 transition: { duration: 0.5 },
                 scale: [1, 1.1],
                 zIndex: 10
@@ -69,26 +69,28 @@ const Cake: React.FC<CakeCardProps> = ({
                 objectFit="cover"
                 width={700}
                 height={800}
-                src={src}
-                alt={alt}
+                src={cake.photo.url}
+                alt={cake.name}
             />
             <CakeInfo>
                 <Header>
-                    <p>{name}</p>
-                    <strong>R$ {price}</strong>
+                    <p>{cake.name}</p>
+                    <strong>R$ {cake.price}</strong>
                 </Header>
                 <Footer>
-                    <p ref={descriptionRef}>{description}</p>
+                    <p ref={descriptionRef}>{cake.description}</p>
                     <motion.button
                         whileHover={{
                             scale: [1, 0.9],
                             transition: { duration: 0.25 },
                             x: 10
                         }}
+                        onClick={() => addToCard({ cake, amount: 1 })}
                         type="button"
                         name="Adicionar"
+                        ref={addToCardRef}
                     >
-                        <Ripple>Adicionar ao carrinho</Ripple>
+                        Adicionar ao carrinho
                     </motion.button>
                 </Footer>
             </CakeInfo>

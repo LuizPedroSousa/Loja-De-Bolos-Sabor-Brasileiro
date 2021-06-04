@@ -1,46 +1,36 @@
 import styled from 'styled-components'
 import { lighten, shade } from 'polished'
-interface CartProps {
-    numberofitems: number
-}
+import tw, { theme } from 'twin.macro'
 
 interface ListProps {
     hasActivePage: boolean
 }
 
 export const UnorderedList = styled.ul`
-    display: flex;
+    ${tw`
+        flex w-max flex-row relative
+        items-center justify-center bg-transparent
+        ml-48
+    `};
     z-index: 9999;
-    width: max-content;
-    flex-direction: row;
-    position: relative;
-    margin-left: 12rem;
-    align-items: center;
-    justify-content: center;
-    background-color: inherit;
 `
 
 export const List = styled.li<ListProps>`
-    height: 3rem;
+    ${tw`
+        h-12
+        flex items-center w-max
+        px-4 justify-center
+    `};
     background-color: shade(0.8, ${({ theme: { colors } }) => colors.bg});
-    display: flex;
-    align-items: center;
-    width: max-content;
-    padding: 0 1rem;
-    justify-content: center;
     a {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: relative;
-        text-align: center;
+        ${tw`
+            flex items-center justify-center
+            relative text-center h-full text-blue-700
+            text-md font-medium no-underline
+            hover:underline
+        `};
         width: 90%;
         transition: 0.25s;
-        height: 100%;
-        color: ${({ theme: { colors } }) => colors.blue[700]};
-        text-decoration: none;
-        font-size: ${({ theme: { fontSize } }) => fontSize.md};
-        font-weight: 500;
         ::after {
             ${({ hasActivePage, theme: { colors } }) =>
                 hasActivePage &&
@@ -56,65 +46,74 @@ export const List = styled.li<ListProps>`
         }
         :hover {
             color: ${({ theme: { colors } }) => lighten(0.2, colors.blue[700])};
-            text-decoration: underline;
         }
     }
 
     button {
-        padding: 1rem 0;
+        ${tw`py-4`};
     }
 
     & + li {
-        margin-left: 1rem;
+        ${tw`ml-4`};
     }
 `
 
-export const Cart = styled.div<CartProps>`
-    color: ${({ theme: { colors } }) => shade(0.05, colors.white)};
-    font-size: ${({ theme: { fontSize } }) => fontSize.md};
-    font-family: Poppins, sans-serif;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-left: auto;
-    margin-right: 2rem;
-    label {
+export const Cart = styled.button`
+    color: ${shade(0.05, theme`colors.white`)};
+    ${tw`
+        font-sans text-md flex
+        items-center justify-center ml-auto
+        bg-transparent
+    `};
+    span {
+        ${tw`
+                w-16 h-16 relative
+            `};
         transition: 0.25s;
-        cursor: pointer;
-        :hover {
-            color: ${({ theme: { colors } }) => shade(0.2, colors.white)};
+        color: ${shade(0.05, theme`colors.white`)};
+
+        p {
+            ${tw`
+                    absolute -bottom-2
+                    flex items-center justify-center
+                    font-normal font-sans text-md
+                    text-blue-700 left-0 rounded-full
+                    bg-yellow-400
+            `};
+            width: 1.625rem;
+            height: 1.625rem;
         }
     }
-    button {
-        background-color: inherit;
+    :hover {
         span {
-            width: 4rem;
-            transition: 0.25s;
-            height: 4rem;
-            position: relative;
-            color: ${({ theme: { colors } }) => shade(0.05, colors.white)};
-            ::after {
-                position: absolute;
-                content: '${({ numberofitems }) => String(numberofitems)}';
-                bottom: 0;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                font: 400 ${({ theme: { fontSize } }) => fontSize.md} Poppins,
-                    sans-serif;
-                color: ${({ theme: { colors } }) => colors.blue[700]};
-                left: 0;
-                width: 1.625rem;
-                height: 1.625rem;
-                border-radius: 50%;
-                background-color: ${({ theme: { colors } }) =>
-                    colors.yellow[400]};
-            }
-        }
-        :hover {
-            span {
-                color: ${({ theme: { colors } }) => shade(0.2, colors.white)};
-            }
+            color: ${shade(0.2, theme`colors.white`)};
         }
     }
+`
+
+export const CartFooter = styled.footer`
+    ${tw`
+        flex flex-col  w-full bg-orange-100
+    `};
+
+    p {
+        ${tw`
+            flex justify-between
+            mb-4
+            px-4 text-white font-medium
+        `};
+        span {
+            ${tw`ml-auto`}
+        }
+    }
+    a {
+        ${tw`w-full text-white font-medium text-lg flex items-center justify-center h-14 bg-orange-500`};
+    }
+`
+
+export const CartItem = styled.div`
+    ${tw`
+        flex items-center justify-between w-full
+
+    `};
 `

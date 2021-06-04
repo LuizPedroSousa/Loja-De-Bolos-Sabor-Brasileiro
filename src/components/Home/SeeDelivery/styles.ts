@@ -9,6 +9,10 @@ export const Section = styled.section`
         justify-center
         md:pb-20
     `};
+    @media ${({ theme: { bp } }) => bp.l} {
+        max-width: 88%;
+        ${tw`mx-auto pb-32`};
+    }
 `
 export const Title = styled.div`
     ${tw`w-full flex flex-col px-5`};
@@ -28,8 +32,7 @@ export const Title = styled.div`
 
 export const Cake = styled.div`
     width: 13.813rem;
-    ${tw`-left-14 absolute md:-left-20`};
-    bottom: -4rem;
+    ${tw`-left-14 absolute -bottom-16 md:-left-0 md:-bottom-12 l:-bottom-4`};
 
     @media ${({ theme: { bp } }) => bp.sm} {
         width: 20.063rem;
@@ -37,11 +40,10 @@ export const Cake = styled.div`
 
     @media ${({ theme: { bp } }) => bp.md} {
         width: 27.938rem;
-        bottom: -3rem;
     }
 
     @media ${({ theme: { bp } }) => bp.l} {
-        width: 31.563rem;
+        width: 25.563rem;
     }
 `
 

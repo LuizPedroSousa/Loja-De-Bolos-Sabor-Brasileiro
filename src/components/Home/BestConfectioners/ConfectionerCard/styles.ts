@@ -1,23 +1,24 @@
 import styled from 'styled-components'
 import { motion } from 'framer-motion'
 import { shade } from 'polished'
+import tw, { theme } from 'twin.macro'
 
 export const Container = styled.div`
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    flex-direction: column;
+    ${tw`
+        flex justify-end
+        items-center flex-col relative
+        bg-white shadow-md
+        md:h-full
+        hover:shadow-lg
+    `};
+    transition: 0.25s;
     height: 16.125rem;
-    position: relative;
     border-top-left-radius: 1.063rem;
     border-top-right-radius: 1.063rem;
-    background-color: ${({ theme: { colors } }) => colors.white};
-    box-shadow: 0px 1.75848px 4.39621px rgba(0, 0, 0, 0.15);
     border-bottom-left-radius: 2.188rem;
     border-bottom-right-radius: 2.188rem;
 
     @media ${({ theme: { bp } }) => bp.md} {
-        height: 100%;
         :nth-of-type(1),
         :nth-of-type(2) {
             img {
@@ -53,9 +54,7 @@ export const Container = styled.div`
         :nth-of-type(1),
         :nth-of-type(2) {
             strong {
-                font-size: calc(
-                    ${({ theme: { fontSize } }) => fontSize['2xl']} + 0.25rem
-                );
+                font-size: calc(${theme`fontSize.2xl`} + 0.25rem);
             }
             img {
                 width: 14.375rem;
@@ -66,9 +65,7 @@ export const Container = styled.div`
         :nth-of-type(4) {
             bottom: 6em;
             strong {
-                font-size: calc(
-                    ${({ theme: { fontSize } }) => fontSize['2xl']} + 0.2rem
-                );
+                font-size: calc(${theme`fontSize.2xl`} + 0.2rem);
             }
             img {
                 width: 13.625rem;
@@ -81,9 +78,7 @@ export const Container = styled.div`
         :nth-of-type(1),
         :nth-of-type(2) {
             strong {
-                font-size: calc(
-                    ${({ theme: { fontSize } }) => fontSize['2xl']} + 0.3rem
-                );
+                font-size: calc(${theme`fontSize.2xl`} + 0.3rem);
             }
         }
     }
@@ -107,40 +102,34 @@ export const Container = styled.div`
 `
 
 export const Content = styled.div`
-    background-color: ${({ theme: { colors } }) => colors.orange[500]};
-    width: 100%;
-    height: 100%;
-    display: flex;
-    border: 6px solid ${({ theme: { colors } }) => colors.white};
+    ${tw`
+        bg-orange-500 w-full h-full
+        flex border-white justify-end items-center
+        flex-col relative overflow-hidden pb-4
+        md:pb-6
+    `};
 
-    justify-content: flex-end;
-    align-items: center;
+    border-width: 6px;
+
     border-top-left-radius: 1.063rem;
     border-top-right-radius: 1.063rem;
-    flex-direction: column;
-    position: relative;
-    overflow: hidden;
-    padding-bottom: 1rem;
 
     strong {
-        font-weight: 500;
-        font-size: ${({ theme: { fontSize } }) => fontSize['2xl']};
-        color: ${({ theme: { colors } }) => colors.white};
-    }
-
-    @media ${({ theme: { bp } }) => bp.md} {
-        padding-bottom: 1.5rem;
+        ${tw`
+            font-medium text-2xl text-white
+        `};
     }
 `
 
 export const Wave = styled.div`
-    position: relative;
-    width: 100%;
+    ${tw`
+        relative w-full
+    `};
     svg {
-        position: absolute;
-        bottom: -4rem;
-        width: max-content;
-        left: -3rem;
+        ${tw`
+            absolute -bottom-16 w-max
+            -left-16 l:left-0
+        `};
     }
 
     @media ${({ theme: { bp } }) => bp.xs} {
@@ -157,49 +146,33 @@ export const Wave = styled.div`
 `
 
 export const Avatar = styled.div`
-    position: absolute;
+    ${tw`
+        absolute -top-20 overflow-hidden
+    `};
     z-index: 1;
-    top: -5rem;
     img {
         border: 2px solid ${({ theme: { colors } }) => colors.white} !important;
         width: 11.625rem;
         height: 11.625rem;
         border-radius: 50%;
     }
-    overflow: hidden;
 `
 
-export const SeeProfile = styled(motion.button)`
-    width: 100%;
-    height: 5rem;
-    font: 500 ${({ theme: { fontSize } }) => fontSize['2xl']} Poppins,
-        sans-serif;
-    color: ${({ theme: { colors } }) => colors.blue[700]};
-    background-color: ${({ theme: { colors } }) => colors.white};
+export const SeeProfile = styled.button`
+    ${tw`
+        w-full h-20 font-sans text-2xl font-medium
+        flex items-center justify-center
+        text-blue-700 bg-white
+        overflow-hidden
+        outline-none
+        focus:ring-2
+        md-3:h-24
+    `};
 
-    &,
-    div {
-        border-bottom-left-radius: 2.188rem;
-        border-bottom-right-radius: 2.188rem;
-    }
+    border-bottom-left-radius: 2.188rem;
+    border-bottom-right-radius: 2.188rem;
 
-    div {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
-        height: 100%;
-    }
-    :focus {
-        transition: none;
-        border: 3px solid ${({ theme: { colors } }) => colors.orange[500]};
-    }
     :hover {
-        background-color: ${({ theme: { colors } }) =>
-            shade(0.05, colors.white)};
-    }
-
-    @media ${({ theme: { bp } }) => bp['3md']} {
-        height: 6rem;
+        background-color: ${shade(0.05, theme`colors.white`)};
     }
 `
