@@ -107,7 +107,6 @@ const ItemsDesktop: React.FC<ItemsDesktopProps> = ({
                                     <ItemInfo hasDownAmount={item.amount > 1}>
                                         <p>
                                             {item.cake.name}
-                                            <br />
                                             <span>R$ {item.cake.price}</span>
                                         </p>
                                         <div>
