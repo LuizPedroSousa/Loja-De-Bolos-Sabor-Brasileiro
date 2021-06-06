@@ -1,27 +1,40 @@
 import React, { useRef } from 'react'
 import Image from 'next/image'
 
+import { useRouter } from 'next/router'
+
 import { Container, CakeInfo, Header, Footer, AddToCard } from './styles'
 import { FaMapMarkerAlt } from 'react-icons/fa'
 import useCustomRipple from '../../../../hooks/useCustomRipple'
+import useCart from '../../../../hooks/useCart'
 
-interface CakeCardProps {
-    image: {
-        src: string
-        alt: string
-    }
+type CakeType = {
+    id: string
+    price: string
     name: string
     description: string
-    price: string
+    photo: {
+        url: string
+    }
 }
-const CakeCard: React.FC<CakeCardProps> = ({
-    name,
-    image: { src, alt },
-    description,
-    price
-}) => {
+
+interface CakeCardProps {
+    cake: CakeType
+}
+
+const CakeCard: React.FC<CakeCardProps> = ({ cake }) => {
     const addToCardRef = useRef<HTMLButtonElement>(null)
     useCustomRipple([{ ref: addToCardRef }])
+    const { addToCard, hasCakeInCart } = useCart()
+
+    const router = useRouter()
+
+    function handleAddToCart() {
+        if (!hasCakeInCart(cake)) {
+            return addToCard({ cake, amount: 1 })
+        }
+        router.push('/meu-carrinho')
+    }
     return (
         <Container
             whileHover={{
@@ -29,11 +42,16 @@ const CakeCard: React.FC<CakeCardProps> = ({
                 zIndex: 10
             }}
         >
-            <Image width={700} height={800} src={src} alt={alt} />
+            <Image
+                width={700}
+                height={800}
+                src={cake.photo.url}
+                alt={cake.name}
+            />
             <CakeInfo>
                 <Header>
-                    <strong>{name}</strong>
-                    <p>{description}</p>
+                    <strong>{cake.name}</strong>
+                    <p>{cake.description}</p>
                 </Header>
                 <Footer>
                     <a href="#">
@@ -43,7 +61,8 @@ const CakeCard: React.FC<CakeCardProps> = ({
                         Av. Parada pinto
                     </a>
                     <AddToCard
-                        price={price}
+                        hasCakeInCart={hasCakeInCart(cake)}
+                        price={cake.price}
                         ref={addToCardRef}
                         whileHover={{
                             scale: [1, 0.98],
@@ -52,8 +71,11 @@ const CakeCard: React.FC<CakeCardProps> = ({
                         }}
                         type="button"
                         name="Adicionar"
+                        onClick={handleAddToCart}
                     >
-                        Adicionar ao carrinho
+                        {hasCakeInCart(cake)
+                            ? 'Ver Carrinho'
+                            : 'Adicionar ao carrinho'}
                     </AddToCard>
                 </Footer>
             </CakeInfo>

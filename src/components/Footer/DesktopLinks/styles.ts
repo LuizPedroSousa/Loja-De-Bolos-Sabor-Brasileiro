@@ -2,17 +2,21 @@ import styled from 'styled-components'
 import tw from 'twin.macro'
 
 export const Container = styled.div`
-    ${tw`grid grid-cols-max-2 mt-5 ml-auto gap-x-12`};
+    ${tw`grid grid-cols-max-3 mt-5 ml-auto gap-x-12`};
     div {
-        ${tw`flex flex-col`};
+        ${tw`flex w-full flex-col`};
         a {
             transition: 0.25s;
-            ${tw`text-blue-100 hover:underline hover:text-blue-700`};
+            ${tw`text-blue-100 w-max flex items-center justify-start hover:underline hover:text-blue-700`};
             & + a {
                 ${tw`mt-2`};
             }
+            span {
+                ${tw`mr-2`};
+            }
         }
     }
+
     p {
         ${tw`text-xl text-blue-700 font-medium mb-4`};
     }

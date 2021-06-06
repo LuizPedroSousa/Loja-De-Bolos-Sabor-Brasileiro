@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Head from 'next/head'
 
 import { Wrapper, Container, BackgroundSvg } from '../styles/pages/home'
@@ -13,6 +13,7 @@ import ExploreOurFlavors from '../components/Home/ExploreOurFlavors'
 import BestConfectioners from '../components/Home/BestConfectioners'
 import Footer from '../components/Footer'
 import SeeDelivery from '../components/Home/SeeDelivery'
+import useCake from '../hooks/useCake'
 
 type Cake = {
     id: string
@@ -43,6 +44,10 @@ export default function Home({
     bestConfectioners,
     cakes
 }: HomeProps) {
+    const { setCakes } = useCake()
+    useEffect(() => {
+        setCakes(cakes)
+    }, [])
     return (
         <Wrapper>
             <Head>
@@ -56,7 +61,7 @@ export default function Home({
                     <SomeFlavors bestCakes={bestCakes} />
                     <ScheduleOrder />
                     <OurServices />
-                    <ExploreOurFlavors cakes={cakes} />
+                    <ExploreOurFlavors />
                     <BestConfectioners bestConfectioners={bestConfectioners} />
                     <SeeDelivery />
                     <Footer />

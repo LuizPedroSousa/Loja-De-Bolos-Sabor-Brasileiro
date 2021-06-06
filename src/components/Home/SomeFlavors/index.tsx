@@ -51,17 +51,9 @@ const SomeFlavors: React.FC<SomeFlavorsProps> = ({ bestCakes }) => {
             <CakesContainer>
                 <Cakes>
                     <BackgroundTop />
-                    {bestCakes.map(
-                        ({ photo: { url }, id, name, description, price }) => (
-                            <CakeCard
-                                description={description}
-                                name={name}
-                                price={price}
-                                key={id}
-                                image={{ src: url, alt: name }}
-                            />
-                        )
-                    )}
+                    {bestCakes.map(cake => (
+                        <CakeCard cake={cake} key={cake.id} />
+                    ))}
                     <BackgroundBottom />
                 </Cakes>
                 <NextLink href="/bolos/melhores-sabores">

@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import Image from 'next/image'
+import Link from 'next/link'
 import React, { useEffect, useRef } from 'react'
 import useBreakPoint from '../../../../hooks/useBreakPoint'
 import useCart from '../../../../hooks/useCart'
@@ -25,7 +26,7 @@ const Cake: React.FC<CakeCardProps> = ({ cake }) => {
     const addToCardRef = useRef<HTMLButtonElement>(null)
     useCustomRipple([{ ref: addToCardRef }])
 
-    const { addToCard } = useCart()
+    const { addToCard, hasCakeInCart } = useCart()
 
     const { xs, sm, md } = useBreakPoint()
 
@@ -57,6 +58,10 @@ const Cake: React.FC<CakeCardProps> = ({ cake }) => {
         }
     }
 
+    function handleAddToCart() {
+        addToCard({ cake, amount: 1 })
+    }
+
     return (
         <Container
             whileHover={{
@@ -79,19 +84,25 @@ const Cake: React.FC<CakeCardProps> = ({ cake }) => {
                 </Header>
                 <Footer>
                     <p ref={descriptionRef}>{cake.description}</p>
-                    <motion.button
-                        whileHover={{
-                            scale: [1, 0.9],
-                            transition: { duration: 0.25 },
-                            x: 10
-                        }}
-                        onClick={() => addToCard({ cake, amount: 1 })}
-                        type="button"
-                        name="Adicionar"
-                        ref={addToCardRef}
-                    >
-                        Adicionar ao carrinho
-                    </motion.button>
+                    {hasCakeInCart(cake) ? (
+                        <Link href="/meu-carrinho">
+                            <a>Ver Carrinho</a>
+                        </Link>
+                    ) : (
+                        <motion.button
+                            whileHover={{
+                                scale: [1, 0.9],
+                                transition: { duration: 0.25 },
+                                x: 10
+                            }}
+                            onClick={handleAddToCart}
+                            type="button"
+                            name="Adicionar"
+                            ref={addToCardRef}
+                        >
+                            Adicionar ao carrinho
+                        </motion.button>
+                    )}
                 </Footer>
             </CakeInfo>
         </Container>

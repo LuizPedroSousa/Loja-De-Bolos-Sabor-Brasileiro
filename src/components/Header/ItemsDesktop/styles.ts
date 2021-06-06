@@ -6,6 +6,10 @@ interface ListProps {
     hasActivePage: boolean
 }
 
+interface ItemInfoProps {
+    hasDownAmount: boolean
+}
+
 export const UnorderedList = styled.ul`
     ${tw`
         flex w-max flex-row relative
@@ -77,7 +81,7 @@ export const Cart = styled.button`
                     absolute -bottom-2
                     flex items-center justify-center
                     font-normal font-sans text-md
-                    text-blue-700 left-0 rounded-full
+                    text-gray-400 left-0 rounded-full
                     bg-yellow-400
             `};
             width: 1.625rem;
@@ -91,29 +95,108 @@ export const Cart = styled.button`
     }
 `
 
-export const CartFooter = styled.footer`
-    ${tw`
-        flex flex-col  w-full bg-orange-100
-    `};
-
-    p {
+export const CartContent = styled.div`
+    header {
         ${tw`
-            flex justify-between
-            mb-4
-            px-4 text-white font-medium
+            w-full
         `};
-        span {
-            ${tw`ml-auto`}
+        strong {
+            ${tw`
+                text-orange-500 text-xl capitalize
+            `};
         }
     }
-    a {
-        ${tw`w-full text-white font-medium text-lg flex items-center justify-center h-14 bg-orange-500`};
+    footer {
+        ${tw`
+            rounded-b-md pb-0
+            flex flex-col pt-2 w-full bg-orange-100
+        `};
+
+        p {
+            ${tw`
+                flex justify-between items-center
+                pb-4 pt-2
+                px-4 text-white font-medium
+            `};
+            span {
+                ${tw`ml-auto`}
+            }
+        }
+        a {
+            ${tw`
+                rounded-b-md
+                w-full text-white
+                font-medium text-lg flex items-center
+                justify-center h-16 bg-orange-500
+                hover:bg-orange-700 focus:ring-2
+            `};
+        }
     }
 `
 
 export const CartItem = styled.div`
     ${tw`
-        flex items-center justify-between w-full
-
+        flex items-start justify-start w-full
     `};
+    img {
+        ${tw`
+            w-20 h-20 rounded-3xl
+        `};
+    }
+
+    & + & {
+        ${tw`mt-6`};
+    }
+`
+
+export const ItemInfo = styled.div<ItemInfoProps>`
+    ${tw`ml-4 h-full`};
+    p {
+        span {
+            ${tw`text-blue-100`};
+        }
+        ${tw`text-blue-400`};
+    }
+    div {
+        ${tw`
+            w-max mt-2
+            flex
+            items-center justify-between
+        `};
+        span {
+            ${tw`mx-2 font-medium text-blue-400`};
+        }
+        button {
+            ${tw`
+                bg-orange-500 hover:bg-orange-700 focus:ring-2
+                outline-none text-white rounded-md p-1
+            `};
+            :last-of-type {
+                ${({ hasDownAmount }) => !hasDownAmount && tw`opacity-20`};
+            }
+        }
+    }
+`
+
+export const AnyItems = styled.div`
+    ${tw`
+        w-full py-10 flex items-center justify-center
+    `};
+    p {
+        ${tw`
+            text-blue-100 text-md
+        `};
+    }
+`
+
+export const CartRemoveItem = styled.button`
+    font-size: 0;
+    ${tw`
+        w-5 h-5 p-1 overflow-hidden rounded-md bg-red-400 text-white
+        flex items-center justify-center outline-none
+        focus:ring-2 ml-auto
+    `};
+    svg {
+        outline: none;
+    }
 `

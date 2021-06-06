@@ -34,7 +34,7 @@ type SocialContact = {
 }
 
 const Footer: React.FC = () => {
-    const { sm, md } = useBreakPoint()
+    const { md, xsDown, l } = useBreakPoint()
 
     const sendButtonRef = useRef<HTMLButtonElement>(null)
 
@@ -113,19 +113,22 @@ const Footer: React.FC = () => {
                         </InputGroup>
                     </Form>
                 </Newsletter>
-                <Contact>
-                    <p>Informações de contato</p>
-                    <div>
-                        {contactList.map(({ href, label, icon }, index) => (
-                            <a key={label + index} href={href}>
-                                <span>{icon}</span>
-                                {label}
-                            </a>
-                        ))}
-                    </div>
-                </Contact>
+                {xsDown && !l && (
+                    <Contact>
+                        <p>Informações de contato</p>
+                        <div>
+                            {contactList.map(({ href, label, icon }, index) => (
+                                <a key={label + index} href={href}>
+                                    <span>{icon}</span>
+                                    {label}
+                                </a>
+                            ))}
+                        </div>
+                    </Contact>
+                )}
+
                 {md && <DesktopLinks />}
-                {sm && !md && <MobalLinks />}
+                {xsDown && !md && <MobalLinks />}
             </Content>
             <Social>
                 <p>2020 Sabor brasileiro &copy;</p>

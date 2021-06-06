@@ -1,23 +1,11 @@
 import React from 'react'
+import useCake from '../../../hooks/useCake'
 import Cake from './Cake'
 
 import { Section, Title, Cakes } from './styles'
 
-type CakeType = {
-    id: string
-    price: string
-    name: string
-    description: string
-    photo: {
-        url: string
-    }
-}
-
-interface ExploreOurFlavorsProps {
-    cakes: CakeType[]
-}
-
-const ExploreOurFlavors: React.FC<ExploreOurFlavorsProps> = ({ cakes }) => {
+const ExploreOurFlavors: React.FC = () => {
+    const { cakes } = useCake()
     return (
         <Section>
             <Title>
@@ -34,8 +22,8 @@ const ExploreOurFlavors: React.FC<ExploreOurFlavorsProps> = ({ cakes }) => {
                 </p>
             </Title>
             <Cakes>
-                {cakes.map(cake => (
-                    <Cake key={cake.id} cake={cake} />
+                {cakes.map((cake, i) => (
+                    <Cake key={cake.id + i} cake={cake} />
                 ))}
             </Cakes>
         </Section>

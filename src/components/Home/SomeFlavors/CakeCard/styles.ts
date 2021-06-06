@@ -5,6 +5,7 @@ import tw, { theme } from 'twin.macro'
 
 interface AddToCardProps {
     price: string
+    hasCakeInCart: boolean
 }
 
 export const Container = styled(motion.div)`
@@ -103,6 +104,8 @@ export const AddToCard = styled(motion.button)<AddToCardProps>`
     `};
     border-top-left-radius: 6.25rem;
     border-bottom-left-radius: 6.25rem;
+
+    ${({ hasCakeInCart }) => hasCakeInCart && tw`px-16 py-2.5`};
     ::after {
         content: 'R$ ${({ price }) => price}';
         ${tw`

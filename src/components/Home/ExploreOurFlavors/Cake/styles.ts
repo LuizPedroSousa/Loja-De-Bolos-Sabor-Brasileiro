@@ -101,19 +101,30 @@ export const Footer = styled.footer`
         width: max-content;
     }
     button {
-        border-top-left-radius: 6.25rem;
-        border-bottom-left-radius: 6.25rem;
         ${tw`
             w-80 text-orange-500 font-sans font-normal text-sm
             bg-beige-400 overflow-hidden
             flex items-center justify-center
             outline-none focus:ring-2
         `};
+    }
+    button,
+    a {
+        border-top-left-radius: 6.25rem;
+        border-bottom-left-radius: 6.25rem;
         height: 2.813rem;
-
         :hover {
             background-color: ${shade(0.05, theme`colors.beige.400`)};
         }
+    }
+
+    a {
+        ${tw`
+            w-40 text-orange-500 font-sans font-normal text-sm
+            bg-beige-400 overflow-hidden
+            flex items-center justify-center
+            outline-none focus:ring-2
+        `};
     }
 
     @media ${({ theme: { bp } }) => bp.xs} {

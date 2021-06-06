@@ -40,7 +40,7 @@ const Map = () => {
                         }}
                     />
                     <Marker longitude={-46.6550099} latitude={-23.4698073}>
-                        <div tw={'w-10'}>
+                        <div className="w-10">
                             <Image
                                 objectFit="cover"
                                 width={504}

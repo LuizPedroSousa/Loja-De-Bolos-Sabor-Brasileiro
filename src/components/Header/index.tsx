@@ -20,7 +20,7 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ activePage }) => {
-    const { l, md } = useBreakPoint()
+    const { l, xsDown } = useBreakPoint()
     const { navigationLinks } = useMemo(() => {
         const navigationLinks: INavigationLinks[] = [
             { href: '/', label: 'Home' },
@@ -67,7 +67,7 @@ const Header: React.FC<HeaderProps> = ({ activePage }) => {
                         navigationLinks={navigationLinks}
                     />
                 )}
-                {md && !l && (
+                {xsDown && !l && (
                     <ItemsMobal
                         activePage={activePage}
                         navigationLinks={navigationLinks}

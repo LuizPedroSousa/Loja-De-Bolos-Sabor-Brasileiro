@@ -1,5 +1,4 @@
 import styled from 'styled-components'
-import { motion } from 'framer-motion'
 import { shade } from 'polished'
 import tw, { theme } from 'twin.macro'
 

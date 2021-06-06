@@ -17,8 +17,13 @@ interface CartItem {
 interface CartContextProps {
     total: number
     itemsLength: number
+    hasItems: boolean
     cartItems: CartItem[]
     addToCard: (item: CartItem) => void
+    upAmount: (item: CartItem) => void
+    downAmount: (item: CartItem) => void
+    removeItem: (item: CartItem) => void
+    hasCakeInCart: (cake: Cake) => boolean
 }
 
 const CartContext = createContext({} as CartContextProps)

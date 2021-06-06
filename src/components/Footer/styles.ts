@@ -11,7 +11,7 @@ export const Content = styled.div`
     ${tw`
         w-full
         h-full
-        md:mx-auto md:grid md:grid-cols-2 grid-rows-2 md:gap-y-6
+        md:mx-auto md:grid md:grid-cols-2 md:grid-rows-2 md:gap-y-6
     `};
     @media ${({ theme: { bp } }) => bp.md} {
         grid-template-areas:
@@ -22,12 +22,25 @@ export const Content = styled.div`
             'social social';
         max-width: 88%;
     }
+
+    @media ${({ theme: { bp } }) => bp.l} {
+        ${tw`gap-y-20 mt-6`};
+        grid-template-columns: max-content 1fr;
+        grid-template-rows: max-content max-content;
+        grid-template-areas:
+            'newsletter references'
+            'social social';
+    }
 `
 
 export const Newsletter = styled.div`
     ${tw`w-full sm:flex flex-col items-start justify-between md:px-0`};
     grid-area: newsletter;
     padding: 0 1.313rem;
+    @media ${({ theme: { bp } }) => bp.l} {
+        height: max-content;
+        ${tw`w-max`};
+    }
 `
 
 export const Logo = styled.div`

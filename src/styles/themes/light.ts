@@ -49,6 +49,7 @@ const light = {
         '15xl': '12.5rem' // 200px
     },
     bp: {
+        xsDown: '(min-width: 18.75em)',
         xs: '(min-width: 30em)', // 480px
         sm: '(min-width: 48em)', // 768px
         md: '(min-width: 62em)', // 992px
