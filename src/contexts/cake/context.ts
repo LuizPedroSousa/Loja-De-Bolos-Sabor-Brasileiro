@@ -1,18 +1,45 @@
-import { createContext, Dispatch, SetStateAction } from 'react'
+import { createContext } from 'react'
+
+type Photos = {
+    url: string
+}
+
+type Star = {
+    toMap: {
+        key: string
+        hasStar: boolean
+    }[]
+    length: number
+}
 
 type Cake = {
     id: string
     price: string
     name: string
     description: string
-    photo: {
-        url: string
-    }
+    slug: string
+    photos: Photos[]
+    stars: Star
+    isBest: boolean
+}
+
+type Category = {
+    id: string
+    name: string
+    cakes: Cake[]
+}
+
+type Filter = {
+    category: string
+    mostPrice: string
 }
 
 interface CakeContextProps {
     cakes: Cake[]
-    setCakes: Dispatch<SetStateAction<Cake[]>>
+    // filter: Filter
+
+    bestCakes: Cake[]
+    categories: Category[]
 }
 
 const CakeContext = createContext({} as CakeContextProps)
