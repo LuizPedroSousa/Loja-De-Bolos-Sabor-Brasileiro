@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import { lighten, shade } from 'polished'
 import tw, { theme } from 'twin.macro'
+import { ActiveHrefType } from '.'
 
 interface ListProps {
     hasActivePage: boolean
@@ -8,6 +9,10 @@ interface ListProps {
 
 interface ItemInfoProps {
     hasDownAmount: boolean
+}
+
+interface CartProps {
+    activePage: ActiveHrefType
 }
 
 export const UnorderedList = styled.ul`
@@ -62,7 +67,7 @@ export const List = styled.li<ListProps>`
     }
 `
 
-export const Cart = styled.button`
+export const Cart = styled.button<CartProps>`
     color: ${shade(0.05, theme`colors.white`)};
     ${tw`
         font-sans text-md flex
@@ -74,14 +79,16 @@ export const Cart = styled.button`
                 w-16 h-16 relative
             `};
         transition: 0.25s;
-        color: ${shade(0.05, theme`colors.white`)};
-
+        color: ${({ activePage }) =>
+            activePage !== '/'
+                ? theme`colors.orange.100`
+                : shade(0.05, theme`colors.white`)};
         p {
             ${tw`
                     absolute -bottom-2
                     flex items-center justify-center
                     font-normal font-sans text-md
-                    text-gray-400 left-0 rounded-full
+                    text-gray-100 left-0 rounded-full
                     bg-yellow-400
             `};
             width: 1.625rem;

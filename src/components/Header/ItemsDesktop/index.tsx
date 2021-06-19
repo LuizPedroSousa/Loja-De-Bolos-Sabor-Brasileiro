@@ -66,7 +66,7 @@ const ItemsDesktop: React.FC<ItemsDesktopProps> = ({
             </UnorderedList>
             <Popover>
                 <PopoverTrigger>
-                    <Cart>
+                    <Cart activePage={activePage}>
                         <span>
                             <AiOutlineShoppingCart size={70} />
                             <p>{itemsLength}</p>
@@ -99,7 +99,7 @@ const ItemsDesktop: React.FC<ItemsDesktopProps> = ({
                                 <CartItem key={item.cake.id}>
                                     <Image
                                         objectFit="cover"
-                                        src={item.cake.photo.url}
+                                        src={item.cake.photos[0].url}
                                         alt={item.cake.name}
                                         width={600}
                                         height={600}

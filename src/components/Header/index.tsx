@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 
-import { Container, Logo, Nav } from './styles'
+import { Container, Logo, Nav, PageLinks } from './styles'
 
 import useBreakPoint from '../../hooks/useBreakPoint'
 import ItemsDesktop from './ItemsDesktop'
@@ -49,30 +49,33 @@ const Header: React.FC<HeaderProps> = ({ activePage }) => {
     // })
 
     return (
-        <Container>
-            <Link href="/">
-                <Logo>
-                    <Image
-                        src="/images/icon.png"
-                        width={618}
-                        height={369}
-                        alt="logo"
-                    />
-                </Logo>
-            </Link>
+        <Container activePage={activePage}>
             <Nav>
-                {l && (
-                    <ItemsDesktop
-                        activePage={activePage}
-                        navigationLinks={navigationLinks}
-                    />
-                )}
-                {xsDown && !l && (
-                    <ItemsMobal
-                        activePage={activePage}
-                        navigationLinks={navigationLinks}
-                    />
-                )}
+                <Link href="/">
+                    <Logo>
+                        <Image
+                            src="/images/icon.png"
+                            width={618}
+                            height={369}
+                            objectFit="contain"
+                            alt="logo"
+                        />
+                    </Logo>
+                </Link>
+                <PageLinks>
+                    {l && (
+                        <ItemsDesktop
+                            activePage={activePage}
+                            navigationLinks={navigationLinks}
+                        />
+                    )}
+                    {xsDown && !l && (
+                        <ItemsMobal
+                            activePage={activePage}
+                            navigationLinks={navigationLinks}
+                        />
+                    )}
+                </PageLinks>
             </Nav>
         </Container>
     )
