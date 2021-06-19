@@ -1,12 +1,14 @@
 import { createContext } from 'react'
 
+type Photos = {
+    url: string
+}
+
 type Cake = {
     id: string
-    name: string
     price: string
-    photo: {
-        url: string
-    }
+    name: string
+    photos: Photos[]
 }
 
 interface CartItem {
@@ -19,7 +21,8 @@ interface CartContextProps {
     itemsLength: number
     hasItems: boolean
     cartItems: CartItem[]
-    addToCard: (item: CartItem) => void
+    addToCart: (item: CartItem) => void
+    toggleAddToCart: (cake: Cake) => void
     upAmount: (item: CartItem) => void
     downAmount: (item: CartItem) => void
     removeItem: (item: CartItem) => void
