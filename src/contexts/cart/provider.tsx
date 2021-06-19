@@ -127,6 +127,10 @@ const CartProvider: React.FC = ({ children }) => {
         addToCart({ cake, amount: 1 })
     }
 
+    function clearCart() {
+        setCartItems([])
+    }
+
     return (
         <Provider
             value={{
@@ -139,7 +143,8 @@ const CartProvider: React.FC = ({ children }) => {
                 downAmount,
                 hasCakeInCart,
                 toggleAddToCart,
-                addToCart
+                addToCart,
+                clearCart
             }}
         >
             {children}

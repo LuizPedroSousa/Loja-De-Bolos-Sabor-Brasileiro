@@ -27,6 +27,7 @@ interface CartContextProps {
     downAmount: (item: CartItem) => void
     removeItem: (item: CartItem) => void
     hasCakeInCart: (cake: Cake) => boolean
+    clearCart: () => void
 }
 
 const CartContext = createContext({} as CartContextProps)
