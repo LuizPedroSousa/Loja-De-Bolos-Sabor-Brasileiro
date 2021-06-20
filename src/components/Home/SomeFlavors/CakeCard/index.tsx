@@ -8,14 +8,16 @@ import { FaMapMarkerAlt } from 'react-icons/fa'
 import useCustomRipple from '../../../../hooks/useCustomRipple'
 import useCart from '../../../../hooks/useCart'
 
+type Photo = {
+    url: string
+}
+
 type CakeType = {
     id: string
     price: string
     name: string
     description: string
-    photo: {
-        url: string
-    }
+    photos: Photo[]
 }
 
 interface CakeCardProps {
@@ -25,13 +27,13 @@ interface CakeCardProps {
 const CakeCard: React.FC<CakeCardProps> = ({ cake }) => {
     const addToCardRef = useRef<HTMLButtonElement>(null)
     useCustomRipple([{ ref: addToCardRef }])
-    const { addToCard, hasCakeInCart } = useCart()
+    const { addToCart, hasCakeInCart } = useCart()
 
     const router = useRouter()
 
     function handleAddToCart() {
         if (!hasCakeInCart(cake)) {
-            return addToCard({ cake, amount: 1 })
+            return addToCart({ cake, amount: 1 })
         }
         router.push('/meu-carrinho')
     }
@@ -45,7 +47,7 @@ const CakeCard: React.FC<CakeCardProps> = ({ cake }) => {
             <Image
                 width={700}
                 height={800}
-                src={cake.photo.url}
+                src={cake.photos[0].url}
                 alt={cake.name}
             />
             <CakeInfo>

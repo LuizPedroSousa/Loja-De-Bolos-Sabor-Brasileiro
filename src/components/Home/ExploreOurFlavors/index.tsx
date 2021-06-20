@@ -1,11 +1,16 @@
 import React from 'react'
-import useCake from '../../../hooks/useCake'
+import { useQuery } from 'react-query'
+import { getCakes } from '../../../hooks/useCake'
 import Cake from './Cake'
 
 import { Section, Title, Cakes } from './styles'
 
 const ExploreOurFlavors: React.FC = () => {
-    const { cakes } = useCake()
+    const { data: cakes } = useQuery(
+        ['cakes', 6],
+        async () => await getCakes({ params: { _limit: 6 } })
+    )
+
     return (
         <Section>
             <Title>

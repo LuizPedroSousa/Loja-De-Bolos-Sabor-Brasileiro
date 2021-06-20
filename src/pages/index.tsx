@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import Head from 'next/head'
 
 import { Wrapper, Container, BackgroundSvg } from '../styles/pages/home'
@@ -6,48 +6,18 @@ import Header from '../components/Header'
 import Introduction from '../components/Home/Introduction'
 import SomeFlavors from '../components/Home/SomeFlavors'
 import { GetStaticProps } from 'next'
-import api from '../services/api'
 import ScheduleOrder from '../components/Home/ScheduleOrder'
 import OurServices from '../components/Home/OurServices'
 import ExploreOurFlavors from '../components/Home/ExploreOurFlavors'
 import BestConfectioners from '../components/Home/BestConfectioners'
 import Footer from '../components/Footer'
 import SeeDelivery from '../components/Home/SeeDelivery'
-import useCake from '../hooks/useCake'
+import { QueryClient } from 'react-query'
+import { getCakes } from '../hooks/useCake'
+import { getConfectioners } from '../hooks/useConfectioners'
+import { dehydrate } from 'react-query/hydration'
 
-type Cake = {
-    id: string
-    price: string
-    name: string
-    description: string
-    photo: {
-        url: string
-    }
-}
-
-type BestConfectioner = {
-    id: string
-    name: string
-    photo: {
-        url: string
-    }
-}
-
-interface HomeProps {
-    bestCakes: Cake[]
-    bestConfectioners: BestConfectioner[]
-    cakes: Cake[]
-}
-
-export default function Home({
-    bestCakes,
-    bestConfectioners,
-    cakes
-}: HomeProps) {
-    const { setCakes } = useCake()
-    useEffect(() => {
-        setCakes(cakes)
-    }, [])
+export default function Home() {
     return (
         <Wrapper>
             <Head>
@@ -58,11 +28,11 @@ export default function Home({
                 <Header activePage="/" />
                 <Container>
                     <Introduction />
-                    <SomeFlavors bestCakes={bestCakes} />
+                    <SomeFlavors />
                     <ScheduleOrder />
                     <OurServices />
                     <ExploreOurFlavors />
-                    <BestConfectioners bestConfectioners={bestConfectioners} />
+                    <BestConfectioners />
                     <SeeDelivery />
                     <Footer />
                 </Container>
@@ -72,35 +42,22 @@ export default function Home({
 }
 
 export const getStaticProps: GetStaticProps = async () => {
-    const cakes = await api.get('/cakes', {
-        params: {
-            _sort: 'inserted_at',
-            _limit: 6,
-            _order: 'desc'
-        }
-    })
+    const queryClient = new QueryClient()
+    await queryClient.prefetchQuery(['cakes', 6], () =>
+        getCakes({ params: { _limit: 6 } })
+    )
 
-    const bestCakes = await api.get('/best-cakes', {
-        params: {
-            _sort: 'inserted_at',
-            _limit: 2,
-            _order: 'desc'
-        }
-    })
+    await queryClient.prefetchQuery(['bestCakes', 2], () =>
+        getCakes({ params: { isBest: true, _limit: 2 } })
+    )
 
-    const bestConfectioners = await api.get('/best-confectioners', {
-        params: {
-            _sort: 'inserted_at',
-            _limit: 4,
-            _order: 'desc'
-        }
-    })
+    await queryClient.prefetchQuery(['bestConfectioners', 4], () =>
+        getConfectioners({ params: { _limit: 4 } })
+    )
 
     return {
         props: {
-            bestCakes: bestCakes.data,
-            bestConfectioners: bestConfectioners.data,
-            cakes: cakes.data
+            dehydratedState: dehydrate(queryClient)
         },
         revalidate: 60 * 60 * 5
     }

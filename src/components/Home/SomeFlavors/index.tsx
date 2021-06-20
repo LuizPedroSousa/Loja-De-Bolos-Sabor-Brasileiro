@@ -4,6 +4,7 @@ import CakeCard from './CakeCard'
 import NextLink from 'next/link'
 
 import SeeMoreIcon from '../../../../public/images/see-more.svg'
+import { useCake } from '../../../hooks/useCake'
 
 import {
     Section,
@@ -17,19 +18,8 @@ import {
     SeeMore
 } from './styles'
 
-type BestCake = {
-    id: string
-    price: string
-    name: string
-    description: string
-    photo: {
-        url: string
-    }
-}
-interface SomeFlavorsProps {
-    bestCakes: BestCake[]
-}
-const SomeFlavors: React.FC<SomeFlavorsProps> = ({ bestCakes }) => {
+const SomeFlavors: React.FC = () => {
+    const { bestCakes } = useCake()
     return (
         <Section>
             <TitleContainer>

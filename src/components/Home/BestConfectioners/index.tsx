@@ -1,24 +1,12 @@
 import Image from 'next/image'
 import React from 'react'
+import { useConfectioners } from '../../../hooks/useConfectioners'
 import ConfectionerCard from './ConfectionerCard'
 
 import { Section, Content, Title, Confectioners, Cake, Coffee } from './styles'
 
-type BestConfectioner = {
-    id: string
-    name: string
-    photo: {
-        url: string
-    }
-}
-
-interface BestConfectionersProps {
-    bestConfectioners: BestConfectioner[]
-}
-
-const BestConfectioners: React.FC<BestConfectionersProps> = ({
-    bestConfectioners
-}) => {
+const BestConfectioners: React.FC = () => {
+    const { bestConfectioners } = useConfectioners()
     return (
         <Section>
             <Cake>

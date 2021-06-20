@@ -7,14 +7,16 @@ import useCart from '../../../../hooks/useCart'
 import useCustomRipple from '../../../../hooks/useCustomRipple'
 import { Container, CakeInfo, Header, Footer } from './styles'
 
+type Photo = {
+    url: string
+}
+
 type CakeType = {
     id: string
     price: string
     name: string
     description: string
-    photo: {
-        url: string
-    }
+    photos: Photo[]
 }
 
 interface CakeCardProps {
@@ -26,7 +28,7 @@ const Cake: React.FC<CakeCardProps> = ({ cake }) => {
     const addToCardRef = useRef<HTMLButtonElement>(null)
     useCustomRipple([{ ref: addToCardRef }])
 
-    const { addToCard, hasCakeInCart } = useCart()
+    const { addToCart, hasCakeInCart } = useCart()
 
     const { xs, sm, md } = useBreakPoint()
 
@@ -59,7 +61,7 @@ const Cake: React.FC<CakeCardProps> = ({ cake }) => {
     }
 
     function handleAddToCart() {
-        addToCard({ cake, amount: 1 })
+        addToCart({ cake, amount: 1 })
     }
 
     return (
@@ -74,7 +76,7 @@ const Cake: React.FC<CakeCardProps> = ({ cake }) => {
                 objectFit="cover"
                 width={700}
                 height={800}
-                src={cake.photo.url}
+                src={cake.photos[0].url}
                 alt={cake.name}
             />
             <CakeInfo>
