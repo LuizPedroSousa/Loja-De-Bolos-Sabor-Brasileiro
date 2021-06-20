@@ -18,6 +18,8 @@ type Cake = {
     price: string
     name: string
     photos: Photos[]
+    description: string
+    slug: string
 }
 
 interface CartItem {

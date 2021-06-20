@@ -2,12 +2,22 @@ import styled from 'styled-components'
 import { lighten, shade } from 'polished'
 import tw, { theme } from 'twin.macro'
 import { ActiveHrefType } from '.'
+import {
+    DrawerContent as ChakraDrawerContent,
+    DrawerBody as ChakraDrawerBody,
+    DrawerFooter as ChakraDrawerFooter
+} from '@chakra-ui/react'
+import { motion } from 'framer-motion'
 
 interface ListProps {
     hasActivePage: boolean
 }
 
-interface ItemInfoProps {
+interface DrawerFooterProps {
+    hasItems: boolean
+}
+
+interface AmountControlsProps {
     hasDownAmount: boolean
 }
 
@@ -102,108 +112,224 @@ export const Cart = styled.button<CartProps>`
     }
 `
 
-export const CartContent = styled.div`
+export const DrawerContent = styled(ChakraDrawerContent)`
     header {
         ${tw`
+            flex items-center justify-between
             w-full
         `};
         strong {
             ${tw`
-                text-orange-500 text-xl capitalize
-            `};
-        }
-    }
-    footer {
-        ${tw`
-            rounded-b-md pb-0
-            flex flex-col pt-2 w-full bg-orange-100
-        `};
-
-        p {
-            ${tw`
-                flex justify-between items-center
-                pb-4 pt-2
-                px-4 text-white font-medium
-            `};
-            span {
-                ${tw`ml-auto`}
-            }
-        }
-        a {
-            ${tw`
-                rounded-b-md
-                w-full text-white
-                font-medium text-lg flex items-center
-                justify-center h-16 bg-orange-500
-                hover:bg-orange-700 focus:ring-2
+                font-semibold
             `};
         }
     }
 `
 
-export const CartItem = styled.div`
+export const ExitButton = styled(motion.button)`
     ${tw`
-        flex items-start justify-start w-full
+        w-9 h-9 bg-orange-500
+        border-2 hover:border-orange-100 focus:ring-2
+        focus:border-0 flex items-center
+        hover:bg-orange-700 justify-center
+        text-white rounded-lg
     `};
-    img {
-        ${tw`
-            w-20 h-20 rounded-3xl
-        `};
-    }
+`
 
-    & + & {
-        ${tw`mt-6`};
+export const DrawerBody = styled(ChakraDrawerBody)`
+    ${tw`overflow-y-scroll`};
+`
+
+export const CakeItem = styled.div`
+    ${tw`
+        w-full flex items-center justify-between
+        px-2 py-4 relative
+    `};
+    button {
+        ${tw`
+            p-0 w-6 h-6
+            flex items-center justify-center
+        `};
     }
 `
 
-export const ItemInfo = styled.div<ItemInfoProps>`
-    ${tw`ml-4 h-full`};
-    p {
-        span {
-            ${tw`text-blue-100`};
-        }
-        ${tw`text-blue-400`};
-    }
-    div {
+export const Thumb = styled.div`
+    ${tw`
+        w-20 h-20 rounded-md
+        overflow-hidden border-2 border-orange-100
+    `};
+`
+
+export const Info = styled.div`
+    ${tw`
+        flex items-start justify-start
+        flex-col mr-auto h-full
+        ml-4
+    `};
+    strong {
         ${tw`
-            w-max mt-2
-            flex
-            items-center justify-between
+            capitalize whitespace-nowrap font-inter
+            text-blue-400
         `};
-        span {
-            ${tw`mx-2 font-medium text-blue-400`};
-        }
-        button {
+    }
+    p {
+        ${tw`
+            font-sans font-medium text-blue-100
+            mb-auto
+        `}
+    }
+`
+
+export const AmountControls = styled.div<AmountControlsProps>`
+    ${tw`
+        flex items-center justify-between
+        rounded-md h-6 mt-1
+    `};
+    span {
+        ${tw`
+            mx-2 font-roboto font-medium
+        `};
+    }
+    button {
+        :first-of-type {
             ${tw`
-                bg-orange-500 hover:bg-orange-700 focus:ring-2
-                outline-none text-white rounded-md p-1
+                text-red-400 hover:bg-red-400 hover:border-red-100
             `};
-            :last-of-type {
-                ${({ hasDownAmount }) => !hasDownAmount && tw`opacity-20`};
-            }
+            ${({ hasDownAmount }) =>
+                !hasDownAmount && tw`opacity-50 cursor-not-allowed`};
+        }
+        :last-of-type {
+            ${tw`
+                text-green-400 hover:bg-green-400 hover:border-green-100
+            `};
+        }
+        ${tw`
+            h-full w-6 border-2 rounded-md
+            focus:ring-2 focus:border-0 hover:text-white
+            focus:rounded-sm transition-colors
+        `};
+    }
+`
+
+export const CakeControls = styled.div`
+    ${tw`
+        flex flex-col h-full
+        items-center justify-between
+        absolute right-0 py-4
+    `};
+
+    button {
+        :first-of-type {
+            ${tw`
+                rounded-md text-red-400 border-2
+                border-red-100 mb-auto focus:ring-2
+                hover:bg-red-400 hover:text-white
+                hover:border-red-200
+            `}
         }
     }
 `
 
 export const AnyItems = styled.div`
     ${tw`
-        w-full py-10 flex items-center justify-center
+        flex items-center justify-center
+        flex-col h-full
     `};
+    span {
+        ${tw`mb-2`};
+    }
+    strong {
+        ${tw`
+            text-gray-700 text-xl
+        `};
+    }
     p {
         ${tw`
-            text-blue-100 text-md
+            text-center mt-1 font-medium
+            text-gray-600
         `};
     }
 `
 
-export const CartRemoveItem = styled.button`
-    font-size: 0;
+export const DrawerFooter = styled(ChakraDrawerFooter).attrs({
+    p: 0
+})<DrawerFooterProps>`
     ${tw`
-        w-5 h-5 p-1 overflow-hidden rounded-md bg-red-400 text-white
-        flex items-center justify-center outline-none
-        focus:ring-2 ml-auto
+        flex flex-col
+        items-center justify-center
     `};
-    svg {
-        outline: none;
+    ${({ hasItems }) =>
+        !hasItems &&
+        tw`
+            opacity-75
+        `};
+    div,
+    button,
+    a {
+        ${({ hasItems }) =>
+            !hasItems &&
+            tw`
+                cursor-not-allowed
+            `};
+        ${({ hasItems }) => !hasItems && 'pointer-events: none;'};
+    }
+`
+
+export const CartOptions = styled.div`
+    ${tw`
+        px-6 grid items-center
+        justify-center w-full h-14
+        gap-x-2 mb-2
+    `};
+    grid-template-columns: 1.25fr 1fr;
+
+    a,
+    button {
+        ${tw`
+            flex items-center justify-center
+            border-2 font-sans transition-colors
+            rounded-md
+            focus:border-0 focus:ring-2 h-full
+        `};
+    }
+    button {
+        ${tw`
+             hover:border-red-100 hover:bg-red-400 hover:text-white
+        `};
+        span {
+            ${tw`ml-1`};
+        }
+    }
+
+    a {
+        ${tw`
+            bg-orange-500 text-white hover:border-orange-100
+            hover:bg-orange-700 cursor-pointer focus:ring-2
+        `};
+    }
+`
+
+export const Total = styled.div`
+    ${tw`
+        grid items-center justify-center
+        bg-orange-500 w-full
+        px-6  h-20
+    `};
+    grid-template-columns: 1fr 1.25fr;
+    a {
+        ${tw`
+            w-full h-14 bg-orange-100
+            hover:bg-orange-700 flex font-inter
+            items-center justify-center font-medium
+            rounded-lg text-white text-md
+            focus:ring-2 focus:border-0 hover:border-2
+            hover:border-orange-100 transition-colors
+        `};
+    }
+    strong {
+        ${tw`
+            mx-auto text-white font-inter
+            text-md
+        `};
     }
 `

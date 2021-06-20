@@ -73,13 +73,13 @@ const CakeModal: React.FC<CakeModalProps> = ({ onClose, isOpen, cake }) => {
     const mobalCartRef = useRef<HTMLButtonElement>(null)
     const mobalDownAmountRef = useRef<HTMLButtonElement>(null)
     const mobalUpAmountRef = useRef<HTMLButtonElement>(null)
-
-    const { md } = useBreakPoint()
     useCustomRipple([
         { ref: mobalCartRef },
         { ref: mobalDownAmountRef, color: theme`colors.pink.400` },
         { ref: mobalUpAmountRef, color: theme`colors.green.400` }
     ])
+
+    const { md } = useBreakPoint()
     const [item, setItem] = useState<CartItem>({ cake, amount: 1 })
 
     function EditableControls() {
