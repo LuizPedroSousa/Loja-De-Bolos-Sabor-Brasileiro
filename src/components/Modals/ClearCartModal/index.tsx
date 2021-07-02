@@ -49,7 +49,7 @@ const ClearCartModal: React.FC<CakeModalProps> = ({ isOpen, onClose }) => {
                 </ModalBody>
                 <ModalFooter>
                     <motion.button
-                        name="button"
+                        name="Não"
                         type="button"
                         onClick={onClose}
                         whileHover={{ scale: [1, 0.9, 0.91, 0.9] }}
@@ -57,7 +57,7 @@ const ClearCartModal: React.FC<CakeModalProps> = ({ isOpen, onClose }) => {
                         Não, voltar
                     </motion.button>
                     <motion.button
-                        name="button"
+                        name="Sim"
                         onClick={handleClearCart}
                         type="button"
                         whileHover={{ scale: [1, 0.9, 0.91, 0.9] }}

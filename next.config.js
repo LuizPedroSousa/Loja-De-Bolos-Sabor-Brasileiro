@@ -7,7 +7,7 @@ const imagePlugin = withImages({
 
 const nextConfig = {
     images: {
-        domains: ['storage.googleapis.com','scontent.fcgh37-1.fna.fbcdn.net']
+        domains: ['storage.googleapis.com','scontent.fcgh37-1.fna.fbcdn.net', 'static-images.ifood.com.br']
     },
 
     env: {
