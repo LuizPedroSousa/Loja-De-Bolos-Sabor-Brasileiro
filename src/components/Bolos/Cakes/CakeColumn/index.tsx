@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import Image from 'next/image'
 
 import { Container } from './styles'
@@ -11,6 +11,8 @@ import { useRouter } from 'next/router'
 import { lighten } from 'polished'
 import CakeModal from '../../../Modals/CakeModal'
 import { useDisclosure } from '@chakra-ui/react'
+import { motion } from 'framer-motion'
+import useCustomRipple from '../../../../hooks/useCustomRipple'
 
 type Photos = {
     url: string
@@ -45,6 +47,8 @@ const CakeColumn: React.FC<CakeColumnProps> = ({ cake }) => {
     const { onClose, onOpen, isOpen } = useDisclosure()
 
     const router = useRouter()
+    const addToCartRef = useRef<HTMLButtonElement>(null)
+    useCustomRipple([{ ref: addToCartRef }])
     const handleAddToCart = () => {
         if (hasCakeInCart(cake)) {
             return router.push('/meu-carrinho')
@@ -53,9 +57,17 @@ const CakeColumn: React.FC<CakeColumnProps> = ({ cake }) => {
     }
 
     return (
-        <Container onClick={onOpen} hasCakeInCart={hasCakeInCart(cake)}>
+        <Container
+            initial={{ opacity: 0, y: 60 }}
+            animate={{
+                opacity: [null, 0.5, 1],
+                y: [null, 0]
+            }}
+            whileHover={{ scale: [1, 1.05], transition: { duration: 0.25 } }}
+            hasCakeInCart={hasCakeInCart(cake)}
+        >
             <CakeModal cake={cake} isOpen={isOpen} onClose={onClose} />
-            <header>
+            <header onClick={onOpen}>
                 <Image
                     src={cake.photos[0].url}
                     alt={cake.name}
@@ -65,9 +77,11 @@ const CakeColumn: React.FC<CakeColumnProps> = ({ cake }) => {
                 />
             </header>
 
-            <p>{cake.name}</p>
-            <strong>R$ {cake.price}</strong>
-            <p>{cake.description}</p>
+            <div>
+                <p>{cake.name}</p>
+                <strong>R$ {cake.price}</strong>
+                <p>{cake.description}</p>
+            </div>
 
             <footer>
                 <div>
@@ -86,13 +100,16 @@ const CakeColumn: React.FC<CakeColumnProps> = ({ cake }) => {
                     })}
                 </div>
 
-                <button type="button" onClick={handleAddToCart}>
+                <motion.button
+                    whileHover={{ scale: [1, 0.9, 0.91, 0.9] }}
+                    type="button"
+                    ref={addToCartRef}
+
+                    onClick={handleAddToCart}
+                >
                     <span>
                         {hasCakeInCart(cake) ? (
-                            <FaCartArrowDown
-                                size={20}
-                                color={theme`colors.orange.500`}
-                            />
+                            <FaCartArrowDown size={20} />
                         ) : (
                             <FiShoppingCart size={20} />
                         )}
@@ -100,7 +117,7 @@ const CakeColumn: React.FC<CakeColumnProps> = ({ cake }) => {
                     {hasCakeInCart(cake)
                         ? 'Ver meu carrinho'
                         : 'Adicionar ao carrinho'}
-                </button>
+                </motion.button>
             </footer>
         </Container>
     )

@@ -1,24 +1,48 @@
+import { motion } from 'framer-motion'
+import { shade } from 'polished'
 import styled from 'styled-components'
 import tw, { theme } from 'twin.macro'
 interface ContainerProps {
     hasCakeInCart: boolean
 }
 
-export const Container = styled.div<ContainerProps>`
+export const Container = styled(motion.div)<ContainerProps>`
     ${tw`
-        w-full bg-white
-        shadow-md
+        w-full bg-white border-2
         flex items-start justify-center
         flex-col p-4 rounded-md mx-auto
+        transition-colors
     `};
 
     max-width: 18.125rem;
+    height: 26.625rem;
+
+    :hover {
+        ${tw`
+            shadow-md border-orange-100
+        `};
+        &,
+        header {
+            background-color: ${shade(0.01, theme`colors.white`)};
+        }
+    }
 
     header {
         ${tw`
             w-full rounded-md overflow-hidden
-            mb-2 h-56
+            mb-2 h-56 cursor-pointer
+
         `};
+        img {
+            ${tw`transition-all`}
+        }
+        :hover {
+            img {
+                ${tw`
+                    transform scale-110
+                `};
+            }
+        }
     }
 
     p {
@@ -32,6 +56,11 @@ export const Container = styled.div<ContainerProps>`
             ${tw`
                 font-inter
             `};
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2; /* number of lines to show */
+            -webkit-box-orient: vertical;
             line-height: 143%;
         }
     }
@@ -47,7 +76,7 @@ export const Container = styled.div<ContainerProps>`
     footer {
         ${tw`
             w-full flex items-center
-            justify-between mt-3
+            justify-between mt-auto
         `};
         div {
             ${tw`
@@ -64,15 +93,16 @@ export const Container = styled.div<ContainerProps>`
         button {
             ${tw`
                 flex items-center justify-between font-inter
-                transition-all h-8 text-xs
-                rounded-md font-medium
+                transition-colors h-8 text-xs
+                rounded-md font-medium hover:bg-orange-500
+                hover:text-white hover:border-indigo-300 focus:ring-2
             `};
 
             ${({ hasCakeInCart }) =>
                 hasCakeInCart
                     ? tw`
                         px-3 py-2 border-orange-500
-                        text-orange-100
+                        text-orange-500
                     `
                     : tw`px-1 py-2 border-indigo-500 text-indigo-400`};
             span {
@@ -81,6 +111,11 @@ export const Container = styled.div<ContainerProps>`
                 `};
             }
             border-width: 1px;
+            :hover {
+                span {
+                    ${tw`text-white`}
+                }
+            }
         }
     }
 
