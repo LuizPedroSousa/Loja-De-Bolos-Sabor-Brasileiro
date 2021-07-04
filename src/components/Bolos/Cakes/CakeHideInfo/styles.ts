@@ -7,7 +7,8 @@ export const Container = styled(motion.div)`
     ${tw`
         flex items-center justify-center
         flex-col w-64 mx-auto
-        rounded-t-lg shadow-md rounded-b-lg
+        rounded-t-lg border-2 rounded-b-lg
+        z-10 transition-colors relative
         overflow-hidden sm:w-56 md:w-64
     `};
 
@@ -15,7 +16,7 @@ export const Container = styled(motion.div)`
         ${tw`
             flex flex-col items-center
             px-4 pt-4 pb-2 transition-colors
-            w-full bg-beige-400 cursor-pointer
+            w-full bg-white cursor-pointer
         `};
     }
     footer {
@@ -28,11 +29,23 @@ export const Container = styled(motion.div)`
 
     :hover {
         ${tw`
-            shadow-2xl
+            shadow-xl relative z-50!
+            border-orange-100
         `};
+
+        header {
+            img {
+                ${tw`transition-transform duration-1000`}
+            }
+            img {
+                ${tw`
+                    transform scale-110
+                `};
+            }
+        }
         header,
         > div {
-            background-color: ${shade(0.05, theme`colors.beige.400`)};
+            background-color: ${shade(0.02, theme`colors.gray.100`)};
         }
     }
 `
@@ -59,7 +72,7 @@ export const Stars = styled.div`
 
 export const Info = styled.div`
     ${tw`
-        w-full flex items-center bg-beige-400
+        w-full flex items-center bg-white
         justify-between py-3 flex-col
         font-cake-variant border-orange-100
         relative cursor-pointer transition-colors

@@ -104,7 +104,6 @@ const CakeColumn: React.FC<CakeColumnProps> = ({ cake }) => {
                     whileHover={{ scale: [1, 0.9, 0.91, 0.9] }}
                     type="button"
                     ref={addToCartRef}
-
                     onClick={handleAddToCart}
                 >
                     <span>

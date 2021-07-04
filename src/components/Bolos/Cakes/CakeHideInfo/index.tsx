@@ -11,6 +11,7 @@ import { ImCart } from 'react-icons/im'
 import { FiShoppingCart } from 'react-icons/fi'
 import useCart from '../../../../hooks/useCart'
 import { useRouter } from 'next/router'
+import useCustomRipple from '../../../../hooks/useCustomRipple'
 
 type Photos = {
     url: string
@@ -43,6 +44,8 @@ const CakeHideInfo: React.FC<CakeHideInfoProps> = ({ cake }) => {
     const { isOpen, onClose, onOpen } = useDisclosure()
     const { hasCakeInCart, addToCart } = useCart()
     const addToCartRef = useRef<HTMLButtonElement>(null)
+
+    useCustomRipple([{ ref: addToCartRef }])
     const router = useRouter()
     const handleAddToCart = () => {
         if (hasCakeInCart(cake)) {
@@ -52,7 +55,20 @@ const CakeHideInfo: React.FC<CakeHideInfoProps> = ({ cake }) => {
     }
 
     return (
-        <Container whileHover={{ scale: [1, 0.992, 1.1] }}>
+        <Container
+            initial={{ opacity: 0, y: -60, scale: 1, zIndex: 1 }}
+            animate={{
+                opacity: [null, 0.5, 1],
+                y: [null, 0],
+                scale: [null, 0.99, 1.02]
+            }}
+            whileHover={{
+                scale: [1, 1.05],
+                zIndex: 999,
+                position: 'relative',
+                transition: { duration: 0.5 }
+            }}
+        >
             <CakeModal cake={cake} onClose={onClose} isOpen={isOpen} />
             <header onClick={onOpen}>
                 <Thumb>
