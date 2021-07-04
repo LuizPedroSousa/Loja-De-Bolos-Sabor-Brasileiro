@@ -1,31 +1,22 @@
+import { motion } from 'framer-motion'
 import styled from 'styled-components'
 import tw from 'twin.macro'
 
-export const ListContainer = styled.div`
+interface ControlsProps {
+    hasCakeInCart: boolean
+}
+
+export const ListContainer = styled(motion.div)`
     ${tw`
         w-full border-b-2 border-gray-300 py-4
-        grid bg-white hover:bg-gray-100
-        shadow-md px-2
-        xs:py-8 sm:px-6 sm:gap-x-4
-        md:px-8 md:gap-x-6 md-2:shadow-none
-        md-2:border-t-2 md-3:px-1  md-3:gap-x-3
+        grid bg-white hover:(border-orange-100!)
+         px-2 transition-colors
+        xs:py-8 sm:(px-6 gap-x-4)
+        md:(px-8 gap-x-6)
+        md-3:(gap-x-3 px-1 pt-0)
     `};
     grid-template-columns: 1fr 65%;
     grid-template-areas: 'thumb info' 'controls .';
-
-    & {
-        :last-of-type {
-            border: 0;
-        }
-    }
-
-    :hover {
-        img {
-            ${tw`
-                transform scale-110
-            `};
-        }
-    }
 
     @media ${({ theme: { bp } }) => bp.sm} {
         grid-template-columns: 1fr 60%;
@@ -42,21 +33,29 @@ export const ListContainer = styled.div`
 
 export const Box = styled.div`
     ${tw`
-        w-full flex flex-col mr-auto items-center
+       flex flex-col mr-auto items-center
         justify-center overflow-hidden
-        rounded-md
+        rounded-md cursor-pointer
+        w-full h-28 border-2 border-gray-100
+        xs:h-32 sm:h-52 md-3:h-44
     `};
     img {
         ${tw`
             transition duration-1000 ease-in-out
-            w-full h-28
-            xs:h-32 sm:h-52 md-3:h-44
+
         `};
+    }
+    :hover {
+        img {
+            ${tw`
+            transform scale-110
+        `};
+        }
     }
 
     grid-area: thumb;
 `
-export const Controls = styled.div`
+export const Controls = styled.div<ControlsProps>`
     ${tw`
         grid grid-cols-3 mt-3
         w-full gap-x-3
@@ -69,18 +68,37 @@ export const Controls = styled.div`
     button {
         ${tw`
             w-7 h-7 rounded-full
-            p-2
-            flex shadow-sm focus:ring-2
+            p-2 transition-colors
+            flex  focus:(ring-2 border-0!)
             items-center justify-center
-            bg-gray-200 xs:w-9 xs:h-9
-            sm:w-8 sm:h-8
+            bg-white xs:(w-9 h-9)
+            sm:(w-8 h-8 mt-auto) hover:(border-2)
         `}
-        outline: 0 !important;
         font-size: 0;
+        border-width: 1px;
+
         span {
             ${tw`
                 flex
                 items-center justify-center
+            `};
+        }
+
+        :nth-of-type(1) {
+            ${({ hasCakeInCart }) =>
+                hasCakeInCart
+                    ? tw`text-pink-400 hover:(border-pink-100 text-white bg-pink-400) focus:ring-pink-200`
+                    : tw`text-blue-400 hover:(border-blue-100 text-white bg-blue-400) focus:ring-blue-100`};
+        }
+        :nth-of-type(2) {
+            ${tw`
+                text-red-400 hover:(border-red-200 bg-red-400 text-white) focus:ring-red-200
+            `};
+        }
+        :nth-of-type(3) {
+            ${tw`
+                text-indigo-400 hover:(border-indigo-100 bg-indigo-400 text-white)
+                focus:ring-indigo-100
             `};
         }
     }
@@ -91,7 +109,6 @@ export const Info = styled.a`
         w-full ml-2
         flex items-start justify-center flex-col
         sm:ml-0
-        no-underline hover:underline hover:opacity-75
     `};
     grid-area: info;
     strong {
@@ -115,8 +132,12 @@ export const Info = styled.a`
     p {
         ${tw`
             font-description-variant max-w-xs
-            text-md
+            text-md overflow-hidden overflow-ellipsis
             sm:text-lg
         `};
+        display: -webkit-box;
+        -webkit-line-clamp: 2; /* number of lines to show */
+        -webkit-box-orient: vertical;
+        line-height: 143%;
     }
 `

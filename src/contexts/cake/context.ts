@@ -1,5 +1,4 @@
-import { createContext } from 'react'
-
+import { createContext, Dispatch, SetStateAction } from 'react'
 type Photos = {
     url: string
 }
@@ -30,16 +29,17 @@ type Category = {
 }
 
 type Filter = {
+    search: string
     category: string
-    mostPrice: string
 }
 
 interface CakeContextProps {
     cakes: Cake[]
-    // filter: Filter
-
+    filter: Filter
+    setFilter: Dispatch<SetStateAction<Filter>>
     bestCakes: Cake[]
     categories: Category[]
+    formatCakes: (cakes: any) => Cake[]
 }
 
 const CakeContext = createContext({} as CakeContextProps)

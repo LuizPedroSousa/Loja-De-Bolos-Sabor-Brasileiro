@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 
 import { Container, Thumb, Info, AddToCart, Stars } from './styles'
@@ -42,13 +42,18 @@ interface CakeHideInfoProps {
 
 const CakeHideInfo: React.FC<CakeHideInfoProps> = ({ cake }) => {
     const { isOpen, onClose, onOpen } = useDisclosure()
-    const { hasCakeInCart, addToCart } = useCart()
+    const { hasCakeInCart, addToCart, cartItems } = useCart()
     const addToCartRef = useRef<HTMLButtonElement>(null)
+    const [hasInCart, setHasInCart] = useState(false)
+
+    useEffect(() => {
+        setHasInCart(hasCakeInCart(cake))
+    }, [cartItems])
 
     useCustomRipple([{ ref: addToCartRef }])
     const router = useRouter()
     const handleAddToCart = () => {
-        if (hasCakeInCart(cake)) {
+        if (hasInCart) {
             return router.push('/meu-carrinho')
         }
         addToCart({ cake, amount: 1 })
@@ -109,15 +114,13 @@ const CakeHideInfo: React.FC<CakeHideInfoProps> = ({ cake }) => {
                     onClick={handleAddToCart}
                 >
                     <span>
-                        {hasCakeInCart(cake) ? (
+                        {hasInCart ? (
                             <ImCart size={20} />
                         ) : (
                             <FiShoppingCart size={20} />
                         )}
                     </span>
-                    {hasCakeInCart(cake)
-                        ? 'Ver meu carrinho'
-                        : 'Adicionar ao carrinho'}
+                    {hasInCart ? 'Ver meu carrinho' : 'Adicionar ao carrinho'}
                 </AddToCart>
             </footer>
         </Container>

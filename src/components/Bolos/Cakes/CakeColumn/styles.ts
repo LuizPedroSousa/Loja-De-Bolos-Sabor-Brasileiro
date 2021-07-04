@@ -92,8 +92,8 @@ export const Container = styled(motion.div)<ContainerProps>`
 
         button {
             ${tw`
-                flex items-center justify-between font-inter
-                transition-colors h-8 text-xs
+                flex items-center justify-center font-inter
+                transition-colors h-9 text-xs w-36 py-2
                 rounded-md font-medium hover:bg-orange-500
                 hover:text-white hover:border-indigo-300 focus:ring-2
             `};
@@ -101,10 +101,10 @@ export const Container = styled(motion.div)<ContainerProps>`
             ${({ hasCakeInCart }) =>
                 hasCakeInCart
                     ? tw`
-                        px-3 py-2 border-orange-500
+                        border-orange-500
                         text-orange-500
                     `
-                    : tw`px-1 py-2 border-indigo-500 text-indigo-400`};
+                    : tw` border-indigo-500 text-indigo-400`};
             span {
                 ${tw`
                     mr-2

@@ -1,9 +1,10 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, useState } from 'react'
 import { useQuery } from 'react-query'
 import { getCakeCategories, getCakes } from '../../hooks/useCake'
 
 import { v4 as uuid } from 'uuid'
 import CakeContext from './context'
+
 const { Provider } = CakeContext
 
 type Photos = {
@@ -35,7 +36,14 @@ type Category = {
     cakes: Cake[]
 }
 
+type Filter = {
+    search: string
+    category: string
+}
+
 const CakeProvider: React.FC = ({ children }) => {
+    const [filter, setFilter] = useState<Filter>({} as Filter)
+    const [cakes, setCakes] = useState<Cake[]>([])
     const { data: bestCakesData } = useQuery(
         ['bestCakes', 2],
         async () =>
@@ -68,11 +76,20 @@ const CakeProvider: React.FC = ({ children }) => {
         getCakeCategories()
     )
 
-    const { cakes } = useMemo(() => {
-        const cakes: Cake[] = formatCakes(cakesData)
-
-        return { cakes }
+    useMemo(() => {
+        setCakes(formatCakes(cakesData))
     }, [cakesData])
+
+    useMemo(() => {
+        if (filter.search) {
+            ;(async () => {
+                const data = await getCakes({
+                    params: { name: filter.search }
+                })
+                setCakes(formatCakes(data as any))
+            })()
+        }
+    }, [filter.search])
 
     const { bestCakes } = useMemo(() => {
         const bestCakes: Cake[] = formatCakes(bestCakesData)
@@ -89,7 +106,18 @@ const CakeProvider: React.FC = ({ children }) => {
     }, [categoriesData])
 
     return (
-        <Provider value={{ cakes, bestCakes, categories }}>{children}</Provider>
+        <Provider
+            value={{
+                filter,
+                setFilter,
+                cakes,
+                bestCakes,
+                categories,
+                formatCakes
+            }}
+        >
+            {children}
+        </Provider>
     )
 }
 

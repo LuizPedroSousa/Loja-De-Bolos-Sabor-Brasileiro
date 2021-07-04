@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 
 import { Container } from './styles'
@@ -42,15 +42,20 @@ interface CakeColumnProps {
 }
 
 const CakeColumn: React.FC<CakeColumnProps> = ({ cake }) => {
-    const { addToCart, hasCakeInCart } = useCart()
+    const { addToCart, hasCakeInCart, cartItems } = useCart()
 
     const { onClose, onOpen, isOpen } = useDisclosure()
 
     const router = useRouter()
     const addToCartRef = useRef<HTMLButtonElement>(null)
+    const [hasInCart, setHasInCart] = useState(false)
+
+    useEffect(() => {
+        setHasInCart(hasCakeInCart(cake))
+    }, [cartItems])
     useCustomRipple([{ ref: addToCartRef }])
     const handleAddToCart = () => {
-        if (hasCakeInCart(cake)) {
+        if (hasInCart) {
             return router.push('/meu-carrinho')
         }
         addToCart({ cake, amount: 1 })
@@ -64,7 +69,7 @@ const CakeColumn: React.FC<CakeColumnProps> = ({ cake }) => {
                 y: [null, 0]
             }}
             whileHover={{ scale: [1, 1.05], transition: { duration: 0.25 } }}
-            hasCakeInCart={hasCakeInCart(cake)}
+            hasCakeInCart={hasInCart}
         >
             <CakeModal cake={cake} isOpen={isOpen} onClose={onClose} />
             <header onClick={onOpen}>
@@ -107,15 +112,13 @@ const CakeColumn: React.FC<CakeColumnProps> = ({ cake }) => {
                     onClick={handleAddToCart}
                 >
                     <span>
-                        {hasCakeInCart(cake) ? (
+                        {hasInCart ? (
                             <FaCartArrowDown size={20} />
                         ) : (
                             <FiShoppingCart size={20} />
                         )}
                     </span>
-                    {hasCakeInCart(cake)
-                        ? 'Ver meu carrinho'
-                        : 'Adicionar ao carrinho'}
+                    {hasInCart ? 'Ver meu carrinho' : 'Adicionar ao carrinho'}
                 </motion.button>
             </footer>
         </Container>
