@@ -5,7 +5,7 @@ import api from '../services/api'
 type BestConfectioner = {
     id: string
     name: string
-    photo: {
+    avatar: {
         url: string
     }
 }
