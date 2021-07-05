@@ -82,7 +82,7 @@ export const Info = styled.div`
     strong {
         ${tw`
             capitalize text-md
-            text-blue-700 font-bold
+            text-blue-700 font-bold text-center
         `};
     }
     span {

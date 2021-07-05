@@ -13,7 +13,7 @@ export const ListContainer = styled(motion.div)`
          px-2 transition-colors
         xs:py-8 sm:(px-6 gap-x-4)
         md:(px-8 gap-x-6)
-        md-3:(gap-x-3 px-1 pt-0)
+        md-3:(gap-x-3 px-1 pt-0 pb-6)
     `};
     grid-template-columns: 1fr 65%;
     grid-template-areas: 'thumb info' 'controls .';

@@ -15,7 +15,7 @@ export const Container = styled(motion.div)<ContainerProps>`
     `};
 
     max-width: 18.125rem;
-    height: 26.625rem;
+    height: 28rem;
 
     :hover {
         ${tw`
@@ -30,8 +30,7 @@ export const Container = styled(motion.div)<ContainerProps>`
     header {
         ${tw`
             w-full rounded-md overflow-hidden
-            mb-2 h-56 cursor-pointer
-
+            mb-2 cursor-pointer h-56
         `};
         img {
             ${tw`transition-all`}
@@ -44,33 +43,35 @@ export const Container = styled(motion.div)<ContainerProps>`
             }
         }
     }
-
-    p {
-        :first-of-type {
-            ${tw`
-                text-blue-700 font-semibold text-md
-                mb-1 capitalize
-            `};
-        }
-        :last-of-type {
-            ${tw`
+    > div {
+        ${tw`flex flex-col items-start justify-start h-32`}
+        p {
+            :first-of-type {
+                ${tw`
+                    text-blue-700 font-semibold text-md
+                    capitalize
+                `};
+                line-height: 140%;
+            }
+            :last-of-type {
+                ${tw`
                 font-inter
             `};
-            overflow: hidden;
-            text-overflow: ellipsis;
-            display: -webkit-box;
-            -webkit-line-clamp: 2; /* number of lines to show */
-            -webkit-box-orient: vertical;
-            line-height: 143%;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                display: -webkit-box;
+                -webkit-line-clamp: 2; /* number of lines to show */
+                -webkit-box-orient: vertical;
+                line-height: 143%;
+            }
         }
-    }
-
-    strong {
-        ${tw`
+        strong {
+            ${tw`
             text-blue-500 text-2xl
-            font-inter
-        `};
-        line-height: 150%;
+            font-inter mt-auto
+            `};
+            line-height: 150%;
+        }
     }
 
     footer {

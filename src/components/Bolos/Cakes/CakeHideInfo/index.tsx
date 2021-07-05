@@ -33,7 +33,6 @@ type Cake = {
     slug: string
     photos: Photos[]
     stars: Star
-    isBest: boolean
 }
 
 interface CakeHideInfoProps {

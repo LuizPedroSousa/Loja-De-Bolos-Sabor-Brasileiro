@@ -24,7 +24,7 @@ export default function Contato() {
     return (
         <DefaultLayout>
             <Head>
-                <title>Sabor Brasileiro | Contato</title>
+                <title>Contato | Sabor Brasileiro</title>
             </Head>
             <main>
                 <Header activePage="/contato" />

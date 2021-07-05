@@ -50,7 +50,6 @@ type Cake = {
     id: string
     price: string
     name: string
-    isBest: boolean
     description: string
     slug: string
     photos: Photos[]
@@ -148,7 +147,7 @@ const CakeModal: React.FC<CakeModalProps> = ({ onClose, isOpen, cake }) => {
                             src={cake.photos[0].url}
                             alt={cake.name}
                         />
-                        {cake.isBest && (
+                        {cake.stars.length >= 4 && (
                             <motion.span
                                 animate={{
                                     y: [30, 20, 10, 0],

@@ -12,4 +12,5 @@ export const Categories = styled.div`
             whitespace-nowrap
         `};
     }
+    grid-area: 'categories';
 `

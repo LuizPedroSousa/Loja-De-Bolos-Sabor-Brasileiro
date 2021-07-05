@@ -1,8 +1,8 @@
 import React, { useMemo, useState } from 'react'
 import { useQuery } from 'react-query'
 import { getCakeCategories, getCakes } from '../../hooks/useCake'
+import formatCakes from '../../utils/formatCakes'
 
-import { v4 as uuid } from 'uuid'
 import CakeContext from './context'
 
 const { Provider } = CakeContext
@@ -22,27 +22,21 @@ type Star = {
 type Cake = {
     id: string
     price: string
-    slug: string
     name: string
     description: string
+    slug: string
     photos: Photos[]
     stars: Star
-    isBest: boolean
 }
 
 type Category = {
     id: string
     name: string
+    slug: string
     cakes: Cake[]
 }
 
-type Filter = {
-    search: string
-    category: string
-}
-
 const CakeProvider: React.FC = ({ children }) => {
-    const [filter, setFilter] = useState<Filter>({} as Filter)
     const [cakes, setCakes] = useState<Cake[]>([])
     const { data: bestCakesData } = useQuery(
         ['bestCakes', 2],
@@ -55,21 +49,6 @@ const CakeProvider: React.FC = ({ children }) => {
             })
     )
 
-    function formatCakes(cakes: typeof cakesData): Cake[] {
-        return cakes?.map(cake => {
-            const stars = []
-            for (let i = 0; i < cake.stars; i++) {
-                stars.push({ hasStar: true, key: uuid() })
-            }
-            if (cake.stars < 5) {
-                for (let i = stars.length; i < 5; i++) {
-                    stars.push({ hasStar: false, key: uuid() })
-                }
-            }
-            return { ...cake, stars: { length: cake.stars, toMap: stars } }
-        })
-    }
-
     const { data: cakesData } = useQuery('cakes', async () => await getCakes())
 
     const { data: categoriesData } = useQuery('cakeCategories', () =>
@@ -79,17 +58,6 @@ const CakeProvider: React.FC = ({ children }) => {
     useMemo(() => {
         setCakes(formatCakes(cakesData))
     }, [cakesData])
-
-    useMemo(() => {
-        if (filter.search) {
-            ;(async () => {
-                const data = await getCakes({
-                    params: { name: filter.search }
-                })
-                setCakes(formatCakes(data as any))
-            })()
-        }
-    }, [filter.search])
 
     const { bestCakes } = useMemo(() => {
         const bestCakes: Cake[] = formatCakes(bestCakesData)
@@ -108,8 +76,6 @@ const CakeProvider: React.FC = ({ children }) => {
     return (
         <Provider
             value={{
-                filter,
-                setFilter,
                 cakes,
                 bestCakes,
                 categories,
