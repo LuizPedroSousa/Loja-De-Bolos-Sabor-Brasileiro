@@ -16,5 +16,5 @@
         "types": ["cypress"]
     },
     "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/components/Header/.stories.tsx"],
-    "exclude": ["node_modules"]
+    "exclude": ["node_modules", "**/*.spec.ts"]
 }

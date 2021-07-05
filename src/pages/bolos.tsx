@@ -103,7 +103,6 @@ export default function Bolos({ search, price, category }: BolosProps) {
     const { getFieldProps, handleSubmit } = useFormik({
         initialValues: { to: '' },
         onSubmit: ({ to }) => {
-            console.log(to)
             setQuery({ ...query, price: String(to) })
         }
     })
