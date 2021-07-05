@@ -19,8 +19,26 @@ module.exports = {
       bg: '#FFF5EC',
       white: '#FFF',
       gray: {
-          '100': '#E5E5E5',
-          '400': '#707070'
+          100: "#fafafa",
+          200: "#f5f5f5",
+          300: "#efefef",
+          400: "#eaeaea",
+          500: "#e5e5e5",
+          600: "#b7b7b7",
+          700: "#898989",
+          800: "#5c5c5c",
+          900: "#2e2e2e"
+      },
+      pink: {
+        100: "#ffd8f0",
+        200: "#ffb2e0",
+        300: "#ff8bd1",
+        400: "#ff65c1",
+        500: "#ff3eb2",
+        600: "#cc328e",
+        700: "#99256b",
+        800: "#661947",
+        900: "#330c24"
       },
       beige: {
           '400': '#FFEDDE',
@@ -28,19 +46,51 @@ module.exports = {
       },
       orange: {
           '100': '#FFC08B',
-          '500': '#F6934B',
-          '700': '#ED854A'
+          '500': '#FFA451',
+          '700': '#ED854A',
+          '800': '#E47625'
+      },
+      indigo: {
+          100: "#d3e0f6",
+          200: "#a7c1ed",
+          300: "#7aa2e3",
+          400: "#4e83da",
+          500: "#2264d1",
+          600: "#1b50a7",
+          700: "#143c7d",
+          800: "#0e2854",
+          900: "#07142a"
       },
       blue: {
+          '50': '#7E81A2',
           '100': '#8A8FB9',
           '400': '#50479A',
-          '700': '#2E266F'
+          '500': '#473E8F',
+          '600': '#393082',
+          '700': '#2E266F',
+          '900': '#261F64'
       },
       red: {
-          '400': '#FE043C'
+          100: "#ffcdd8",
+          200: "#ff9bb1",
+          300: "#fe688a",
+          400: "#fe3663",
+          500: "#fe043c",
+          600: "#cb0330",
+          700: "#980224",
+          800: "#660218",
+          900: "#33010c"
       },
       green: {
-          '400': '#00a500'
+          100: "#ccedcc",
+          200: "#99db99",
+          300: "#66c966",
+          400: "#00a500",
+          500: "#33b733",
+          600: "#008400",
+          700: "#006300",
+          800: "#004200",
+          900: "#002100"
       },
       yellow: {
           '400': '#FBD54D'
@@ -279,6 +329,8 @@ module.exports = {
         '"Segoe UI Symbol"',
         '"Noto Color Emoji"',
       ],
+      'cake-variant': ['Josefin Sans', 'Poppins', 'sans-serif'],
+      'description-variant': ['Lato', 'Josefin Sans', 'Poppins', 'sans-serif'],
       serif: ['ui-serif', 'Georgia', 'Cambria', '"Times New Roman"', 'Times', 'serif'],
       mono: [
         'ui-monospace',
@@ -290,8 +342,11 @@ module.exports = {
         '"Courier New"',
         'monospace',
       ],
+      inter: ['Inter', 'Lato', 'Josefin Sans', 'Poppins', 'Roboto', 'sans-serif'],
+      roboto: ['Roboto', 'Lato', 'Josefin Sans', 'Poppins', 'Inter', 'sans-serif']
     },
     fontSize: {
+        xs: '0.5rem',
         sm: '0.875rem', // 14px
         md: '1rem', // 16px
         lg: '1.125rem', // 18px
@@ -444,6 +499,18 @@ module.exports = {
       4: 'repeat(4, minmax(0, 1fr))',
       5: 'repeat(5, minmax(0, 1fr))',
       6: 'repeat(6, minmax(0, 1fr))',
+      'max-1': 'repeat(1, minmax(0, max-content))',
+      'max-2': 'repeat(2, minmax(0, max-content))',
+      'max-3': 'repeat(3, minmax(0, max-content))',
+      'max-4': 'repeat(4, minmax(0, max-content))',
+      'max-5': 'repeat(5, minmax(0, max-content))',
+      'max-6': 'repeat(6, minmax(0, max-content))',
+      'max-7': 'repeat(7, minmax(0, max-content))',
+      'max-8': 'repeat(8, minmax(0, max-content))',
+      'max-9': 'repeat(9, minmax(0, max-content))',
+      'max-10': 'repeat(10, minmax(0, max-content))',
+      'max-11': 'repeat(11, minmax(0, max-content))',
+      'max-12': 'repeat(12, minmax(0, max-content))',
     },
     height: (theme) => ({
       auto: 'auto',

@@ -6,9 +6,7 @@ import tw, { theme } from 'twin.macro'
 export const Container = styled(motion.div)`
     ${tw`
         relative shadow-md-bg
-        cursor-pointer overflow-hidden
-        hover:shadow-xl
-        rounded-3xl
+        overflow-hidden hover:shadow-xl rounded-3xl
     `};
     & + & {
         ${tw`
@@ -19,13 +17,12 @@ export const Container = styled(motion.div)`
         transition: 0.25s;
         border-radius: 1.563rem;
         ${tw`
-            w-full h-full
+            w-full h-full cursor-pointer
+            transition-transform duration-500
         `};
 
         border-bottom-left-radius: 20%;
         border-bottom-right-radius: 20%;
-
-        transition: 0.25s;
     }
     height: 20%;
 
@@ -80,13 +77,13 @@ export const Header = styled.header`
 
     p {
         ${tw`
-            text-2xl text-blue-700
-            font-medium
+            text-xl text-blue-700
+            font-medium capitalize
         `};
     }
     strong {
         ${tw`
-            text-2xl text-orange-500
+            text-2xl text-orange-500 whitespace-nowrap
         `};
     }
 `
@@ -97,8 +94,11 @@ export const Footer = styled.footer`
         items-center w-full pl-4
     `};
     p {
-        ${tw`w-max`};
-        width: max-content;
+        ${tw`w-max overflow-hidden overflow-ellipsis`};
+        display: -webkit-box;
+        -webkit-line-clamp: 2; /* number of lines to show */
+        -webkit-box-orient: vertical;
+        line-height: 143%;
     }
     button {
         ${tw`

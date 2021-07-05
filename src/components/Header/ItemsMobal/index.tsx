@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { FormEvent, useRef } from 'react'
 import Link from 'next/link'
 import {
     AiOutlineArrowDown,
@@ -14,11 +14,16 @@ import {
     ExitButton,
     ModalContent,
     HamburgerButton,
-    LinkList,
+    PageList,
     CartItem,
     ItemInfo,
     CartRemoveItem,
-    AnyItems
+    AnyItems,
+    AccordionItem,
+    FilterItem,
+    FilterCheckbox,
+    FilterPriceForm,
+    SendSolicitation
 } from './styles'
 import {
     Drawer,
@@ -26,7 +31,6 @@ import {
     DrawerHeader,
     DrawerOverlay,
     useDisclosure,
-    Divider,
     List,
     ListItem,
     DrawerBody,
@@ -34,13 +38,24 @@ import {
     Modal,
     ModalHeader,
     ModalBody,
-    ModalFooter
+    ModalFooter,
+    Accordion,
+    AccordionButton,
+    AccordionIcon,
+    AccordionPanel
 } from '@chakra-ui/react'
 import useCustomRipple from '../../../hooks/useCustomRipple'
 import useCart from '../../../hooks/useCart'
 import Image from 'next/image'
+import { useCake } from '../../../hooks/useCake'
+import useBreakPoint from '../../../hooks/useBreakPoint'
 
-export type ActiveHrefType = '/' | '/bolos' | '/contato' | '/encomendar'
+export type ActiveHrefType =
+    | '/'
+    | '/bolos'
+    | '/contato'
+    | '/encomendar'
+    | '/faq'
 
 interface INavigationLinks {
     href: ActiveHrefType
@@ -66,10 +81,13 @@ const ItemsMobal: React.FC<ItemsMobalProps> = ({
         onOpen: onModalOpen,
         onClose: onModalClose
     } = useDisclosure()
+    const { sm } = useBreakPoint()
     const cartRef = useRef<HTMLButtonElement>(null)
     const linkRef = useRef<HTMLAnchorElement>(null)
     const exitRef = useRef<HTMLButtonElement>(null)
     const exitModalRef = useRef<HTMLButtonElement>(null)
+    const buttonGoRef = useRef<HTMLButtonElement>(null)
+    const sendSolicitationRef = useRef<HTMLAnchorElement>(null)
     const {
         itemsLength,
         cartItems,
@@ -79,56 +97,230 @@ const ItemsMobal: React.FC<ItemsMobalProps> = ({
         downAmount,
         removeItem
     } = useCart()
-    useCustomRipple([{ ref: cartRef }, { ref: linkRef }, { ref: exitRef }])
+    const { categories } = useCake()
+    useCustomRipple([
+        { ref: cartRef },
+        { ref: linkRef },
+        { ref: exitRef },
+        { ref: buttonGoRef },
+        { ref: sendSolicitationRef }
+    ])
+
+    const { '3md': md3 } = useBreakPoint()
+
+    function handleFilterPrice(e: FormEvent) {
+        e.preventDefault()
+    }
 
     return (
         <>
-            <HamburgerButton type="button" onClick={onOpenDrawer}>
+            <HamburgerButton
+                activePage={activePage}
+                type="button"
+                onClick={onOpenDrawer}
+            >
                 <span>
                     <Hamburger />
                 </span>
             </HamburgerButton>
-            <Drawer isOpen={isDrawerOpen} onClose={onCloseDrawer}>
+            <Drawer
+                size={sm ? 'md' : 'full'}
+                isOpen={isDrawerOpen}
+                onClose={onCloseDrawer}
+            >
                 <DrawerOverlay />
                 <DrawerContent bg="white">
-                    <DrawerHeader align="end">
+                    <DrawerHeader
+                        borderBottom="1px"
+                        borderColor="gray.100"
+                        align="end"
+                    >
                         <ExitButton ref={exitRef} onClick={onCloseDrawer}>
                             <IoMdExit size={38} />
                         </ExitButton>
                     </DrawerHeader>
-                    <Divider />
-                    <DrawerBody px="0" mt="2">
+                    <DrawerBody px="0">
                         <List>
                             {navigationLinks.map(({ href, label }, index) => (
-                                <LinkList
+                                <PageList
                                     key={index}
                                     hasActivePage={activePage === href}
                                 >
                                     <Link href={href}>
                                         <a ref={linkRef}>{label}</a>
                                     </Link>
-                                </LinkList>
+                                </PageList>
                             ))}
+                            {activePage === '/bolos' && !md3 && (
+                                <>
+                                    <ListItem>
+                                        <Accordion px="4" allowToggle>
+                                            <AccordionItem>
+                                                <h2>
+                                                    <AccordionButton>
+                                                        <p>Categorias</p>
+                                                        <AccordionIcon />
+                                                    </AccordionButton>
+                                                </h2>
+                                                <AccordionPanel>
+                                                    <FilterItem>
+                                                        <FilterCheckbox>
+                                                            Todos
+                                                        </FilterCheckbox>
+                                                    </FilterItem>
+                                                    {categories.map(
+                                                        category => (
+                                                            <FilterItem
+                                                                key={
+                                                                    category.id
+                                                                }
+                                                            >
+                                                                <FilterCheckbox>
+                                                                    {
+                                                                        category.name
+                                                                    }
+                                                                </FilterCheckbox>
+                                                            </FilterItem>
+                                                        )
+                                                    )}
+                                                </AccordionPanel>
+                                            </AccordionItem>
+                                            <AccordionItem>
+                                                <h2>
+                                                    <AccordionButton>
+                                                        <p>Mais Comprados</p>
+                                                        <AccordionIcon />
+                                                    </AccordionButton>
+                                                </h2>
+                                                <AccordionPanel>
+                                                    {categories.map(
+                                                        category => (
+                                                            <FilterItem
+                                                                key={
+                                                                    category.id
+                                                                }
+                                                            >
+                                                                <FilterCheckbox>
+                                                                    {
+                                                                        category.name
+                                                                    }
+                                                                </FilterCheckbox>
+                                                            </FilterItem>
+                                                        )
+                                                    )}
+                                                </AccordionPanel>
+                                            </AccordionItem>
+                                            <AccordionItem>
+                                                <h2>
+                                                    <AccordionButton>
+                                                        <p>Descontos</p>
+                                                        <AccordionIcon />
+                                                    </AccordionButton>
+                                                </h2>
+                                                <AccordionPanel>
+                                                    {categories.map(
+                                                        category => (
+                                                            <FilterItem
+                                                                key={
+                                                                    category.id
+                                                                }
+                                                            >
+                                                                <FilterCheckbox>
+                                                                    {
+                                                                        category.name
+                                                                    }
+                                                                </FilterCheckbox>
+                                                            </FilterItem>
+                                                        )
+                                                    )}
+                                                </AccordionPanel>
+                                            </AccordionItem>
+                                            <AccordionItem>
+                                                <h2>
+                                                    <AccordionButton>
+                                                        <p>Filtrar por preço</p>
+                                                        <AccordionIcon />
+                                                    </AccordionButton>
+                                                </h2>
+                                                <AccordionPanel>
+                                                    <FilterItem>
+                                                        <FilterCheckbox>
+                                                            R$0.00 - R$10.00
+                                                        </FilterCheckbox>
+                                                    </FilterItem>
+                                                    <FilterItem>
+                                                        <FilterCheckbox>
+                                                            R$10.00 - R$20.00
+                                                        </FilterCheckbox>
+                                                    </FilterItem>
+                                                    <FilterItem>
+                                                        <FilterCheckbox>
+                                                            R$20.00 - R$30.00
+                                                        </FilterCheckbox>
+                                                    </FilterItem>
+                                                    <FilterItem>
+                                                        <FilterCheckbox>
+                                                            R$60.00 +
+                                                        </FilterCheckbox>
+                                                    </FilterItem>
+                                                    <FilterPriceForm
+                                                        onSubmit={
+                                                            handleFilterPrice
+                                                        }
+                                                    >
+                                                        <div>
+                                                            <input
+                                                                type="text"
+                                                                placeholder="R$0.00 - R$100.00"
+                                                            />
+                                                            <button
+                                                                ref={
+                                                                    buttonGoRef
+                                                                }
+                                                                type="submit"
+                                                                name="Enviar"
+                                                            >
+                                                                Go
+                                                            </button>
+                                                        </div>
+                                                    </FilterPriceForm>
+                                                </AccordionPanel>
+                                            </AccordionItem>
+                                        </Accordion>
+                                    </ListItem>
+                                </>
+                            )}
 
                             <ListItem>
-                                <CartMobal
-                                    color="primary"
-                                    type="button"
-                                    name="Meu Carrinho"
-                                    onClick={onModalOpen}
-                                    ref={cartRef}
-                                >
-                                    <span>
-                                        <AiOutlineShoppingCart size={40} />
-                                        <p>{itemsLength}</p>
-                                    </span>
-                                    Meu carrinho
-                                </CartMobal>
+                                {activePage === '/faq' ? (
+                                    <Link href="/faq/requests/new">
+                                        <SendSolicitation
+                                            ref={sendSolicitationRef}
+                                        >
+                                            Enviar Solicitação
+                                        </SendSolicitation>
+                                    </Link>
+                                ) : (
+                                    <CartMobal
+                                        color="primary"
+                                        type="button"
+                                        name="Meu Carrinho"
+                                        onClick={onModalOpen}
+                                        ref={cartRef}
+                                    >
+                                        <span>
+                                            <AiOutlineShoppingCart size={40} />
+                                            <p>{itemsLength}</p>
+                                        </span>
+                                        Meu carrinho
+                                    </CartMobal>
+                                )}
                             </ListItem>
                         </List>
                     </DrawerBody>
                 </DrawerContent>
             </Drawer>
+
             <Modal isOpen={isModalOpen} onClose={onModalClose}>
                 <ModalOverlay />
                 <ModalContent>
@@ -146,7 +338,7 @@ const ItemsMobal: React.FC<ItemsMobalProps> = ({
                                         objectFit="cover"
                                         width={600}
                                         height={600}
-                                        src={item.cake.photo.url}
+                                        src={item.cake.photos[0].url}
                                         alt={item.cake.name}
                                     />
                                     <ItemInfo>

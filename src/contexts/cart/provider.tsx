@@ -1,24 +1,25 @@
 /* eslint-disable react/display-name */
-import React, { useEffect, useMemo, useState } from 'react'
-import { useToast } from '@chakra-ui/react'
+import React, { useMemo, useState } from 'react'
 
 import CartContext from './context'
-import { FaCheck } from 'react-icons/fa'
-import Image from 'next/image'
-import Link from 'next/link'
-import { AiOutlineClose } from 'react-icons/ai'
+
 import usePersistedState from '../../hooks/usePersistedState'
-import useCake from '../../hooks/useCake'
-import { v4 as uuid } from 'uuid'
+import { useCake } from '../../hooks/useCake'
+import AddCakeToast from '../../components/Toasts/AddCakeToast'
+import { useToast } from '@chakra-ui/react'
 const { Provider } = CartContext
+
+type Photos = {
+    url: string
+}
 
 type Cake = {
     id: string
-    name: string
     price: string
-    photo: {
-        url: string
-    }
+    name: string
+    photos: Photos[]
+    description: string
+    slug: string
 }
 
 interface CartItem {
@@ -28,11 +29,12 @@ interface CartItem {
 
 const CartProvider: React.FC = ({ children }) => {
     const [cartItems, setCartItems] = usePersistedState<CartItem[]>([], 'cart')
-    const toast = useToast()
     const { cakes } = useCake()
 
     const [total, setTotal] = useState(0)
-    useEffect(() => calcTotal(), [cartItems])
+    const toast = useToast()
+
+    useMemo(() => calcTotal(), [cartItems])
 
     const { hasItems, itemsLength } = useMemo(() => {
         const itemsLength = cartItems.length
@@ -40,70 +42,14 @@ const CartProvider: React.FC = ({ children }) => {
         return { hasItems, itemsLength }
     }, [cartItems])
 
-    function addToCard(item: CartItem) {
-        const toastId = uuid()
-        function close() {
-            toast.close(toastId)
-        }
-
-        if (!toast.isActive(toastId)) {
-            toast({
-                position: 'top-left',
-                duration: 5000,
-                isClosable: true,
-                id: toastId,
-                render: () => (
-                    <div className="bg-orange-500 flex flex-col justify-center flex-start w-full p-4 text-white text-md font-sans font-medium rounded-xl shadow-2xl">
-                        <header className="text-white w-full flex flex-col items-center justify-start">
-                            <button
-                                className="w-6 h-6 mb-2 p-1 flex text-white items-center  rounded-md ml-auto justify-center bg-orange-100"
-                                type="button"
-                                onClick={close}
-                            >
-                                <AiOutlineClose />
-                            </button>
-
-                            <div className="flex items-center w-full justify-start">
-                                <span className="mr-2 flex items-center justify-center  bg-green-400 w-4 h-4 p-1 rounded-full">
-                                    <FaCheck />
-                                </span>
-                                Bolo adicionado ao carrinho!!
-                            </div>
-                        </header>
-                        <footer className="flex flex-col items-center w-full justify-start">
-                            <div className="flex items-center w-full justify-start">
-                                <div className="w-16 h-16 mt-4 overflow-hidden mr-4 rounded-xl">
-                                    <Image
-                                        objectFit="cover"
-                                        src={item.cake.photo.url}
-                                        alt={item.cake.name}
-                                        width={500}
-                                        height={600}
-                                    />
-                                </div>
-                                <p>
-                                    {item.cake.name}
-                                    <br />
-                                    <span>R$ {item.cake.price}</span>
-                                </p>
-                            </div>
-
-                            <Link href="/meu-carrinho">
-                                <a className="hover:bg-orange-700 text-sm focus:ring-2 transition-all bg-orange-100 flex items-center justify-center w-full px-2 ml-auto mt-4 rounded-md py-4">
-                                    Ver meu carrinho
-                                </a>
-                            </Link>
-                        </footer>
-                    </div>
-                )
-            })
-        }
+    function addToCart(item: CartItem) {
+        AddCakeToast({ cake: item.cake, toast })
         setCartItems([...cartItems, item])
     }
 
     function calcTotal() {
         let value = 0
-        cartItems.forEach(({ cake: { price } }) => (value += Number(price)))
+        cartItems.forEach(item => (value += Number(item.cake.price)))
         setTotal(value)
     }
 
@@ -176,6 +122,17 @@ const CartProvider: React.FC = ({ children }) => {
         return hasIn
     }
 
+    function toggleAddToCart(cake: Cake) {
+        if (hasCakeInCart(cake)) {
+            return removeItem({ cake, amount: 1 })
+        }
+        addToCart({ cake, amount: 1 })
+    }
+
+    function clearCart() {
+        setCartItems([])
+    }
+
     return (
         <Provider
             value={{
@@ -187,7 +144,9 @@ const CartProvider: React.FC = ({ children }) => {
                 upAmount,
                 downAmount,
                 hasCakeInCart,
-                addToCard
+                toggleAddToCart,
+                addToCart,
+                clearCart
             }}
         >
             {children}

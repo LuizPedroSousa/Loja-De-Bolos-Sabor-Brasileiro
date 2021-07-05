@@ -2,13 +2,18 @@ import React, { useMemo } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 
-import { Container, Logo, Nav } from './styles'
+import { Container, Logo, Nav, PageLinks } from './styles'
 
 import useBreakPoint from '../../hooks/useBreakPoint'
 import ItemsDesktop from './ItemsDesktop'
 import ItemsMobal from './ItemsMobal'
 
-export type ActiveHrefType = '/' | '/bolos' | '/contato' | '/encomendar'
+export type ActiveHrefType =
+    | '/'
+    | '/bolos'
+    | '/contato'
+    | '/encomendar'
+    | '/faq'
 
 interface INavigationLinks {
     href: ActiveHrefType
@@ -26,7 +31,8 @@ const Header: React.FC<HeaderProps> = ({ activePage }) => {
             { href: '/', label: 'Home' },
             { href: '/bolos', label: 'Bolos' },
             { href: '/contato', label: 'Contato' },
-            { href: '/encomendar', label: 'Encomendar' }
+            { href: '/encomendar', label: 'Encomendar' },
+            { href: '/faq', label: 'FAQ' }
         ]
         return { navigationLinks }
     }, [])
@@ -49,30 +55,33 @@ const Header: React.FC<HeaderProps> = ({ activePage }) => {
     // })
 
     return (
-        <Container>
-            <Link href="/">
-                <Logo>
-                    <Image
-                        src="/images/icon.png"
-                        width={618}
-                        height={369}
-                        alt="logo"
-                    />
-                </Logo>
-            </Link>
+        <Container activePage={activePage}>
             <Nav>
-                {l && (
-                    <ItemsDesktop
-                        activePage={activePage}
-                        navigationLinks={navigationLinks}
-                    />
-                )}
-                {xsDown && !l && (
-                    <ItemsMobal
-                        activePage={activePage}
-                        navigationLinks={navigationLinks}
-                    />
-                )}
+                <Link href="/">
+                    <Logo activePage={activePage}>
+                        <Image
+                            src="/images/icon.png"
+                            width={618}
+                            height={369}
+                            objectFit="contain"
+                            alt="logo"
+                        />
+                    </Logo>
+                </Link>
+                <PageLinks>
+                    {l && (
+                        <ItemsDesktop
+                            activePage={activePage}
+                            navigationLinks={navigationLinks}
+                        />
+                    )}
+                    {xsDown && !l && (
+                        <ItemsMobal
+                            activePage={activePage}
+                            navigationLinks={navigationLinks}
+                        />
+                    )}
+                </PageLinks>
             </Nav>
         </Container>
     )

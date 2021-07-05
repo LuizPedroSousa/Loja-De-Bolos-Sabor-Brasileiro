@@ -27,8 +27,8 @@ const CustomStyles = createGlobalStyle`
         border: 0;
     }
     button {
-        border: 0;
         cursor: pointer;
+        outline: 0 !important;
         transition: 0.25s;
     }
     @media (min-width: 1080px) {

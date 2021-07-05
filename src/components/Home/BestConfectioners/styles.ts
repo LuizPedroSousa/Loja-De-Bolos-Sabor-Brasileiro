@@ -108,7 +108,6 @@ export const Confectioners = styled.div`
     ${tw`
         mt-24 w-full grid grid-cols-1
         px-4 mb-16 gap-32
-        xs:grid-cols-2 xs:p-0
         sm:mt-32 sm:gap-y-9
     `};
     grid-area: auto;

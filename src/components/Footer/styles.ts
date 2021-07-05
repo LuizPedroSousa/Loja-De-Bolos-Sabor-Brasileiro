@@ -54,7 +54,7 @@ export const Form = styled.form`
     ${tw`flex flex-col items-start justify-center`};
     label {
         font-size: calc(${theme`fontSize.2xl`} - 0.3rem);
-        ${tw`text-blue-700 font-medium`};
+        ${tw`text-blue-500 font-cake-variant font-medium`};
     }
 `
 
@@ -64,7 +64,7 @@ export const InputGroup = styled.div`
     display: flex;
     padding: 3px;
     border-radius: 3px;
-    ${tw`flex justify-between items-center w-full mt-2 shadow-sm`};
+    ${tw`flex justify-between items-center w-full mt-1 shadow-sm`};
 
     :focus-within {
         ${tw`border-2 border-orange-500`};
@@ -81,30 +81,19 @@ export const InputGroup = styled.div`
             border-0
             outline-none
             text-blue-100
-            pl-4
+            pl-4 placeholder:(text-sm font-sans text-blue-100)
         `};
         width: 60%;
-        ::placeholder {
-            font: 400 ${({ theme: { fontSize } }) => fontSize.sm} Poppins,
-                sans-serif;
-            color: ${({ theme: { colors } }) => colors.blue[100]};
-        }
     }
 
     button {
         ${tw`
             bg-orange-500
             text-white
-            rounded-sm
-            font-sans
-            text-sm
-            font-medium
-            focus:ring-2
-            focus:ring-orange-700
+            rounded-sm font-sans text-sm font-medium
+            transition-colors
+            hover:(bg-orange-700 border-2 border-orange-100 rounded-md)
         `};
-        div {
-            ${tw`flex justify-center items-center w-full h-full`};
-        }
         width: 38%;
     }
 
@@ -169,10 +158,13 @@ export const Social = styled.div`
         ${tw`
             w-20
             flex items-center
-            justify-between
+            justify-center
         `};
         a {
             transition: 0.25s;
+            & + a {
+                ${tw`ml-1`};
+            }
             :hover {
                 opacity: 0.25s;
             }

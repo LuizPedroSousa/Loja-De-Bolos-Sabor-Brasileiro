@@ -17,7 +17,7 @@ const ThemeProvider: React.FC = ({ children }) => {
     return (
         <StyledComponentsProvider theme={light}>
             <ChakraThemeProvider theme={customChakraTheme}>
-                <ColorModeProvider options={{ initialColorMode: 'dark' }}>
+                <ColorModeProvider options={{ initialColorMode: 'light' }}>
                     <EmotionThemeProvider theme={customChakraTheme}>
                         <MuiThemeProvider theme={customMaterialTheme}>
                             <MuiPickersUtilsProvider

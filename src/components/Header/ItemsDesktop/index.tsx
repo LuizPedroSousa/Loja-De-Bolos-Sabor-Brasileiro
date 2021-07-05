@@ -1,34 +1,56 @@
 import Link from 'next/link'
-import React from 'react'
+import React, { useRef } from 'react'
 import {
-    AiOutlineArrowDown,
-    AiOutlineArrowUp,
+    AiOutlineLine,
+    AiOutlinePlus,
     AiOutlineShoppingCart
 } from 'react-icons/ai'
-import {
-    UnorderedList,
-    List,
-    Cart,
-    AnyItems,
-    CartContent,
-    CartRemoveItem,
-    CartItem,
-    ItemInfo
-} from './styles'
 
 import {
-    Popover,
-    PopoverArrow,
-    PopoverBody,
-    PopoverContent,
-    PopoverFooter,
-    PopoverHeader,
-    PopoverTrigger
+    Accordion,
+    AccordionButton,
+    AccordionIcon,
+    AccordionItem,
+    AccordionPanel,
+    Drawer,
+    DrawerHeader,
+    DrawerOverlay,
+    useDisclosure
 } from '@chakra-ui/react'
 import useCart from '../../../hooks/useCart'
 import Image from 'next/image'
 import { IoMdClose } from 'react-icons/io'
-export type ActiveHrefType = '/' | '/bolos' | '/contato' | '/encomendar'
+import { BsTrash } from 'react-icons/bs'
+import ClearCartModal from '../../Modals/ClearCartModal'
+import {
+    UnorderedList,
+    List,
+    Cart,
+    DrawerContent,
+    DrawerBody,
+    DrawerFooter,
+    Total,
+    ExitButton,
+    CartOptions,
+    AnyItems,
+    CakeItem,
+    Thumb,
+    Info,
+    AmountControls,
+    CakeControls,
+    SendSolicitation
+} from './styles'
+import { motion } from 'framer-motion'
+import { MdRemoveShoppingCart } from 'react-icons/md'
+import useCustomRipple from '../../../hooks/useCustomRipple'
+import { theme } from 'twin.macro'
+
+export type ActiveHrefType =
+    | '/'
+    | '/bolos'
+    | '/contato'
+    | '/encomendar'
+    | '/faq'
 
 interface INavigationLinks {
     href: ActiveHrefType
@@ -44,6 +66,16 @@ const ItemsDesktop: React.FC<ItemsDesktopProps> = ({
     navigationLinks,
     activePage
 }) => {
+    const mobalDownAmountRef = useRef<HTMLButtonElement>(null)
+    const mobalUpAmountRef = useRef<HTMLButtonElement>(null)
+    const sendSolicitationRef = useRef<HTMLAnchorElement>(null)
+
+    useCustomRipple([
+        { ref: mobalDownAmountRef, color: theme`colors.pink.400` },
+        { ref: mobalUpAmountRef, color: theme`colors.green.400` },
+        { ref: sendSolicitationRef }
+    ])
+
     const {
         total,
         cartItems,
@@ -53,9 +85,20 @@ const ItemsDesktop: React.FC<ItemsDesktopProps> = ({
         upAmount,
         downAmount
     } = useCart()
+    const {
+        isOpen: isDrawerOpen,
+        onClose: onDrawerClose,
+        onOpen: onDrawerOpen
+    } = useDisclosure()
+    const {
+        isOpen: isModalOpen,
+        onClose: onModalClose,
+        onOpen: onModalOpen
+    } = useDisclosure()
+
     return (
         <>
-            <UnorderedList role="list">
+            <UnorderedList activePage={activePage} role="list">
                 {navigationLinks.map(({ href, label }, index) => (
                     <List hasActivePage={activePage === href} key={index}>
                         <Link href={href}>
@@ -64,96 +107,160 @@ const ItemsDesktop: React.FC<ItemsDesktopProps> = ({
                     </List>
                 ))}
             </UnorderedList>
-            <Popover>
-                <PopoverTrigger>
-                    <Cart>
-                        <span>
-                            <AiOutlineShoppingCart size={70} />
-                            <p>{itemsLength}</p>
-                        </span>
-                    </Cart>
-                </PopoverTrigger>
-                <PopoverContent
-                    as={CartContent}
-                    mr="10"
-                    mt="1"
-                    w="sm"
-                    bg="white"
-                    borderRadius="xl"
-                >
-                    <PopoverArrow bg="white" />
-                    <PopoverHeader
-                        borderColor="orange.100"
-                        textAlign="right"
-                        py="4"
-                    >
-                        <strong>Meu Carrinho</strong>
-                    </PopoverHeader>
-                    <PopoverBody py={hasItems ? '16' : '4'}>
+            <ClearCartModal isOpen={isModalOpen} onClose={onModalClose} />
+            {activePage === '/faq' ? (
+                <Link href="/faq/requests/new">
+                    <SendSolicitation ref={sendSolicitationRef}>
+                        {' '}
+                        Enviar Solicitação
+                    </SendSolicitation>
+                </Link>
+            ) : (
+                <Cart onClick={onDrawerOpen} activePage={activePage}>
+                    <span>
+                        <AiOutlineShoppingCart
+                            size={activePage !== '/' ? 60 : 70}
+                        />
+                        <p>{itemsLength}</p>
+                    </span>
+                </Cart>
+            )}
+
+            <Drawer size="sm" isOpen={isDrawerOpen} onClose={onDrawerClose}>
+                <DrawerOverlay />
+                <DrawerContent>
+                    <DrawerHeader>
+                        <strong>Meu carrinho</strong>
+                        <ExitButton
+                            name="Fechar mini cart"
+                            onClick={onDrawerClose}
+                            whileHover={{ scale: [1, 0.9] }}
+                        >
+                            <IoMdClose />
+                        </ExitButton>
+                    </DrawerHeader>
+                    <DrawerBody>
                         {!hasItems ? (
                             <AnyItems>
-                                <p>Nenhum bolo no carrinho</p>
+                                <span>
+                                    <MdRemoveShoppingCart size={48} />
+                                </span>
+                                <strong>O seu carrinho esta vazio</strong>
+                                <p>
+                                    Volte para a loja e adicionar alguns bolos
+                                    ao seu carrinho
+                                </p>
                             </AnyItems>
                         ) : (
                             cartItems.map(item => (
-                                <CartItem key={item.cake.id}>
-                                    <Image
-                                        objectFit="cover"
-                                        src={item.cake.photo.url}
-                                        alt={item.cake.name}
-                                        width={600}
-                                        height={600}
-                                    />
-                                    <ItemInfo hasDownAmount={item.amount > 1}>
-                                        <p>
-                                            {item.cake.name}
-                                            <span>R$ {item.cake.price}</span>
-                                        </p>
-                                        <div>
-                                            <button
-                                                type="button"
-                                                onClick={() => upAmount(item)}
-                                                name="Adicionar um"
-                                            >
-                                                <AiOutlineArrowUp />
-                                            </button>
-                                            <span>{item.amount}</span>
-                                            <button
-                                                type="button"
-                                                name="Remover um"
-                                                disabled={item.amount === 1}
-                                                onClick={() => downAmount(item)}
-                                            >
-                                                <AiOutlineArrowDown />
-                                            </button>
-                                        </div>
-                                    </ItemInfo>
-                                    <CartRemoveItem
-                                        onClick={() => removeItem(item)}
-                                    >
-                                        <IoMdClose size={50} />
-                                    </CartRemoveItem>
-                                </CartItem>
+                                <Accordion allowToggle key={item.cake.id}>
+                                    <AccordionItem>
+                                        <CakeItem>
+                                            <Thumb>
+                                                <Image
+                                                    objectFit="cover"
+                                                    width={400}
+                                                    height={400}
+                                                    src={
+                                                        item.cake.photos[0].url
+                                                    }
+                                                    alt={item.cake.name}
+                                                />
+                                            </Thumb>
+                                            <Info>
+                                                <strong>
+                                                    {item.cake.name}
+                                                </strong>
+                                                <p>R$ {item.cake.price}</p>
+                                                <AmountControls
+                                                    hasDownAmount={
+                                                        item.amount > 1
+                                                    }
+                                                >
+                                                    <button
+                                                        onClick={() =>
+                                                            downAmount(item)
+                                                        }
+                                                        disabled={
+                                                            item.amount === 1
+                                                        }
+                                                        type="button"
+                                                        name="Remover um bolo"
+                                                        ref={mobalDownAmountRef}
+                                                    >
+                                                        <AiOutlineLine />
+                                                    </button>
+                                                    <span>{item.amount}</span>
+                                                    <button
+                                                        onClick={() =>
+                                                            upAmount(item)
+                                                        }
+                                                        type="button"
+                                                        name="Adicionar um bolo"
+                                                        ref={mobalUpAmountRef}
+                                                    >
+                                                        <AiOutlinePlus />
+                                                    </button>
+                                                </AmountControls>
+                                            </Info>
+                                            <CakeControls>
+                                                <button
+                                                    type="button"
+                                                    name="Remover bolo do carrinho"
+                                                    onClick={() =>
+                                                        removeItem(item)
+                                                    }
+                                                >
+                                                    <IoMdClose />
+                                                </button>
+                                                <AccordionButton>
+                                                    <AccordionIcon />
+                                                </AccordionButton>
+                                            </CakeControls>
+                                        </CakeItem>
+                                        <AccordionPanel tw="border-t-2" pb={4}>
+                                            {item.cake.description}
+                                        </AccordionPanel>
+                                    </AccordionItem>
+                                </Accordion>
                             ))
                         )}
-                    </PopoverBody>
-                    <PopoverFooter
-                        borderColor="orange.100"
-                        px="0"
-                        pb="0"
-                        pt="4"
-                    >
-                        <p>
-                            Total (valor sem frete){' '}
-                            <span>R$ {total || '0.00'}</span>
-                        </p>
-
-                        <Link href="/meu-carrinho">
-                            <a>Ver meu carrinho</a>
-                        </Link>
-                    </PopoverFooter>
-                </PopoverContent>
-            </Popover>
+                    </DrawerBody>
+                    <DrawerFooter hasItems={hasItems}>
+                        <CartOptions>
+                            <motion.button
+                                name="Esvaziar carrinho"
+                                type="button"
+                                disabled={!hasItems}
+                                onClick={onModalOpen}
+                                whileHover={{ scale: [1, 0.9, 0.91, 0.9] }}
+                            >
+                                Esvaziar carrinho
+                                <span>
+                                    <BsTrash />
+                                </span>
+                            </motion.button>
+                            <Link href="/meu-carrinho">
+                                <motion.a
+                                    whileHover={{ scale: [1, 0.9, 0.91, 0.9] }}
+                                >
+                                    Ver carrinho
+                                </motion.a>
+                            </Link>
+                        </CartOptions>
+                        <Total>
+                            <strong>Total R${total}</strong>
+                            <Link href="/finish">
+                                <motion.a
+                                    whileHover={{ scale: [1, 0.9, 0.91, 0.9] }}
+                                >
+                                    Finalizar compra
+                                </motion.a>
+                            </Link>
+                        </Total>
+                    </DrawerFooter>
+                </DrawerContent>
+            </Drawer>
         </>
     )
 }

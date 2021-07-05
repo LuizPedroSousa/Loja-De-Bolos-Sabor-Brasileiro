@@ -8,7 +8,7 @@ import { Container, Content, Avatar, SeeProfile, Wave } from './styles'
 type Confectioner = {
     id: string
     name: string
-    photo: {
+    avatar: {
         url: string
     }
 }
@@ -20,7 +20,7 @@ interface ConfectionerCardProps {
 const ConfectionerCard: React.FC<ConfectionerCardProps> = ({
     confectioner: {
         name,
-        photo: { url }
+        avatar: { url }
     }
 }) => {
     const seeProfileRef = useRef<HTMLButtonElement>(null)

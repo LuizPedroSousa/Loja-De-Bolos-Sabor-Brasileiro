@@ -1,27 +1,30 @@
 import styled from 'styled-components'
 import { lighten } from 'polished'
 import tw, { theme } from 'twin.macro'
-import { ModalContent as ChakraModalContent } from '@chakra-ui/react'
-interface LinkListProps {
+import {
+    Checkbox,
+    ModalContent as ChakraModalContent,
+    AccordionItem as ChakraAccordionItem
+} from '@chakra-ui/react'
+import { ActiveHrefType } from '..'
+interface PageListProps {
     hasActivePage: boolean
 }
 
-export const HamburgerButton = styled.button`
+interface HamburgerButtonProps {
+    activePage: ActiveHrefType
+}
+
+export const HamburgerButton = styled.button<HamburgerButtonProps>`
     ${tw`
         w-20 h-16 p-6 bg-transparent
         flex items-center justify-center
+        text-white
     `};
-
-    :hover {
-        .MuiButton-label {
-            svg {
-                fill: shade(0.2, ${({ theme: { colors } }) => colors.white});
-            }
-        }
-    }
+    ${({ activePage }) => activePage !== '/' && tw`text-gray-700`};
 `
 
-export const LinkList = styled.li<LinkListProps>`
+export const PageList = styled.li<PageListProps>`
     ${tw`
         w-full h-16
         flex items-center justify-center
@@ -207,4 +210,98 @@ export const AnyItems = styled.div`
     span {
         ${tw`mt-2`};
     }
+`
+
+export const AccordionItem = styled(ChakraAccordionItem).attrs({
+    borderBottom: '0',
+    borderTopWidth: '1px',
+    borderColor: 'gray.100'
+})`
+    h2 {
+        button {
+            ${tw`justify-between py-4`};
+            p {
+                ${tw`
+                    border-orange-700
+                `};
+                border-bottom-width: 1px;
+            }
+        }
+        ${tw`
+            text-orange-500
+        `};
+    }
+`
+
+export const FilterItem = styled.div`
+    ${tw`
+        flex items-center justify-start ml-4 capitalize
+    `};
+    & + div {
+        ${tw`mt-2`};
+    }
+`
+
+export const FilterCheckbox = styled(Checkbox).attrs({
+    colorScheme: 'orange',
+    iconColor: 'white'
+})`
+    ${tw`
+        text-blue-50
+    `};
+`
+
+export const FilterPriceForm = styled.form`
+    ${tw`
+        w-full mt-4 flex items-center justify-center
+    `};
+    div {
+        ${tw`
+            flex items-center justify-between w-full
+            h-14 p-1.5
+            rounded-md
+            shadow-md
+        `};
+        input {
+            width: 70%;
+            ${tw`
+                h-full px-4 outline-none text-orange-100
+                font-medium font-sans text-md
+            `};
+            ::placeholder {
+                ${tw`
+                    font-medium font-sans text-sm
+                    text-blue-100
+                `};
+            }
+        }
+        button {
+            width: 30%;
+            border-top-left-radius: 1.5rem;
+            ${tw`
+                h-full bg-orange-500 outline-none
+                font-medium font-sans
+                text-md uppercase
+                text-white
+                focus:ring-2 hover:bg-orange-800
+                shadow-md
+            `};
+        }
+        :focus-within {
+            ${tw`
+                border-2 border-orange-500
+            `};
+        }
+    }
+`
+
+export const SendSolicitation = styled.a`
+    ${tw`
+        w-full max-w-xs rounded-md font-roboto
+        flex flex-col items-center justify-center
+        h-14 mt-4 text-md mx-auto
+        font-bold uppercase transition-colors
+        text-orange-500 border-2 border-orange-100
+        hover:(bg-orange-500 text-white) focus:(border-0 ring-2 ring-orange-500)
+    `};
 `

@@ -11,17 +11,18 @@ interface AddToCardProps {
 export const Container = styled(motion.div)`
     ${tw`
         w-full overflow-hidden relative
-        shadow-sm rounded-3xl cursor-pointer
-        transition-none
-        hover:shadow-2xl
-        xs:w-96 xs:h-96
+        shadow-sm rounded-3xl transition-none
+        border-2 border-white
+        hover:shadow-2xl xs:w-96 xs:h-96
     `};
 
     height: 20.875rem;
     z-index: 5;
     img {
-        ${tw`w-full h-full`};
-        transition: 0.25s;
+        ${tw`
+            w-full h-full cursor-pointer
+            transition-transform duration-700
+        `};
     }
     & + & {
         ${tw`mt-8 xs:mt-0`};
@@ -69,14 +70,18 @@ export const Header = styled.div`
     `};
     strong {
         ${tw`
-            text-2xl text-white
+            text-2xl text-white capitalize
         `};
     }
     p {
         ${tw`
-            text-white
+            text-white overflow-hidden overflow-ellipsis
         `};
         max-width: 18.063rem;
+        display: -webkit-box;
+        -webkit-line-clamp: 2; /* number of lines to show */
+        -webkit-box-orient: vertical;
+        line-height: 143%;
     }
 `
 
@@ -86,12 +91,16 @@ export const Footer = styled.div`
         mt-4 justify-between
     `};
     a {
+        font-size: calc(${theme`fontSize.sm`} - 0.25rem);
+
         ${tw`
-            flex items-center
-            justify-center
-            text-white no-underline hover:underline
+            flex items-center justify-center text-white
+            no-underline hover:underline transition-all
+            xs:text-sm
         `};
-        transition: 0.25s;
+        span {
+            ${tw`mr-1 xs:mr-2`}
+        }
     }
 `
 
@@ -99,13 +108,14 @@ export const AddToCard = styled(motion.button)<AddToCardProps>`
     ${tw`
         bg-white text-brown-500
         font-normal font-sans py-2 px-4
+        h-12 w-48
         relative outline-none focus:ring-2
         shadow-md hover:shadow-lg
     `};
     border-top-left-radius: 6.25rem;
     border-bottom-left-radius: 6.25rem;
 
-    ${({ hasCakeInCart }) => hasCakeInCart && tw`px-16 py-2.5`};
+    ${({ hasCakeInCart }) => hasCakeInCart && tw`w-48 font-medium py-0`};
     ::after {
         content: 'R$ ${({ price }) => price}';
         ${tw`
