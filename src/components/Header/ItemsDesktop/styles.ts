@@ -25,13 +25,18 @@ interface CartProps {
     activePage: ActiveHrefType
 }
 
-export const UnorderedList = styled.ul`
+interface UnorderedListProps {
+    activePage: ActiveHrefType
+}
+
+export const UnorderedList = styled.ul<UnorderedListProps>`
     ${tw`
         flex w-max flex-row relative
         items-center justify-center bg-transparent
         ml-48
     `};
     z-index: 9999;
+    ${({ activePage }) => activePage !== '/' && tw`ml-auto`}
 `
 
 export const List = styled.li<ListProps>`
@@ -57,10 +62,10 @@ export const List = styled.li<ListProps>`
                 content: '';
                 position: absolute;
                 bottom: 0;
-                width: 0.625rem;
-                height: 0.625rem;
+                width: 10px;
+                height: 10px;
                 background-color: ${colors.orange[500]};
-                border-radius: 50%;
+                border-radius: 80%;
             `};
         }
         :hover {
@@ -82,17 +87,18 @@ export const Cart = styled.button<CartProps>`
     ${tw`
         font-sans text-md flex
         items-center justify-center ml-auto
-        bg-transparent
+        bg-transparent mb-2
     `};
     span {
         ${tw`
-                w-16 h-16 relative
-            `};
-        transition: 0.25s;
+            w-16 h-16 relative transition-colors
+        `};
         color: ${({ activePage }) =>
             activePage !== '/'
                 ? theme`colors.orange.100`
                 : shade(0.05, theme`colors.white`)};
+
+        ${({ activePage }) => activePage !== '/' && tw`mt-1`}
         p {
             ${tw`
                     absolute -bottom-2
@@ -101,6 +107,8 @@ export const Cart = styled.button<CartProps>`
                     text-gray-100 left-0 rounded-full
                     bg-yellow-400
             `};
+            ${({ activePage }) => activePage !== '/' && tw`bottom-0.5 left-0.5`}
+
             width: 1.625rem;
             height: 1.625rem;
         }
@@ -332,4 +340,16 @@ export const Total = styled.div`
             text-md
         `};
     }
+`
+
+export const SendSolicitation = styled.a`
+    ${tw`
+        ml-auto bg-orange-500 h-11
+        flex items-center justify-center
+        text-white font-roboto font-semibold
+        px-6 rounded-md uppercase cursor-pointer
+        transition-colors select-none
+        hover:(bg-orange-700 border-2 border-orange-100)
+        focus:(ring-2 border-0 ring-orange-100)
+    `}
 `

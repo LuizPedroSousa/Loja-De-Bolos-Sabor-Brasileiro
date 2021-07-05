@@ -7,6 +7,7 @@ interface ContainerProps {
     activePage: ActiveHrefType
 }
 
+type LogoProps = ContainerProps & {}
 export const Container = styled(motion.header)<ContainerProps>`
     ${tw`
         w-full relative top-0 left-0
@@ -17,9 +18,20 @@ export const Container = styled(motion.header)<ContainerProps>`
         activePage !== '/'
             ? tw`
                 bg-white
-                shadow-md
+                border-b-2 brightness-200
             `
             : tw`bg-transparent`};
+    ${({ activePage }) => activePage !== '/' && 'height: 80px;'};
+    nav {
+        @media ${({ theme: { bp } }) => bp.l} {
+            ${({ activePage }) =>
+                activePage !== '/'
+                    ? tw`
+                    py-4
+                    `
+                    : tw`py-4`};
+        }
+    }
 `
 
 export const Nav = styled.nav`
@@ -36,12 +48,13 @@ export const Nav = styled.nav`
 
     @media ${({ theme: { bp } }) => bp.l} {
         max-width: 88%;
-        padding: 1rem 0;
     }
 `
 
-export const Logo = styled.a`
+export const Logo = styled.a<LogoProps>`
     ${tw`cursor-pointer w-20 l:w-36`};
+
+    ${({ activePage }) => activePage !== '/' && tw`l:w-32`};
 `
 
 export const PageLinks = styled.div`

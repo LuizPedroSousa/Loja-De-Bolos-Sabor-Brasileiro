@@ -37,14 +37,20 @@ import {
     Thumb,
     Info,
     AmountControls,
-    CakeControls
+    CakeControls,
+    SendSolicitation
 } from './styles'
 import { motion } from 'framer-motion'
 import { MdRemoveShoppingCart } from 'react-icons/md'
 import useCustomRipple from '../../../hooks/useCustomRipple'
 import { theme } from 'twin.macro'
 
-export type ActiveHrefType = '/' | '/bolos' | '/contato' | '/encomendar'
+export type ActiveHrefType =
+    | '/'
+    | '/bolos'
+    | '/contato'
+    | '/encomendar'
+    | '/faq'
 
 interface INavigationLinks {
     href: ActiveHrefType
@@ -62,9 +68,12 @@ const ItemsDesktop: React.FC<ItemsDesktopProps> = ({
 }) => {
     const mobalDownAmountRef = useRef<HTMLButtonElement>(null)
     const mobalUpAmountRef = useRef<HTMLButtonElement>(null)
+    const sendSolicitationRef = useRef<HTMLAnchorElement>(null)
+
     useCustomRipple([
         { ref: mobalDownAmountRef, color: theme`colors.pink.400` },
-        { ref: mobalUpAmountRef, color: theme`colors.green.400` }
+        { ref: mobalUpAmountRef, color: theme`colors.green.400` },
+        { ref: sendSolicitationRef }
     ])
 
     const {
@@ -89,7 +98,7 @@ const ItemsDesktop: React.FC<ItemsDesktopProps> = ({
 
     return (
         <>
-            <UnorderedList role="list">
+            <UnorderedList activePage={activePage} role="list">
                 {navigationLinks.map(({ href, label }, index) => (
                     <List hasActivePage={activePage === href} key={index}>
                         <Link href={href}>
@@ -99,12 +108,24 @@ const ItemsDesktop: React.FC<ItemsDesktopProps> = ({
                 ))}
             </UnorderedList>
             <ClearCartModal isOpen={isModalOpen} onClose={onModalClose} />
-            <Cart onClick={onDrawerOpen} activePage={activePage}>
-                <span>
-                    <AiOutlineShoppingCart size={70} />
-                    <p>{itemsLength}</p>
-                </span>
-            </Cart>
+            {activePage === '/faq' ? (
+                <Link href="/faq/requests/new">
+                    <SendSolicitation ref={sendSolicitationRef}>
+                        {' '}
+                        Enviar Solicitação
+                    </SendSolicitation>
+                </Link>
+            ) : (
+                <Cart onClick={onDrawerOpen} activePage={activePage}>
+                    <span>
+                        <AiOutlineShoppingCart
+                            size={activePage !== '/' ? 60 : 70}
+                        />
+                        <p>{itemsLength}</p>
+                    </span>
+                </Cart>
+            )}
+
             <Drawer size="sm" isOpen={isDrawerOpen} onClose={onDrawerClose}>
                 <DrawerOverlay />
                 <DrawerContent>

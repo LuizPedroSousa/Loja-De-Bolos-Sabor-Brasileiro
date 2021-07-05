@@ -4,8 +4,7 @@ import tw, { theme } from 'twin.macro'
 import {
     Checkbox,
     ModalContent as ChakraModalContent,
-    AccordionItem as ChakraAccordionItem,
-    Divider as ChakraDivider
+    AccordionItem as ChakraAccordionItem
 } from '@chakra-ui/react'
 import { ActiveHrefType } from '..'
 interface PageListProps {
@@ -20,15 +19,9 @@ export const HamburgerButton = styled.button<HamburgerButtonProps>`
     ${tw`
         w-20 h-16 p-6 bg-transparent
         flex items-center justify-center
+        text-white
     `};
-
-    :hover {
-        .MuiButton-label {
-            svg {
-                fill: shade(0.2, ${({ theme: { colors } }) => colors.white});
-            }
-        }
-    }
+    ${({ activePage }) => activePage !== '/' && tw`text-gray-700`};
 `
 
 export const PageList = styled.li<PageListProps>`
@@ -219,11 +212,6 @@ export const AnyItems = styled.div`
     }
 `
 
-export const Divider = styled(ChakraDivider).attrs({
-    color: 'gray.100',
-    mt: 2
-})``
-
 export const AccordionItem = styled(ChakraAccordionItem).attrs({
     borderBottom: '0',
     borderTopWidth: '1px',
@@ -305,4 +293,15 @@ export const FilterPriceForm = styled.form`
             `};
         }
     }
+`
+
+export const SendSolicitation = styled.a`
+    ${tw`
+        w-full max-w-xs rounded-md font-roboto
+        flex flex-col items-center justify-center
+        h-14 mt-4 text-md mx-auto
+        font-bold uppercase transition-colors
+        text-orange-500 border-2 border-orange-100
+        hover:(bg-orange-500 text-white) focus:(border-0 ring-2 ring-orange-500)
+    `};
 `

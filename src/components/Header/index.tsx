@@ -8,7 +8,12 @@ import useBreakPoint from '../../hooks/useBreakPoint'
 import ItemsDesktop from './ItemsDesktop'
 import ItemsMobal from './ItemsMobal'
 
-export type ActiveHrefType = '/' | '/bolos' | '/contato' | '/encomendar'
+export type ActiveHrefType =
+    | '/'
+    | '/bolos'
+    | '/contato'
+    | '/encomendar'
+    | '/faq'
 
 interface INavigationLinks {
     href: ActiveHrefType
@@ -26,7 +31,8 @@ const Header: React.FC<HeaderProps> = ({ activePage }) => {
             { href: '/', label: 'Home' },
             { href: '/bolos', label: 'Bolos' },
             { href: '/contato', label: 'Contato' },
-            { href: '/encomendar', label: 'Encomendar' }
+            { href: '/encomendar', label: 'Encomendar' },
+            { href: '/faq', label: 'FAQ' }
         ]
         return { navigationLinks }
     }, [])
@@ -52,7 +58,7 @@ const Header: React.FC<HeaderProps> = ({ activePage }) => {
         <Container activePage={activePage}>
             <Nav>
                 <Link href="/">
-                    <Logo>
+                    <Logo activePage={activePage}>
                         <Image
                             src="/images/icon.png"
                             width={618}

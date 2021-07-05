@@ -19,11 +19,11 @@ import {
     ItemInfo,
     CartRemoveItem,
     AnyItems,
-    Divider,
     AccordionItem,
     FilterItem,
     FilterCheckbox,
-    FilterPriceForm
+    FilterPriceForm,
+    SendSolicitation
 } from './styles'
 import {
     Drawer,
@@ -50,7 +50,12 @@ import Image from 'next/image'
 import { useCake } from '../../../hooks/useCake'
 import useBreakPoint from '../../../hooks/useBreakPoint'
 
-export type ActiveHrefType = '/' | '/bolos' | '/contato' | '/encomendar'
+export type ActiveHrefType =
+    | '/'
+    | '/bolos'
+    | '/contato'
+    | '/encomendar'
+    | '/faq'
 
 interface INavigationLinks {
     href: ActiveHrefType
@@ -76,11 +81,13 @@ const ItemsMobal: React.FC<ItemsMobalProps> = ({
         onOpen: onModalOpen,
         onClose: onModalClose
     } = useDisclosure()
+    const { sm } = useBreakPoint()
     const cartRef = useRef<HTMLButtonElement>(null)
     const linkRef = useRef<HTMLAnchorElement>(null)
     const exitRef = useRef<HTMLButtonElement>(null)
     const exitModalRef = useRef<HTMLButtonElement>(null)
     const buttonGoRef = useRef<HTMLButtonElement>(null)
+    const sendSolicitationRef = useRef<HTMLAnchorElement>(null)
     const {
         itemsLength,
         cartItems,
@@ -95,7 +102,8 @@ const ItemsMobal: React.FC<ItemsMobalProps> = ({
         { ref: cartRef },
         { ref: linkRef },
         { ref: exitRef },
-        { ref: buttonGoRef }
+        { ref: buttonGoRef },
+        { ref: sendSolicitationRef }
     ])
 
     const { '3md': md3 } = useBreakPoint()
@@ -112,19 +120,26 @@ const ItemsMobal: React.FC<ItemsMobalProps> = ({
                 onClick={onOpenDrawer}
             >
                 <span>
-                    <Hamburger activePage={activePage} />
+                    <Hamburger />
                 </span>
             </HamburgerButton>
-            <Drawer isOpen={isDrawerOpen} onClose={onCloseDrawer}>
+            <Drawer
+                size={sm ? 'md' : 'full'}
+                isOpen={isDrawerOpen}
+                onClose={onCloseDrawer}
+            >
                 <DrawerOverlay />
                 <DrawerContent bg="white">
-                    <DrawerHeader align="end">
+                    <DrawerHeader
+                        borderBottom="1px"
+                        borderColor="gray.100"
+                        align="end"
+                    >
                         <ExitButton ref={exitRef} onClick={onCloseDrawer}>
                             <IoMdExit size={38} />
                         </ExitButton>
                     </DrawerHeader>
-                    <Divider />
-                    <DrawerBody px="0" mt="2">
+                    <DrawerBody px="0">
                         <List>
                             {navigationLinks.map(({ href, label }, index) => (
                                 <PageList
@@ -138,7 +153,6 @@ const ItemsMobal: React.FC<ItemsMobalProps> = ({
                             ))}
                             {activePage === '/bolos' && !md3 && (
                                 <>
-                                    <Divider />
                                     <ListItem>
                                         <Accordion px="4" allowToggle>
                                             <AccordionItem>
@@ -274,24 +288,33 @@ const ItemsMobal: React.FC<ItemsMobalProps> = ({
                                             </AccordionItem>
                                         </Accordion>
                                     </ListItem>
-                                    <Divider />
                                 </>
                             )}
 
                             <ListItem>
-                                <CartMobal
-                                    color="primary"
-                                    type="button"
-                                    name="Meu Carrinho"
-                                    onClick={onModalOpen}
-                                    ref={cartRef}
-                                >
-                                    <span>
-                                        <AiOutlineShoppingCart size={40} />
-                                        <p>{itemsLength}</p>
-                                    </span>
-                                    Meu carrinho
-                                </CartMobal>
+                                {activePage === '/faq' ? (
+                                    <Link href="/faq/requests/new">
+                                        <SendSolicitation
+                                            ref={sendSolicitationRef}
+                                        >
+                                            Enviar Solicitação
+                                        </SendSolicitation>
+                                    </Link>
+                                ) : (
+                                    <CartMobal
+                                        color="primary"
+                                        type="button"
+                                        name="Meu Carrinho"
+                                        onClick={onModalOpen}
+                                        ref={cartRef}
+                                    >
+                                        <span>
+                                            <AiOutlineShoppingCart size={40} />
+                                            <p>{itemsLength}</p>
+                                        </span>
+                                        Meu carrinho
+                                    </CartMobal>
+                                )}
                             </ListItem>
                         </List>
                     </DrawerBody>
