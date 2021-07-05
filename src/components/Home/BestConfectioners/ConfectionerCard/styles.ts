@@ -1,5 +1,4 @@
 import styled from 'styled-components'
-import { shade } from 'polished'
 import tw, { theme } from 'twin.macro'
 
 export const Container = styled.div`
@@ -7,15 +6,20 @@ export const Container = styled.div`
         flex justify-end
         items-center flex-col relative
         bg-white shadow-md
-        md:h-full
-        hover:shadow-lg
+        md:h-full transition-colors
+        hover:shadow-lg focus-within:(border-2 border-orange-100)
     `};
-    transition: 0.25s;
     height: 16.125rem;
     border-top-left-radius: 1.063rem;
     border-top-right-radius: 1.063rem;
     border-bottom-left-radius: 2.188rem;
     border-bottom-right-radius: 2.188rem;
+
+    :focus-within {
+        img {
+            ${tw`ring-2 ring-orange-100`};
+        }
+    }
 
     @media ${({ theme: { bp } }) => bp.md} {
         :nth-of-type(1),
@@ -147,6 +151,7 @@ export const Wave = styled.div`
 export const Avatar = styled.div`
     ${tw`
         absolute -top-20 overflow-hidden
+
     `};
     z-index: 1;
     img {
@@ -154,6 +159,7 @@ export const Avatar = styled.div`
         width: 11.625rem;
         height: 11.625rem;
         border-radius: 50%;
+        ${tw`transition-colors`};
     }
 `
 
@@ -163,15 +169,11 @@ export const SeeProfile = styled.button`
         flex items-center justify-center
         text-blue-700 bg-white
         overflow-hidden
-        outline-none
-        focus:ring-2
-        md-3:h-24
+        outline-none transition-colors
+        focus:(ring-2 ring-orange-100 text-orange-100)
+        md-3:h-24 hover:(border-2 border-orange-100 bg-orange-500 text-white)
     `};
 
     border-bottom-left-radius: 2.188rem;
     border-bottom-right-radius: 2.188rem;
-
-    :hover {
-        background-color: ${shade(0.05, theme`colors.white`)};
-    }
 `

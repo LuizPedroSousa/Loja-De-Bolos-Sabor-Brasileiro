@@ -1,14 +1,23 @@
+import { useDisclosure } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
-import Link from 'next/link'
-import React, { useEffect, useRef } from 'react'
-import useBreakPoint from '../../../../hooks/useBreakPoint'
+import { useRouter } from 'next/router'
+import React, { useEffect, useRef, useState } from 'react'
 import useCart from '../../../../hooks/useCart'
 import useCustomRipple from '../../../../hooks/useCustomRipple'
+import CakeModal from '../../../Modals/CakeModal'
 import { Container, CakeInfo, Header, Footer } from './styles'
 
 type Photo = {
     url: string
+}
+
+type Star = {
+    toMap: {
+        key: string
+        hasStar: boolean
+    }[]
+    length: number
 }
 
 type CakeType = {
@@ -17,6 +26,8 @@ type CakeType = {
     name: string
     description: string
     photos: Photo[]
+    slug: string
+    stars: Star
 }
 
 interface CakeCardProps {
@@ -27,40 +38,19 @@ const Cake: React.FC<CakeCardProps> = ({ cake }) => {
     const descriptionRef = useRef<HTMLParagraphElement>(null)
     const addToCardRef = useRef<HTMLButtonElement>(null)
     useCustomRipple([{ ref: addToCardRef }])
-
-    const { addToCart, hasCakeInCart } = useCart()
-
-    const { xs, sm, md } = useBreakPoint()
+    const router = useRouter()
+    const { isOpen, onClose, onOpen } = useDisclosure()
+    const { addToCart, hasCakeInCart, cartItems } = useCart()
+    const [hasInCart, setHasInCart] = useState(false)
 
     useEffect(() => {
-        setMaxDescriptionLength()
-    }, [xs, sm])
-
-    function setMaxDescriptionLength() {
-        const words = descriptionRef.current?.textContent
-        let maxWords = 30
-        if (xs && !sm) {
-            maxWords = 60
-        } else if (sm && !md) {
-            maxWords = 90
-        } else if (md) {
-            maxWords = 100
-        }
-
-        if (words.length > maxWords) {
-            return innerText()
-        }
-
-        function innerText() {
-            descriptionRef.current.innerHTML = ''
-            for (let i = 0; i <= maxWords; i++) {
-                descriptionRef.current.innerHTML += words[i]
-            }
-            return (descriptionRef.current.innerHTML += '...')
-        }
-    }
+        setHasInCart(hasCakeInCart(cake))
+    }, [cartItems])
 
     function handleAddToCart() {
+        if (hasInCart) {
+            return router.push('/meu-carrinho')
+        }
         addToCart({ cake, amount: 1 })
     }
 
@@ -75,10 +65,12 @@ const Cake: React.FC<CakeCardProps> = ({ cake }) => {
             <Image
                 objectFit="cover"
                 width={700}
+                onClick={onOpen}
                 height={800}
                 src={cake.photos[0].url}
                 alt={cake.name}
             />
+            <CakeModal cake={cake} isOpen={isOpen} onClose={onClose} />
             <CakeInfo>
                 <Header>
                     <p>{cake.name}</p>
@@ -86,25 +78,19 @@ const Cake: React.FC<CakeCardProps> = ({ cake }) => {
                 </Header>
                 <Footer>
                     <p ref={descriptionRef}>{cake.description}</p>
-                    {hasCakeInCart(cake) ? (
-                        <Link href="/meu-carrinho">
-                            <a>Ver Carrinho</a>
-                        </Link>
-                    ) : (
-                        <motion.button
-                            whileHover={{
-                                scale: [1, 0.9],
-                                transition: { duration: 0.25 },
-                                x: 10
-                            }}
-                            onClick={handleAddToCart}
-                            type="button"
-                            name="Adicionar"
-                            ref={addToCardRef}
-                        >
-                            Adicionar ao carrinho
-                        </motion.button>
-                    )}
+                    <motion.button
+                        whileHover={{
+                            scale: [1, 0.9],
+                            transition: { duration: 0.25 },
+                            x: 10
+                        }}
+                        onClick={handleAddToCart}
+                        type="button"
+                        name="Adicionar"
+                        ref={addToCardRef}
+                    >
+                        {hasInCart ? 'Ver carrinho' : 'Adicionar ao carrinho'}
+                    </motion.button>
                 </Footer>
             </CakeInfo>
         </Container>

@@ -1,11 +1,4 @@
-import React, {
-    FormEvent,
-    Fragment,
-    useEffect,
-    useMemo,
-    useRef,
-    useState
-} from 'react'
+import React, { FormEvent, Fragment, useMemo, useRef, useState } from 'react'
 import Image from 'next/image'
 
 import { FaMapMarkerAlt, FaWhatsapp } from 'react-icons/fa'
@@ -38,10 +31,8 @@ interface ItemsProps {
     className: string
 }
 
-let carouselTimeout: NodeJS.Timeout
-
 const Introduction: React.FC = () => {
-    const { xs } = useBreakPoint()
+    const { xsDown, xs } = useBreakPoint()
     const nextRef = useRef<HTMLButtonElement>(null)
     const previousRef = useRef<HTMLButtonElement>(null)
     const goRef = useRef<HTMLButtonElement>(null)
@@ -49,7 +40,6 @@ const Introduction: React.FC = () => {
     const whatsappRef = useRef<HTMLButtonElement>(null)
 
     const [viewOnNext, setViewOnNext] = useState(false)
-    const [viewOnPrevious, setViewOnPrevious] = useState(false)
 
     useCustomRipple([
         { ref: previousRef },
@@ -59,8 +49,6 @@ const Introduction: React.FC = () => {
         { ref: whatsappRef, color: lighten(0.1, theme`colors.green.400`) }
     ])
     const [currentCarouselIndex, setCurrentCarouselIndex] = useState(0)
-
-    const [hasCarouselLoop, setHasCarouselLoop] = useState(true)
 
     const { items } = useMemo(() => {
         const items: ItemsProps[] = [
@@ -104,48 +92,19 @@ const Introduction: React.FC = () => {
         return { hasPrevious, hasNext, currentItem }
     }, [currentCarouselIndex])
 
-    useEffect(() => {
-        setCurrentCarouselIndex(currentCarouselIndex + 1)
-    }, [])
-
-    useEffect(() => {
-        if (hasCarouselLoop) {
-            carouselTimeout = setTimeout(() => {
-                if (!hasNext) {
-                    return setCurrentCarouselIndex(0)
-                }
-                if (viewOnPrevious) {
-                    setViewOnNext(true)
-                    setViewOnPrevious(false)
-                    clearTimeout(carouselTimeout)
-                } else {
-                    setViewOnNext(false)
-                    setViewOnPrevious(true)
-                }
-                setCurrentCarouselIndex(currentCarouselIndex + 1)
-            }, 5000)
-        }
-    }, [currentCarouselIndex])
-
     const nextSlide = () => {
         if (!hasNext) {
             return
         }
         setViewOnNext(true)
-        setHasCarouselLoop(false)
-        clearTimeout(carouselTimeout)
 
-        setViewOnPrevious(false)
         setCurrentCarouselIndex(currentCarouselIndex + 1)
     }
     const previousSlide = () => {
         if (!hasPrevious) {
             return
         }
-        setHasCarouselLoop(false)
         setViewOnNext(false)
-        clearTimeout(carouselTimeout)
-        setViewOnPrevious(true)
         setCurrentCarouselIndex(currentCarouselIndex - 1)
     }
 
@@ -197,7 +156,16 @@ const Introduction: React.FC = () => {
                                             animate={{
                                                 scale: [0.5, 1],
                                                 opacity: [0, 1],
-                                                x: [!viewOnNext ? -120 : 120, 0]
+                                                x: [
+                                                    !viewOnNext
+                                                        ? xsDown
+                                                            ? -60
+                                                            : -120
+                                                        : xsDown
+                                                        ? 60
+                                                        : 120,
+                                                    0
+                                                ]
                                             }}
                                         >
                                             <Image

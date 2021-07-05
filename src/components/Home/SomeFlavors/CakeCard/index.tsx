@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 
 import { useRouter } from 'next/router'
@@ -7,9 +7,19 @@ import { Container, CakeInfo, Header, Footer, AddToCard } from './styles'
 import { FaMapMarkerAlt } from 'react-icons/fa'
 import useCustomRipple from '../../../../hooks/useCustomRipple'
 import useCart from '../../../../hooks/useCart'
+import CakeModal from '../../../Modals/CakeModal'
+import { useDisclosure } from '@chakra-ui/react'
 
 type Photo = {
     url: string
+}
+
+type Star = {
+    toMap: {
+        key: string
+        hasStar: boolean
+    }[]
+    length: number
 }
 
 type CakeType = {
@@ -18,6 +28,8 @@ type CakeType = {
     name: string
     description: string
     photos: Photo[]
+    slug: string
+    stars: Star
 }
 
 interface CakeCardProps {
@@ -27,26 +39,36 @@ interface CakeCardProps {
 const CakeCard: React.FC<CakeCardProps> = ({ cake }) => {
     const addToCardRef = useRef<HTMLButtonElement>(null)
     useCustomRipple([{ ref: addToCardRef }])
-    const { addToCart, hasCakeInCart } = useCart()
+    const { addToCart, hasCakeInCart, cartItems } = useCart()
+
+    const { isOpen, onClose, onOpen } = useDisclosure()
+    const [hasInCart, setHasInCart] = useState(false)
 
     const router = useRouter()
 
+    useEffect(() => {
+        setHasInCart(hasCakeInCart(cake))
+    }, [cartItems])
     function handleAddToCart() {
-        if (!hasCakeInCart(cake)) {
+        if (!hasInCart) {
             return addToCart({ cake, amount: 1 })
         }
         router.push('/meu-carrinho')
     }
+
     return (
         <Container
             whileHover={{
-                scale: [1, 0.98, 1.05],
+                scale: [1, 0.99, 1.03],
                 zIndex: 10
             }}
         >
+            <CakeModal cake={cake} isOpen={isOpen} onClose={onClose} />
             <Image
-                width={700}
-                height={800}
+                onClick={onOpen}
+                objectFit="cover"
+                width={800}
+                height={700}
                 src={cake.photos[0].url}
                 alt={cake.name}
             />
@@ -63,7 +85,7 @@ const CakeCard: React.FC<CakeCardProps> = ({ cake }) => {
                         Av. Parada pinto
                     </a>
                     <AddToCard
-                        hasCakeInCart={hasCakeInCart(cake)}
+                        hasCakeInCart={hasInCart}
                         price={cake.price}
                         ref={addToCardRef}
                         whileHover={{
@@ -75,9 +97,7 @@ const CakeCard: React.FC<CakeCardProps> = ({ cake }) => {
                         name="Adicionar"
                         onClick={handleAddToCart}
                     >
-                        {hasCakeInCart(cake)
-                            ? 'Ver Carrinho'
-                            : 'Adicionar ao carrinho'}
+                        {hasInCart ? 'Ver Carrinho' : 'Adicionar ao carrinho'}
                     </AddToCard>
                 </Footer>
             </CakeInfo>
