@@ -1,5 +1,5 @@
-import Link from 'next/link'
 import React, { useRef } from 'react'
+import Link from 'next/link'
 import useCustomRipple from '../../../hooks/useCustomRipple'
 
 import { CategoryItemContainer } from './styles'
