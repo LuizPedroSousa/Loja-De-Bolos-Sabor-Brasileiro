@@ -15,7 +15,7 @@ import { motion } from 'framer-motion'
 import { lighten } from 'polished'
 import { FaMapMarkerAlt, FaWhatsapp, FaWhatsappSquare } from 'react-icons/fa'
 import { BiPhoneCall, BiTime } from 'react-icons/bi'
-import { AiFillFacebook, AiFillInstagram, AiOutlineMail } from 'react-icons/ai'
+import { AiFillInstagram, AiOutlineMail } from 'react-icons/ai'
 import MobalLinks from './MobalLinks'
 import DesktopLinks from './DesktopLinks'
 import useBreakPoint from '../../hooks/useBreakPoint'
@@ -60,12 +60,12 @@ const Footer: React.FC = () => {
             },
             {
                 href: '#',
-                label: '(11) 967890564',
+                label: '(11) 961947550',
                 icon: <FaWhatsapp />
             },
             {
                 href: '#',
-                label: '(11) 967890564',
+                label: '(11) 22356145',
                 icon: <BiPhoneCall />
             },
             {
@@ -76,9 +76,14 @@ const Footer: React.FC = () => {
         ]
 
         const socialContact: SocialContact[] = [
-            { href: '#', icon: <AiFillFacebook size={20} /> },
-            { href: '#', icon: <AiFillInstagram size={20} /> },
-            { href: '#', icon: <FaWhatsappSquare size={20} /> }
+            {
+                href: 'https://www.instagram.com/bolossaborbrasileiro/',
+                icon: <AiFillInstagram size={20} />
+            },
+            {
+                href: 'https://wa.me/5511961947550/?text=Ol%C3%A1%20gost%C3%A1ria%20de%20fazer%20um%20pedido%21',
+                icon: <FaWhatsappSquare size={20} />
+            }
         ]
         return { socialContact, contactList }
     }, [])

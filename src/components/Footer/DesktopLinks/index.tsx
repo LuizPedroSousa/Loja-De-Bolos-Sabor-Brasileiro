@@ -27,13 +27,13 @@ const DesktopLinks: React.FC = () => {
                     <span>
                         <FaWhatsapp />
                     </span>
-                    (11) 967890564
+                    (11) 961947550
                 </a>
                 <a href="#">
                     <span>
                         <BiPhoneCall />
                     </span>
-                    (11) 967890564
+                    (11) 22356145
                 </a>
                 <a href="#">
                     <span>

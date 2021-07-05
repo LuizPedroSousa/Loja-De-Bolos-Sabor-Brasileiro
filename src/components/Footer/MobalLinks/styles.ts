@@ -22,6 +22,7 @@ export const Details = styled.div`
 `
 export const AccordionItem = styled(ChakraAccordionItem).attrs({
     border: '1',
-    borderBottom: 0,
+    borderTop: 0,
+    borderColor: 'orange.500',
     p: '0'
 })``
