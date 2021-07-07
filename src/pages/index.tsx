@@ -1,5 +1,4 @@
 import React from 'react'
-import Head from 'next/head'
 
 import { Wrapper, Container, BackgroundSvg } from '../styles/pages/home'
 import Header from '../components/Header'
@@ -16,13 +15,17 @@ import { QueryClient } from 'react-query'
 import { getCakes } from '../hooks/useCake'
 import { getConfectioners } from '../hooks/useConfectioners'
 import { dehydrate } from 'react-query/hydration'
+import Seo from '../components/Seo'
 
 export default function Home() {
     return (
         <Wrapper>
-            <Head>
-                <title>Home | Sabor Brasileiro</title>
-            </Head>
+            <Seo
+                title="Home"
+                description="Sabor Brasileiro | A melhor loja de bolos com os melhores sabores."
+                thumb={`${process.env.NEXT_PUBLIC_URL}/images/thumbs/home.png`}
+            />
+
             <main>
                 <BackgroundSvg />
                 <Header activePage="/" />
