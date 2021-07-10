@@ -53,6 +53,7 @@ import useBreakPoint from '../../../hooks/useBreakPoint'
 export type ActiveHrefType =
     | '/'
     | '/bolos'
+    | '/bolos/bolo'
     | '/contato'
     | '/encomendar'
     | '/faq'

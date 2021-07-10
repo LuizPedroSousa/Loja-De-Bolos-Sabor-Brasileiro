@@ -11,6 +11,7 @@ import ItemsMobal from './ItemsMobal'
 export type ActiveHrefType =
     | '/'
     | '/bolos'
+    | '/bolos/bolo'
     | '/contato'
     | '/encomendar'
     | '/faq'

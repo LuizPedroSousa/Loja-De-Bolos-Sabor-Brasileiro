@@ -48,10 +48,10 @@ import { theme } from 'twin.macro'
 export type ActiveHrefType =
     | '/'
     | '/bolos'
+    | '/bolos/bolo'
     | '/contato'
     | '/encomendar'
     | '/faq'
-
 interface INavigationLinks {
     href: ActiveHrefType
     label: string

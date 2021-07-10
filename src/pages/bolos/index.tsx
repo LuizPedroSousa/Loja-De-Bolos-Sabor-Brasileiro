@@ -1,19 +1,19 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { GetServerSideProps } from 'next'
 import Head from 'next/head'
-import Header from '../components/Header'
-import DefaultLayout from '../components/Layout/DefaultLayout'
+import Header from '../../components/Header'
+import DefaultLayout from '../../components/Layout/DefaultLayout'
 import {
     getCakes,
     getCakeCategories,
     getCakesQueryWithFilter,
     useCake
-} from '../hooks/useCake'
+} from '../../hooks/useCake'
 import { QueryClient } from 'react-query'
 import { dehydrate } from 'react-query/hydration'
-import useBreakPoint from '../hooks/useBreakPoint'
-import Footer from '../components/Footer'
-import MobalCategories from '../components/MobalCategories'
+import useBreakPoint from '../../hooks/useBreakPoint'
+import Footer from '../../components/Footer'
+import MobalCategories from '../../components/MobalCategories'
 import { BsFillGridFill, BsSearch } from 'react-icons/bs'
 import { MdGridOff } from 'react-icons/md'
 import { AiOutlineUnorderedList } from 'react-icons/ai'
@@ -33,16 +33,16 @@ import {
     PriceFilters,
     PriceItemFilters,
     InputPriceFilter
-} from '../styles/pages/bolos'
-import CakeRow from '../components/Bolos/Cakes/CakeRow'
-import CakeColumn from '../components/Bolos/Cakes/CakeColumn'
-import CakeHideInfo from '../components/Bolos/Cakes/CakeHideInfo'
+} from '../../styles/pages/bolos/index'
+import CakeRow from '../../components/Bolos/Cakes/CakeRow'
+import CakeColumn from '../../components/Bolos/Cakes/CakeColumn'
+import CakeHideInfo from '../../components/Bolos/Cakes/CakeHideInfo'
 import { useRouter } from 'next/router'
 import { Skeleton } from '@chakra-ui/react'
 import { useFormik } from 'formik'
-import useCustomRipple from '../hooks/useCustomRipple'
+import useCustomRipple from '../../hooks/useCustomRipple'
 import Lottie from 'react-lottie'
-import CakeAnim from '../../public/lottie/cake-not-found-anim.json'
+import CakeAnim from '../../../public/lottie/cake-not-found-anim.json'
 type ViewLayout = 'column' | 'column-hide-info' | 'row'
 
 interface BolosProps {

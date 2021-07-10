@@ -5,6 +5,7 @@ import CakeContext from '../contexts/cake/context'
 import api from '../services/api'
 import formatCakes from '../utils/formatCakes'
 type Photo = {
+    id: string
     url: string
 }
 
@@ -35,6 +36,12 @@ async function getCakes(opts?: AxiosRequestConfig) {
     const { data } = await api('/cakes', opts)
 
     return data.cakes as Cake[]
+}
+
+async function getCake({ slug }: { slug: string }) {
+    const { data } = await api('/cakes/show/' + slug)
+
+    return data.cake as Cake
 }
 
 async function getCakeCategories(opts?: AxiosRequestConfig) {
@@ -78,4 +85,10 @@ function useCake() {
     return { ...cakeContext }
 }
 
-export { useCake, getCakes, getCakeCategories, getCakesQueryWithFilter }
+export {
+    useCake,
+    getCakes,
+    getCake,
+    getCakeCategories,
+    getCakesQueryWithFilter
+}
