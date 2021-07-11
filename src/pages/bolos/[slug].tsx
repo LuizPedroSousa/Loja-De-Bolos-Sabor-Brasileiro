@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useState } from 'react'
+import React from 'react'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import { QueryClient } from 'react-query'
 import { dehydrate } from 'react-query/hydration'
@@ -8,26 +8,15 @@ import DefaultLayout from 'components/Layout/DefaultLayout'
 import Seo from 'components/Seo'
 import { getCakes, getCake, getCakeQuery } from 'hooks/useCake'
 import useBreakPoint from 'hooks/useBreakPoint'
-import Zoom from 'react-img-zoom'
-import CheckboxDot from 'components/CheckboxDot'
-import { FaSearchPlus } from 'react-icons/fa'
 
-import { AiFillStar, AiOutlineClose } from 'react-icons/ai'
+import { AiFillStar } from 'react-icons/ai'
 
-import {
-    Divider,
-    Drawer,
-    DrawerBody,
-    DrawerHeader,
-    DrawerOverlay,
-    useDisclosure
-} from '@chakra-ui/react'
+import { Divider } from '@chakra-ui/react'
 
 import * as S from 'styles/pages/bolos/bolo'
-import { useElementScroll } from 'framer-motion'
-import Image from 'next/image'
 import { theme } from 'twin.macro'
 import { lighten } from 'polished'
+import MobalSlider from 'components/Bolos/Bolo/MobalSlider'
 
 type Photo = {
     id: string
@@ -43,73 +32,14 @@ type CakeFromApi = {
     stars: number
 }
 
-type Item = Photo & {
-    scroll: number
-}
-
 interface BoloProps {
     slug: string
 }
 
 export default function Bolo({ slug }: BoloProps) {
-    const { isOpen, onClose, onOpen } = useDisclosure()
-    const [currentScroll, setCurrentScroll] = useState(0)
-    const sliderRef = useRef<HTMLDivElement>(null)
-    const [currentSlider, setCurrentSlider] = useState(0)
-    const { scrollX } = useElementScroll(sliderRef)
     const { sm, xsDown } = useBreakPoint()
 
     const { cake } = getCakeQuery({ slug })
-
-    scrollX.onChange(v => {
-        setCurrentScroll(v)
-    })
-
-    const { items } = useMemo(() => {
-        let items: Item[] | Photo[] = cake.photos
-        if (typeof window !== 'undefined') {
-            items = items.map((photo, i) => {
-                const maxScroll = window.screen.width * (cake.photos.length - 1)
-                let scroll = window.screen.width * i
-                if (i === 0) {
-                    scroll = 0
-                }
-                if (i === cake.photos.length - 1) {
-                    scroll = maxScroll
-                }
-                return { ...photo, scroll }
-            })
-        }
-        return { items }
-    }, [typeof window !== 'undefined'])
-
-    function calcItemScroll(index: number, oldIndex: number) {
-        const maxScroll = window.screen.width * (cake.photos.length - 1)
-        const scrollTo = { left: window?.screen.width * (oldIndex - index) }
-
-        if (index === cake.photos.length - 1) {
-            scrollTo.left = -maxScroll
-        }
-        if (index === 0) {
-            scrollTo.left = maxScroll
-        }
-
-        scrollTo.left = -scrollTo.left
-        return { scrollTo, scroll }
-    }
-
-    function handleCheckDot(i: number) {
-        const oldIndex = currentSlider
-
-        if (oldIndex === i) {
-            return
-        }
-        const { scrollTo } = calcItemScroll(i, oldIndex)
-
-        setCurrentSlider(i)
-
-        sliderRef.current.scrollBy(scrollTo)
-    }
 
     return (
         <DefaultLayout>
@@ -121,85 +51,8 @@ export default function Bolo({ slug }: BoloProps) {
             <main>
                 <Header activePage="/bolos/bolo" />
                 <S.Container>
-                    <Drawer
-                        isOpen={isOpen}
-                        placement="bottom"
-                        onClose={onClose}
-                        isFullHeight
-                    >
-                        <DrawerOverlay />
-                        <S.DrawerContent>
-                            <DrawerHeader>
-                                <S.ClosePhoto
-                                    name="Fechar imagem do bolo"
-                                    type="button"
-                                    onClick={onClose}
-                                >
-                                    <AiOutlineClose />
-                                </S.ClosePhoto>
-                            </DrawerHeader>
-
-                            <DrawerBody>
-                                <Zoom
-                                    width={600}
-                                    height={600}
-                                    objectFit="cover"
-                                    zoomScale={3}
-                                    img={cake.photos[currentSlider].url}
-                                />
-                            </DrawerBody>
-                        </S.DrawerContent>
-                    </Drawer>
                     <S.CakePhotosSection>
-                        {!sm && xsDown && (
-                            <>
-                                <S.ExpandPhoto onClick={onOpen}>
-                                    <FaSearchPlus />
-                                </S.ExpandPhoto>
-                                <S.MobalSlider ref={sliderRef}>
-                                    {cake.photos.map(photo => {
-                                        return (
-                                            <S.SlideItem
-                                                key={photo.id}
-                                                initial={{ opacity: 0 }}
-                                                animate={{
-                                                    opacity: [null, 1]
-                                                }}
-                                                transition={{ duration: 1 }}
-                                            >
-                                                <Image
-                                                    width={600}
-                                                    objectFit="cover"
-                                                    height={600}
-                                                    src={photo.url}
-                                                    alt={cake.name}
-                                                />
-                                            </S.SlideItem>
-                                        )
-                                    })}
-                                </S.MobalSlider>
-                                <S.DotSlider>
-                                    {items?.map(
-                                        ({ id, scroll }: Item, i: number) => {
-                                            return (
-                                                <CheckboxDot
-                                                    onCheckedChange={() =>
-                                                        setCurrentSlider(i)
-                                                    }
-                                                    onChange={() =>
-                                                        handleCheckDot(i)
-                                                    }
-                                                    isChecked={
-                                                        scroll === currentScroll
-                                                    }
-                                                    key={id + i + '_dot'}
-                                                />
-                                            )
-                                        }
-                                    )}
-                                </S.DotSlider>
-                            </>
-                        )}
+                        {!sm && xsDown && <MobalSlider cake={cake} />}
                     </S.CakePhotosSection>
                     <S.CakeInfoSection>
                         <S.CakeInfoTitle>
