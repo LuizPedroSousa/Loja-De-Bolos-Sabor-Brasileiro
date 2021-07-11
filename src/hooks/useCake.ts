@@ -1,9 +1,9 @@
 import { useQuery } from 'react-query'
 import { AxiosRequestConfig } from 'axios'
 import { useContext, useMemo } from 'react'
-import CakeContext from '../contexts/cake/context'
-import api from '../services/api'
-import formatCakes from '../utils/formatCakes'
+import CakeContext from 'contexts/cake/context'
+import api from 'services/api'
+import { formatCakes, formatCake } from 'utils/formatCakes'
 type Photo = {
     id: string
     url: string
@@ -49,6 +49,22 @@ async function getCakeCategories(opts?: AxiosRequestConfig) {
     return data.categories as Category[]
 }
 
+function getCakeQuery({ slug }: { slug: string }) {
+    const {
+        data: cakeData,
+        isLoading,
+        isFetching,
+        isError
+    } = useQuery(['cake', slug], () => getCake({ slug: slug as string }))
+
+    const { cake } = useMemo(() => {
+        const cake = formatCake(cakeData)
+        return { cake }
+    }, [cakeData])
+
+    return { cake, isLoading, isFetching, isError }
+}
+
 function getCakesQueryWithFilter({
     search,
     category,
@@ -90,5 +106,6 @@ export {
     getCakes,
     getCake,
     getCakeCategories,
-    getCakesQueryWithFilter
+    getCakesQueryWithFilter,
+    getCakeQuery
 }

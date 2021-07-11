@@ -1,13 +1,14 @@
 import React, { useMemo, useState } from 'react'
 import { useQuery } from 'react-query'
-import { getCakeCategories, getCakes } from '../../hooks/useCake'
-import formatCakes from '../../utils/formatCakes'
+import { getCakeCategories, getCakes } from 'hooks/useCake'
+import { formatCakes } from 'utils/formatCakes'
 
 import CakeContext from './context'
 
 const { Provider } = CakeContext
 
 type Photos = {
+    id: string
     url: string
 }
 
