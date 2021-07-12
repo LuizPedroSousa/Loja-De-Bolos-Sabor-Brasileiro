@@ -17,11 +17,19 @@ import * as S from 'styles/pages/bolos/bolo'
 import { theme } from 'twin.macro'
 import { lighten } from 'polished'
 import MobalSlider from 'components/Bolos/Bolo/MobalSlider'
+import DesktopImagesPreview from 'components/Bolos/Bolo/DesktopImagesPreview'
+import { motion } from 'framer-motion'
 
 type Photo = {
     id: string
     url: string
 }
+
+type Ingredient = {
+    id: string
+    name: string
+}
+
 type CakeFromApi = {
     id: string
     price: string
@@ -29,6 +37,7 @@ type CakeFromApi = {
     slug: string
     description: string
     photos: Photo[]
+    ingredients: Ingredient[]
     stars: number
 }
 
@@ -53,6 +62,7 @@ export default function Bolo({ slug }: BoloProps) {
                 <S.Container>
                     <S.CakePhotosSection>
                         {!sm && xsDown && <MobalSlider cake={cake} />}
+                        {sm && <DesktopImagesPreview cake={cake} />}
                     </S.CakePhotosSection>
                     <S.CakeInfoSection>
                         <S.CakeInfoTitle>
@@ -84,8 +94,10 @@ export default function Bolo({ slug }: BoloProps) {
                                 </p>
                             </S.CakeInfoPrice>
                         </S.CakeInfoTitle>
+                        <S.CakeInfoIngredients>
+
+                        </S.CakeInfoIngredients>
                     </S.CakeInfoSection>
-                    <Divider my="4" w="94%" mx="auto" />
                 </S.Container>
                 <Footer />
             </main>

@@ -11,9 +11,15 @@ type Star = {
     length: number
 }
 
+type Ingredient = {
+    id: string
+    name: string
+}
+
 type Cake = {
     id: string
     price: string
+    Ingredients: Ingredient[]
     name: string
     description: string
     slug: string

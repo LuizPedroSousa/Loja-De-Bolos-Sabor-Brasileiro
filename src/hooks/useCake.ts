@@ -9,6 +9,11 @@ type Photo = {
     url: string
 }
 
+type Ingredient = {
+    id: string
+    name: string
+}
+
 type Cake = {
     id: string
     price: string
@@ -17,6 +22,7 @@ type Cake = {
     description: string
     photos: Photo[]
     stars: number
+    ingredients: Ingredient[]
 }
 
 type Category = {
