@@ -11,14 +11,13 @@ import useBreakPoint from 'hooks/useBreakPoint'
 
 import { AiFillStar } from 'react-icons/ai'
 
-import { Divider } from '@chakra-ui/react'
-
 import * as S from 'styles/pages/bolos/bolo'
 import { theme } from 'twin.macro'
 import { lighten } from 'polished'
 import MobalSlider from 'components/Bolos/Bolo/MobalSlider'
 import DesktopImagesPreview from 'components/Bolos/Bolo/DesktopImagesPreview'
 import { motion } from 'framer-motion'
+import IngredientIcon from 'components/AnimatedSvgs/IngredientIcon'
 
 type Photo = {
     id: string
@@ -85,9 +84,12 @@ export default function Bolo({ slug }: BoloProps) {
                                 })}{' '}
                                 <span>({cake.stars.length})</span>
                             </S.Stars>
-                            <S.CakeInfoBest>
-                                <strong>Prove o melhor Sabor</strong>
-                            </S.CakeInfoBest>
+                            {cake.stars.length >= 4 && (
+                                <S.CakeInfoBest>
+                                    <strong>Prove o melhor Sabor</strong>
+                                </S.CakeInfoBest>
+                            )}
+
                             <S.CakeInfoPrice>
                                 <p>
                                     por <strong>R$ {cake.price}</strong>
@@ -95,7 +97,19 @@ export default function Bolo({ slug }: BoloProps) {
                             </S.CakeInfoPrice>
                         </S.CakeInfoTitle>
                         <S.CakeInfoIngredients>
-
+                            <strong>Principais Ingredientes</strong>
+                            <ul>
+                                {cake.ingredients.map(ingredient => (
+                                    <motion.li
+                                        key={'ingredient_' + ingredient.id}
+                                    >
+                                        <span>
+                                            <IngredientIcon />
+                                        </span>
+                                        <p>{ingredient.name}</p>
+                                    </motion.li>
+                                ))}
+                            </ul>
                         </S.CakeInfoIngredients>
                     </S.CakeInfoSection>
                 </S.Container>

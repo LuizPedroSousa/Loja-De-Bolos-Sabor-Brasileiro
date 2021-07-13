@@ -58,11 +58,13 @@ export const CakeInfoSection = styled.section`
 export const CakeInfoTitle = styled.div`
     ${tw`
         flex flex-col items-start justify-center
-        w-full mt-2
+        w-full mt-2 border-b-2 border-gray-400
+        pb-2
     `}
+    border-bottom-width: 1px;
     strong {
         ${tw`
-            text-xl text-gray-900
+            text-xl text-gray-800
         `}
     }
 `
@@ -114,7 +116,48 @@ export const CakeInfoPrice = styled.div`
 `
 
 export const CakeInfoIngredients = styled.div`
-    ${tw`w-full`}
+    ${tw`w-full mt-2.5`}
+    strong {
+        ${tw`
+            text-xl text-gray-800
+        `}
+    }
+    ul {
+        ${tw`mt-1.5 w-full`}
+        li {
+            ${tw`flex items-center w-full justify-start`}
+            & + li {
+                ${tw`mt-1.5 sm:mt-2`}
+            }
+            span {
+                ${tw`w-4 h-4 flex items-center justify-center mr-2 text-orange-500 l:mb-1`}
+            }
+            p {
+                ${tw`
+                    text-md capitalize font-description-variant
+                    font-semibold text-gray-700
+                `}
+                max-width: 80%;
+            }
+        }
+    }
 
-
+    @media ${({ theme: { bp } }) => bp.sm} {
+        ul {
+            li {
+                p {
+                    max-width: 70%;
+                }
+            }
+        }
+    }
+    @media ${({ theme: { bp } }) => bp['md-3']} {
+        ul {
+            li {
+                p {
+                    max-width: 60%;
+                }
+            }
+        }
+    }
 `
