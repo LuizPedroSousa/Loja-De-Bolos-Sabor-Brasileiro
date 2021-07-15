@@ -1,6 +1,6 @@
-import { createMuiTheme } from '@material-ui/core'
+import { createTheme } from '@material-ui/core'
 
-const customTheme = createMuiTheme({
+const customTheme = createTheme({
     overrides: {
         MuiPickersToolbarButton: {
             toolbarBtn: {

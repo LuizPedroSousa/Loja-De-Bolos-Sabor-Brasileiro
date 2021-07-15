@@ -1,5 +1,13 @@
 import styled from 'styled-components'
 import tw, { theme } from 'twin.macro'
+import { Spinner as ChakraSpinner } from '@chakra-ui/react'
+import { motion } from 'framer-motion'
+
+interface DeliveryOptionsReceiveAtHomeProps {
+    isError: boolean
+    isSuccess: boolean
+}
+
 export const Container = styled.div`
     ${tw`
         relative mb-10 w-full mt-8
@@ -9,7 +17,9 @@ export const Container = styled.div`
 
     @media ${({ theme: { bp } }) => bp.sm} {
         grid-template-columns: 1.25fr 1fr;
-        grid-template-areas: 'cake-photos cake-info';
+        grid-template-areas:
+            'cake-photos cake-info'
+            'cake-photos delivery-options';
     }
 
     @media ${({ theme: { bp } }) => bp.md} {
@@ -58,7 +68,7 @@ export const CakeInfoSection = styled.section`
 export const CakeInfoTitle = styled.div`
     ${tw`
         flex flex-col items-start justify-center
-        w-full mt-2 border-b-2 border-gray-400
+        w-full mt-2 border-b-2 border-gray-700 border-opacity-25
         pb-2
     `}
     border-bottom-width: 1px;
@@ -137,7 +147,7 @@ export const CakeInfoIngredients = styled.div`
                     text-md capitalize font-description-variant
                     font-semibold text-gray-700
                 `}
-                max-width: 80%;
+                max-width: 90%;
             }
         }
     }
@@ -160,4 +170,168 @@ export const CakeInfoIngredients = styled.div`
             }
         }
     }
+`
+
+export const CakeDeliveryOptionsSection = styled.section`
+    ${tw`
+        w-full mx-auto mt-4 border-t-2 border-gray-700
+        border-opacity-25
+        pt-2
+    `}
+    border-top-width: 1px;
+    max-width: 94%;
+    @media ${({ theme: { bp } }) => bp.sm} {
+        grid-area: delivery-options;
+    }
+    > strong {
+        ${tw`
+            mt-2
+            text-xl text-gray-800 font-sans
+        `}
+    }
+`
+
+export const DeliveryOptionsPickUpAtStore = styled.div`
+    ${tw`
+        w-full flex items-center justify-between
+        mt-2 relative mb-4
+        after:(content absolute -bottom-3 bg-gray-700 bg-opacity-25)
+
+    `}
+    :after {
+        height: 1px;
+        width: 90%;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    div {
+        max-width: 58%;
+        > strong {
+            ${tw`
+                text-gray-800 text-md font-semibold
+                font-sans
+            `};
+        }
+        p {
+            ${tw`
+                text-gray-700 font-medium font-sans
+            `}
+            line-height: 140%;
+            strong {
+                ${tw`font-bold text-gray-800`}
+            }
+        }
+    }
+    a {
+        ${tw`
+            w-max bg-orange-500
+            duration-100 h-10 px-4 py-5 rounded-md
+            text-white font-sans font-medium
+            hover:(border-2 border-orange-100 bg-orange-700)
+            focus:(text-orange-700 border-2 border-orange-500 bg-white)
+            flex items-center justify-center
+            md-3:(text-md)
+        `}
+    }
+`
+
+export const DeliveryOptionsReceiveAtHome = styled.fieldset<DeliveryOptionsReceiveAtHomeProps>`
+    ${tw`
+        w-full flex flex-col
+        items-center justify-start mt-2.5
+    `};
+    legend {
+        ${tw`
+            text-gray-800 text-md font-semibold
+            font-sans
+        `}
+    }
+    p {
+        ${tw`
+            font-sans text-gray-700 mr-auto font-medium
+        `}
+        line-height: 140%;
+    }
+    .warning-success {
+        ${tw`mr-auto mt-2`}
+    }
+    form {
+        ${tw`
+            flex justify-start
+            h-10
+            items-center w-full mt-2
+        `}
+        input,button {
+            ${tw`h-full rounded-md p-2`}
+        }
+        input {
+            ${tw`
+                outline-none w-28
+                font-sans text-gray-700 font-medium
+                focus:(ring-2 ring-orange-500)
+                placeholder:(font-sans text-orange-100 font-medium)
+            `}
+        }
+        button {
+            ${tw`
+                ml-2 w-max bg-orange-500
+                duration-100 flex items-center justify-center
+                text-white font-sans font-medium
+                hover:(border-2 border-orange-100 bg-orange-700)
+                focus:(text-orange-700 border-2 border-orange-500 bg-white)
+            `}
+            ${({ isError }) =>
+                isError &&
+                tw`
+                    bg-white text-red-500 border-2 border-red-300
+                    hover:(border-red-100 bg-red-500 text-white!)
+                    focus:(border-0 ring-2 ring-red-200 bg-red-500 text-white)
+                `};
+            ${({ isError }) =>
+                isError &&
+                `
+                    :hover{
+                        span{
+                            color: #fff !important;
+                        }
+                    }
+                `};
+
+            ${({ isSuccess }) =>
+                isSuccess &&
+                tw`
+                    bg-white text-green-500 border-2 border-green-300
+                    hover:(border-green-300 bg-green-500 text-white)
+                    focus:(border-0 ring-2 ring-green-200 bg-green-500 text-white)
+
+            `};
+        }
+    }
+    a {
+        ${tw`
+            mr-auto text-orange-500 mt-2 underline
+            transition-colors duration-200
+            hover:(text-orange-700)
+        `}
+    }
+`
+
+export const ConsultSpinner = styled(ChakraSpinner)`
+    ${tw`ml-1.5 flex w-4! h-4! my-auto`}
+`
+
+export const ConsultSuccess = styled(motion.span)`
+    ${tw`
+        ml-1.5 flex w-5 h-5 my-auto
+        items-center justify-center
+        rounded-full border-2 border-green-100
+        text-white bg-green-300
+    `};
+    border-width: 1px;
+`
+
+export const ConsultError = styled(ConsultSuccess)`
+    ${tw`
+        bg-transparent border-0 text-red-500
+    `}
 `

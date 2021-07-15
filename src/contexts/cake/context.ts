@@ -19,12 +19,12 @@ type Ingredient = {
 type Cake = {
     id: string
     price: string
-    Ingredients: Ingredient[]
     name: string
     description: string
     slug: string
     photos: Photos[]
     stars: Star
+    ingredients: Ingredient[]
 }
 
 type Category = {
