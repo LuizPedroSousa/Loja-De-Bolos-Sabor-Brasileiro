@@ -124,30 +124,6 @@ export const Content = styled.div`
     }
 `
 
-export const Wave = styled.div`
-    ${tw`
-        relative w-full
-    `};
-    svg {
-        ${tw`
-            absolute -bottom-16 w-max
-            -left-16 l:left-0
-        `};
-    }
-
-    @media ${({ theme: { bp } }) => bp.xs} {
-        svg {
-            bottom: -3.5rem;
-        }
-    }
-
-    @media ${({ theme: { bp } }) => bp.md} {
-        svg {
-            bottom: -4.5rem;
-        }
-    }
-`
-
 export const Avatar = styled.div`
     ${tw`
         absolute -top-20 overflow-hidden

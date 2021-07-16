@@ -23,6 +23,7 @@ type Cake = {
     photos: Photo[]
     stars: number
     ingredients: Ingredient[]
+    category: string
 }
 
 type Category = {

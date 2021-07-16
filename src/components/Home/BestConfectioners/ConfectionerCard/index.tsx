@@ -1,9 +1,8 @@
 import Image from 'next/image'
 import React, { useRef } from 'react'
 
-import WaveSvg from '../../../../../public/images/confectioner-background.svg'
 import useCustomRipple from '../../../../hooks/useCustomRipple'
-import { Container, Content, Avatar, SeeProfile, Wave } from './styles'
+import { Container, Content, Avatar, SeeProfile } from './styles'
 
 type Confectioner = {
     id: string
@@ -38,9 +37,6 @@ const ConfectionerCard: React.FC<ConfectionerCardProps> = ({
             </Avatar>
             <Content>
                 <strong>{name}</strong>
-                <Wave>
-                    <WaveSvg />
-                </Wave>
             </Content>
             <SeeProfile ref={seeProfileRef}>Ver Perfil</SeeProfile>
         </Container>
