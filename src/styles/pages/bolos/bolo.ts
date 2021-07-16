@@ -125,8 +125,50 @@ export const CakeInfoPrice = styled.div`
     }
 `
 
+export const CakeInfoShop = styled.div`
+    ${tw`
+        w-full grid
+        h-14 gap-x-2 my-4
+        sm:gap-x-3 l:gap-x-4
+        l:(mb-6)
+    `}
+    border-bottom-width: 1px;
+    grid-template-columns: 0.25fr 1fr;
+    button {
+        ${tw`
+            w-full h-full flex items-center justify-center
+            border-2 text-xl rounded-md font-medium text-white py-3.5
+            font-sans duration-100 sm:py-2.5 md:py-4 l:py-3
+        `}
+        :nth-of-type(1) {
+            ${tw`
+                border-red-400 bg-red-400 text-2xl
+                hover:(border-red-100 bg-red-500)
+                focus:(bg-white text-red-500 ring-2 border-0 ring-red-500)
+
+            `}
+        }
+        :nth-of-type(2) {
+            ${tw`
+                bg-orange-500 hover:(bg-orange-700 border-orange-100)
+                focus:(ring-2 border-0 bg-white text-orange-500 ring-orange-500)
+            `};
+        }
+    }
+    @media ${({ theme: { bp } }) => bp.md} {
+        grid-template-columns: 0.22fr 1fr;
+    }
+    @media ${({ theme: { bp } }) => bp.l} {
+        grid-template-columns: 4rem 1fr;
+    }
+`
+
 export const CakeInfoIngredients = styled.div`
-    ${tw`w-full mt-2.5`}
+    ${tw`
+        w-full mt-2.5  border-t-2 border-gray-700 border-opacity-25
+        pt-2
+    `}
+    border-top-width: 1px;
     strong {
         ${tw`
             text-xl text-gray-800

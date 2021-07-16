@@ -9,7 +9,8 @@ import Seo from 'components/Seo'
 import { getCakes, getCake, getCakeQuery } from 'hooks/useCake'
 import useBreakPoint from 'hooks/useBreakPoint'
 import * as Yup from 'yup'
-import { AiFillStar, AiOutlineCheck } from 'react-icons/ai'
+import { AiFillStar, AiOutlineCheck, AiOutlineHeart } from 'react-icons/ai'
+import { IoMdHeartDislike } from 'react-icons/io'
 import { theme } from 'twin.macro'
 import { lighten } from 'polished'
 import MobalSlider from 'components/Bolos/Bolo/MobalSlider'
@@ -22,6 +23,15 @@ import * as S from 'styles/pages/bolos/bolo'
 import axios from 'axios'
 import CepConsultMessage from 'components/CepConsultMessage'
 import { BiErrorAlt } from 'react-icons/bi'
+import {
+    useHasInFavorite,
+    useToggleFavoriteCake,
+    useFavorites
+} from 'hooks/useFavoriteCakes'
+import { useAddToCart } from 'hooks/useCart'
+import BuyCakeModal from 'components/Modals/BuyCakeModal'
+import { useDisclosure } from '@chakra-ui/react'
+import { useRouter } from 'next/router'
 
 type Photo = {
     id: string
@@ -71,9 +81,19 @@ export default function Bolo({ slug }: BoloProps) {
 
     const { cake } = getCakeQuery({ slug })
 
+    const [hasInFavorites, setHasInFavorites] = useState(false)
     const [queryDelivery, setQueryDelivery] = useState<QueryDeliveryCep>(
         {} as QueryDeliveryCep
     )
+    const router = useRouter()
+    const { isOpen, onClose, onOpen } = useDisclosure()
+    const { addToCart, hasInCart } = useAddToCart(cake)
+    const { favoriteCakes } = useFavorites()
+    const { toggleFavoriteCake } = useToggleFavoriteCake()
+    const { hasCakeInFavorites } = useHasInFavorite()
+    useEffect(() => {
+        setHasInFavorites(hasCakeInFavorites(cake))
+    }, [favoriteCakes])
 
     const {
         handleSubmit,
@@ -161,6 +181,14 @@ export default function Bolo({ slug }: BoloProps) {
         }
     }, [cep])
 
+    function handleAddToCart() {
+        if (hasInCart) {
+            return router.push('/meu-carrinho')
+        }
+        addToCart({ cake, amount: 1 })
+        onOpen()
+    }
+
     return (
         <DefaultLayout>
             <Seo
@@ -168,6 +196,7 @@ export default function Bolo({ slug }: BoloProps) {
                 thumb={cake.photos[0].url}
                 title={cake.name}
             />
+            <BuyCakeModal isOpen={isOpen} onClose={onClose} cake={cake} />
             <main>
                 <Header activePage="/bolos/bolo" />
                 <S.Container>
@@ -209,6 +238,26 @@ export default function Bolo({ slug }: BoloProps) {
                                 </p>
                             </S.CakeInfoPrice>
                         </S.CakeInfoTitle>
+                        <S.CakeInfoShop>
+                            <button
+                                type="button"
+                                onClick={() => toggleFavoriteCake(cake)}
+                                name="Favoritar"
+                            >
+                                {hasInFavorites ? (
+                                    <AiOutlineHeart />
+                                ) : (
+                                    <IoMdHeartDislike />
+                                )}
+                            </button>
+                            <button
+                                onClick={handleAddToCart}
+                                type="button"
+                                name="Comprar"
+                            >
+                                {hasInCart ? 'Finalizar Compra' : 'Comprar'}
+                            </button>
+                        </S.CakeInfoShop>
                         <S.CakeInfoIngredients>
                             <strong>Principais Ingredientes</strong>
                             <ul>

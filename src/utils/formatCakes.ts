@@ -27,6 +27,7 @@ type Cake = {
     photos: Photos[]
     stars: Star
     ingredients: Ingredient[]
+    category: string
 }
 
 type CakeFromApi = {
@@ -38,6 +39,7 @@ type CakeFromApi = {
     photos: Photos[]
     stars: number
     ingredients: Ingredient[]
+    category: string
 }
 
 function formatStars(cake: CakeFromApi): { stars: Star } {

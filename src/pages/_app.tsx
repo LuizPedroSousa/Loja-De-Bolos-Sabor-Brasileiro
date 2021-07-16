@@ -6,6 +6,7 @@ import CartProvider from '../contexts/cart/provider'
 import CakeProvider from '../contexts/cake/provider'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { Hydrate } from 'react-query/hydration'
+import { FavoriteProvider } from 'contexts/favorite/provider'
 function MyApp({ Component, pageProps }) {
     const [queryClient] = useState(() => new QueryClient())
     return (
@@ -13,10 +14,12 @@ function MyApp({ Component, pageProps }) {
             <Hydrate state={pageProps.dehydratedState}>
                 <ThemeProvider>
                     <CakeProvider>
-                        <CartProvider>
-                            <GlobalStyles />
-                            <Component {...pageProps} />
-                        </CartProvider>
+                        <FavoriteProvider>
+                            <CartProvider>
+                                <GlobalStyles />
+                                <Component {...pageProps} />
+                            </CartProvider>
+                        </FavoriteProvider>
                     </CakeProvider>
                 </ThemeProvider>
             </Hydrate>
