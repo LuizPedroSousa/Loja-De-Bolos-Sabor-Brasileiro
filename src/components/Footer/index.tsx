@@ -96,7 +96,7 @@ const Footer: React.FC = () => {
                         <Image
                             width={977}
                             height={585}
-                            objectFit="cover"
+                            objectFit="contain"
                             src="/images/logo.png"
                             alt="Sabor Brasileiro"
                         />

@@ -377,3 +377,57 @@ export const ConsultError = styled(ConsultSuccess)`
         bg-transparent border-0 text-red-500
     `}
 `
+
+export const CakeRatingSection = styled.section`
+    ${tw`w-full mt-6 mx-auto`};
+    max-width: 94%;
+`
+
+export const CakeRatingTitle = styled.div`
+    ${tw`
+        w-full flex items-center justify-center
+        flex-col
+    `};
+
+    h2 {
+        ${tw`
+            text-gray-800 text-lg capitalize relative
+            after:(left-0)
+            before:(right-0)
+            font-bold w-full text-center
+        `};
+        :after,
+        :before {
+            ${tw`content absolute bg-gray-500`};
+            top: 50%;
+            height: 1px;
+            transform: translateY(-50%);
+            width: 6%;
+        }
+    }
+    div {
+        ${tw`
+            flex items-center justify-center
+            flex-col mt-2
+        `}
+        > strong {
+            ${tw`
+                text-3xl font-bold uppercase
+                text-center
+            `};
+        }
+        & + div {
+            ${tw`
+                mt-2
+            `};
+        }
+        :first-of-type {
+        }
+    }
+`
+
+export const CakeRatingsStars = styled.div`
+    ${tw`
+        flex items-center justify-center
+    `};
+`

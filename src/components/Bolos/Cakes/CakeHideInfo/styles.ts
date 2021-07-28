@@ -12,6 +12,8 @@ export const Container = styled(motion.div)`
         overflow-hidden sm:w-56 md:w-64
     `};
 
+    border-width: 1px;
+
     header {
         ${tw`
             flex flex-col items-center

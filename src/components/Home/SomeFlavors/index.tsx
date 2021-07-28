@@ -41,7 +41,7 @@ const SomeFlavors: React.FC = () => {
             <CakesContainer>
                 <Cakes>
                     <BackgroundTop />
-                    {bestCakes.map(cake => (
+                    {bestCakes?.map(cake => (
                         <CakeCard cake={cake} key={cake.id} />
                     ))}
                     <BackgroundBottom />

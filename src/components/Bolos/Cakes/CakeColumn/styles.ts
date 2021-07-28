@@ -14,6 +14,7 @@ export const Container = styled(motion.div)<ContainerProps>`
         transition-colors
     `};
 
+    border-width: 1px;
     max-width: 18.125rem;
     height: 28rem;
 

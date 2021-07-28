@@ -16,6 +16,6 @@
         "jsx": "preserve",
         "types": ["cypress"]
     },
-    "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/components/Header/.stories.tsx"],
+    "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/components/Header/.stories.tsx", "src/components/Drawers/CakeDrawer/.spec.tsx"],
     "exclude": ["node_modules", "**/*.spec.ts"]
 }

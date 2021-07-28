@@ -12,8 +12,11 @@ import { FiShoppingCart } from 'react-icons/fi'
 import useCart from '../../../../hooks/useCart'
 import { useRouter } from 'next/router'
 import useCustomRipple from '../../../../hooks/useCustomRipple'
+import CakeDrawer from 'components/Drawers/CakeDrawer'
+import useBreakPoint from 'hooks/useBreakPoint'
 
-type Photos = {
+type Photo = {
+    id: string
     url: string
 }
 
@@ -25,14 +28,20 @@ type Star = {
     length: number
 }
 
+type Ingredient = {
+    id: string
+    name: string
+}
+
 type Cake = {
     id: string
     price: string
     name: string
     description: string
     slug: string
-    photos: Photos[]
+    photos: Photo[]
     stars: Star
+    ingredients: Ingredient[]
 }
 
 interface CakeHideInfoProps {
@@ -45,6 +54,7 @@ const CakeHideInfo: React.FC<CakeHideInfoProps> = ({ cake }) => {
     const addToCartRef = useRef<HTMLButtonElement>(null)
     const [hasInCart, setHasInCart] = useState(false)
 
+    const { md } = useBreakPoint()
     useEffect(() => {
         setHasInCart(hasCakeInCart(cake))
     }, [cartItems])
@@ -73,7 +83,11 @@ const CakeHideInfo: React.FC<CakeHideInfoProps> = ({ cake }) => {
                 transition: { duration: 0.5 }
             }}
         >
-            <CakeModal cake={cake} onClose={onClose} isOpen={isOpen} />
+            {!md && (
+                <CakeDrawer isOpen={isOpen} onClose={onClose} cake={cake} />
+            )}
+
+            {md && <CakeModal isOpen={isOpen} onClose={onClose} cake={cake} />}
             <header onClick={onOpen}>
                 <Thumb>
                     <Image

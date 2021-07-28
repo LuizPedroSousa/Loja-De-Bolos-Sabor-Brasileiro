@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "test": "jest",
-    "e2e": "cypress open",
+    "cy:open": "cypress open",
     "start": "next start",
     "server": "json-server db.json -w -d 750 -p 3333",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json}\"",
@@ -36,6 +36,7 @@
     "next-compose-plugins": "^2.2.1",
     "next-images": "^1.7.0",
     "polished": "^4.1.2",
+    "popmotion": "^9.4.0",
     "postcss": "^8.3.5",
     "postcss-cli": "^8.3.1",
     "react": "^17.0.2",
@@ -61,6 +62,9 @@
     "yup": "^0.32.9"
   },
   "devDependencies": {
+    "@cypress/code-coverage": "^3.9.9",
+    "@cypress/react": "^5.9.2",
+    "@cypress/webpack-dev-server": "^1.4.0",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^12.0.0",
     "@types/": "splidejs/react-splide",
@@ -89,6 +93,7 @@
     "babel-jest": "^27.0.6",
     "babel-loader": "^8.2.2",
     "babel-plugin-inline-react-svg": "^2.0.1",
+    "babel-plugin-istanbul": "^6.0.0",
     "cypress": "^7.6.0",
     "eslint": "^7.26.0",
     "eslint-config-prettier": "^8.3.0",
@@ -99,13 +104,16 @@
     "eslint-plugin-promise": "^4.3.1",
     "eslint-plugin-react": "^7.23.2",
     "faker": "^5.5.3",
+    "html-webpack-plugin": "4",
     "jest": "^27.0.6",
     "jest-styled-components": "^7.0.4",
     "json-server": "^0.16.3",
     "mocha": "^9.0.2",
     "msw": "^0.30.1",
     "prettier": "^2.3.0",
-    "typescript": "^4.2.4"
+    "typescript": "^4.2.4",
+    "webpack": "4",
+    "webpack-dev-server": "3"
   },
   "browserslist": [
     ">0.2%",

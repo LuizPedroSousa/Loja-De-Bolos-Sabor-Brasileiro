@@ -6,6 +6,8 @@ COPY package*.json ./
 COPY yarn* ./
 
 
+RUN echo $API_URL
+
 RUN npm install --force
 
 COPY . .

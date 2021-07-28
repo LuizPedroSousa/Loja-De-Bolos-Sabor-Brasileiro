@@ -13,8 +13,11 @@ import CakeModal from '../../../Modals/CakeModal'
 import { useDisclosure } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 import useCustomRipple from '../../../../hooks/useCustomRipple'
+import CakeDrawer from 'components/Drawers/CakeDrawer'
+import useBreakPoint from 'hooks/useBreakPoint'
 
-type Photos = {
+type Photo = {
+    id: string
     url: string
 }
 
@@ -26,14 +29,20 @@ type Star = {
     length: number
 }
 
+type Ingredient = {
+    id: string
+    name: string
+}
+
 type Cake = {
     id: string
     price: string
     name: string
     description: string
     slug: string
-    photos: Photos[]
+    photos: Photo[]
     stars: Star
+    ingredients: Ingredient[]
 }
 
 interface CakeColumnProps {
@@ -45,6 +54,7 @@ const CakeColumn: React.FC<CakeColumnProps> = ({ cake }) => {
 
     const { onClose, onOpen, isOpen } = useDisclosure()
 
+    const { md } = useBreakPoint()
     const router = useRouter()
     const addToCartRef = useRef<HTMLButtonElement>(null)
     const [hasInCart, setHasInCart] = useState(false)
@@ -70,7 +80,11 @@ const CakeColumn: React.FC<CakeColumnProps> = ({ cake }) => {
             whileHover={{ scale: [1, 1.05], transition: { duration: 0.25 } }}
             hasCakeInCart={hasInCart}
         >
-            <CakeModal cake={cake} isOpen={isOpen} onClose={onClose} />
+            {!md && (
+                <CakeDrawer isOpen={isOpen} onClose={onClose} cake={cake} />
+            )}
+
+            {md && <CakeModal isOpen={isOpen} onClose={onClose} cake={cake} />}
             <header onClick={onOpen}>
                 <Image
                     src={cake.photos[0].url}

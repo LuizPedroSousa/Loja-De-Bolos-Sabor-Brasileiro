@@ -15,6 +15,8 @@ export const ListContainer = styled(motion.div)`
         md:(px-8 gap-x-6)
         md-3:(gap-x-3 px-1 pt-0 pb-6)
     `};
+
+    border-width: 1px;
     grid-template-columns: 1fr 65%;
     grid-template-areas: 'thumb info' 'controls .';
 

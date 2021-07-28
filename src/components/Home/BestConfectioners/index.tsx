@@ -26,7 +26,7 @@ const BestConfectioners: React.FC = () => {
                 </Title>
 
                 <Confectioners>
-                    {bestConfectioners.map(confectioner => (
+                    {bestConfectioners?.map(confectioner => (
                         <ConfectionerCard
                             key={confectioner.id}
                             confectioner={confectioner}

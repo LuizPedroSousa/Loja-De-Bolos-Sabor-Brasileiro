@@ -8,6 +8,8 @@ interface ContainerProps {
 }
 
 type LogoProps = ContainerProps & {}
+
+type NavProps = ContainerProps & {}
 export const Container = styled(motion.header)<ContainerProps>`
     ${tw`
         w-full relative top-0 left-0
@@ -34,12 +36,12 @@ export const Container = styled(motion.header)<ContainerProps>`
     }
 `
 
-export const Nav = styled.nav`
+export const Nav = styled.nav<NavProps>`
     transition: 0.25s;
     ${tw`
         w-full flex justify-between items-center
          p-5 md:px-0 md:mx-auto
-        h-full
+        h-full l:px-4
     `};
 
     @media ${({ theme: { bp } }) => bp.md} {
@@ -47,7 +49,18 @@ export const Nav = styled.nav`
     }
 
     @media ${({ theme: { bp } }) => bp.l} {
-        max-width: 88%;
+        ${({ activePage }) => {
+            switch (activePage) {
+                case '/bolos':
+                    return 'max-width: 1360px;'
+                default:
+                    return 'max-width: 88%'
+            }
+        }}
+    }
+
+    @media ${({ theme: { bp } }) => bp.xl} {
+        max-width: 1360px;
     }
 `
 

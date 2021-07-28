@@ -10,7 +10,10 @@ import { FaSearchPlus } from 'react-icons/fa'
 import CakeModal from '../../../Modals/CakeModal'
 import { useDisclosure } from '@chakra-ui/react'
 import useCustomRipple from '../../../../hooks/useCustomRipple'
-type Photos = {
+import CakeDrawer from 'components/Drawers/CakeDrawer'
+import useBreakPoint from 'hooks/useBreakPoint'
+type Photo = {
+    id: string
     url: string
 }
 
@@ -22,14 +25,20 @@ type Star = {
     length: number
 }
 
+type Ingredient = {
+    id: string
+    name: string
+}
+
 type Cake = {
     id: string
     price: string
     name: string
     description: string
     slug: string
-    photos: Photos[]
+    photos: Photo[]
     stars: Star
+    ingredients: Ingredient[]
 }
 
 interface CakeListProps {
@@ -43,6 +52,7 @@ const CakeRow: React.FC<CakeListProps> = ({ cake }) => {
     const viewRef = useRef<HTMLButtonElement>(null)
     const [hasInCart, setHasInCart] = useState(false)
 
+    const { md } = useBreakPoint()
     useEffect(() => {
         setHasInCart(hasCakeInCart(cake))
     }, [cartItems])
@@ -60,7 +70,11 @@ const CakeRow: React.FC<CakeListProps> = ({ cake }) => {
                 y: [null, 0]
             }}
         >
-            <CakeModal isOpen={isOpen} onClose={onClose} cake={cake} />
+            {!md && (
+                <CakeDrawer isOpen={isOpen} onClose={onClose} cake={cake} />
+            )}
+
+            {md && <CakeModal isOpen={isOpen} onClose={onClose} cake={cake} />}
             <Box onClick={onOpen}>
                 <Image
                     objectFit="cover"

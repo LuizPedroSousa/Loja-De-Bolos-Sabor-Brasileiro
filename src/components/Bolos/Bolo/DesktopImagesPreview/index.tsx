@@ -24,7 +24,6 @@ interface DesktopImagesPreviewPros {
 SwiperCore.use([Pagination, Thumbs, Zoom])
 
 const DesktopImagesPreview: React.FC<DesktopImagesPreviewPros> = ({ cake }) => {
-    // Swiper thumbsinstance
     const [thumbsSwiper, setThumbsSwiper] = useState(null)
 
     return (

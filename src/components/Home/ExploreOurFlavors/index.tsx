@@ -32,7 +32,7 @@ const ExploreOurFlavors: React.FC = () => {
                 </p>
             </Title>
             <Cakes>
-                {cakes.map((cake, i) => (
+                {cakes?.map((cake, i) => (
                     <Cake key={cake.id + i} cake={cake} />
                 ))}
             </Cakes>
