@@ -58,7 +58,7 @@ const Header: React.FC<HeaderProps> = ({ activePage }) => {
     return (
         <Container activePage={activePage}>
             <Nav activePage={activePage}>
-                <Link href="/">
+                <Link passHref href="/">
                     <Logo activePage={activePage}>
                         <Image
                             src="/images/icon.png"

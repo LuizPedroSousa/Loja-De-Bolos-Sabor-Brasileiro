@@ -4,7 +4,7 @@ import React, { useMemo, useState } from 'react'
 import CartContext from './context'
 
 import usePersistedState from '../../hooks/usePersistedState'
-import { useCake } from '../../hooks/useCake'
+import { useCakes } from '../../hooks/useCake'
 import AddCakeToast from '../../components/Toasts/AddCakeToast'
 import { useToast } from '@chakra-ui/react'
 const { Provider } = CartContext
@@ -29,7 +29,7 @@ interface CartItem {
 
 const CartProvider: React.FC = ({ children }) => {
     const [cartItems, setCartItems] = usePersistedState<CartItem[]>([], 'cart')
-    const { cakes } = useCake()
+    const { cakes } = useCakes()
 
     const [total, setTotal] = useState(0)
     const toast = useToast()

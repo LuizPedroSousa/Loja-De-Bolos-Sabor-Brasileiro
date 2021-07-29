@@ -11,11 +11,8 @@ type BestConfectioner = {
 }
 
 async function getConfectioners(opts: AxiosRequestConfig) {
-    const { data } = await api('/best_confectioners', opts)
-    const confectioners = data.BestConfectioners.map(({ confectioner }) => {
-        return { ...confectioner }
-    })
-    return confectioners as BestConfectioner[]
+    const { data } = await api('/users/best_confectioners', opts)
+    return data.confectioners as BestConfectioner[]
 }
 
 function useConfectioners() {

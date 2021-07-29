@@ -1,5 +1,5 @@
 import React, { useRef } from 'react'
-import { useCake } from '../../hooks/useCake'
+import { useCakeCategories } from '../../hooks/useCake'
 import useCustomRipple from '../../hooks/useCustomRipple'
 import CategoryList from './CategoryList'
 import { Category } from './CategoryList/styles'
@@ -8,7 +8,7 @@ import { Categories } from './styles'
 const MobalCategories: React.FC = () => {
     const categoryTodosRef = useRef<HTMLButtonElement>(null)
     useCustomRipple([{ ref: categoryTodosRef }])
-    const { categories } = useCake()
+    const { categories } = useCakeCategories()
     return (
         <Categories>
             <ul>

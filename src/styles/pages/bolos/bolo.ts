@@ -398,30 +398,36 @@ export const CakeRatingTitle = styled.div`
         `};
         :after,
         :before {
-            ${tw`content absolute bg-gray-500`};
+            ${tw`content absolute bg-gray-600`};
             top: 50%;
             height: 1px;
             transform: translateY(-50%);
             width: 6%;
         }
     }
-    div {
+    > div {
         ${tw`
-            flex items-center justify-center
-            flex-col mt-2
-        `}
+                flex items-center justify-center
+                flex-col mt-2
+            `}
         > strong {
             ${tw`
                 text-3xl font-bold uppercase
                 text-center
             `};
         }
+        > p {
+            ${tw`mt-2`};
+        }
         & + div {
             ${tw`
                 mt-2
             `};
         }
-        :first-of-type {
+        :last-of-type {
+            ${tw`
+                leading-5 mt-4
+            `};
         }
     }
 `
@@ -429,5 +435,7 @@ export const CakeRatingTitle = styled.div`
 export const CakeRatingsStars = styled.div`
     ${tw`
         flex items-center justify-center
+        w-full
     `};
+    height: max-content;
 `

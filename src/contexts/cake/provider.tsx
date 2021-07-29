@@ -1,15 +1,52 @@
-import React, { useMemo, useState } from 'react'
-import { useQuery } from 'react-query'
-import { getCakeCategories, getCakes } from 'hooks/useCake'
-import { formatCakes } from 'utils/formatCakes'
+import React, { useState } from 'react'
 
 import CakeContext from './context'
 
 const { Provider } = CakeContext
-
-type Photos = {
+type Photo = {
     id: string
     url: string
+}
+
+type Ingredient = {
+    id: string
+    name: string
+}
+
+type Avatar = Photo & {}
+type User = {
+    id: string
+    name: string
+    surname: string
+    avatar: Avatar
+}
+
+type CakeRating = {
+    id: string
+    title: string
+    description: string
+    user: User
+    stars: Star
+}
+
+type Cake = {
+    id: string
+    price: string
+    slug: string
+    name: string
+    description: string
+    photos: Photo[]
+    ingredients: Ingredient[]
+    ratings: CakeRating[]
+    category: string
+    starsAverage: Star
+}
+
+type Category = {
+    id: string
+    name: string
+    slug: string
+    cakes: Cake[]
 }
 
 type Star = {
@@ -20,73 +57,17 @@ type Star = {
     length: number
 }
 
-type Ingredient = {
-    id: string
-    name: string
-}
-
-type Cake = {
-    id: string
-    price: string
-    name: string
-    description: string
-    slug: string
-    photos: Photos[]
-    stars: Star
-    ingredients: Ingredient[]
-}
-
-type Category = {
-    id: string
-    name: string
-    slug: string
-    cakes: Cake[]
-}
-
 const CakeProvider: React.FC = ({ children }) => {
     const [cakes, setCakes] = useState<Cake[]>([])
-    const { data: bestCakesData } = useQuery(
-        ['bestCakes', 2],
-        async () =>
-            await getCakes({
-                params: {
-                    isBest: true,
-                    _limit: 2
-                }
-            })
-    )
-
-    const { data: cakesData } = useQuery('cakes', async () => await getCakes())
-
-    const { data: categoriesData } = useQuery('cakeCategories', () =>
-        getCakeCategories()
-    )
-
-    useMemo(() => {
-        setCakes(formatCakes(cakesData))
-    }, [cakesData])
-
-    const { bestCakes } = useMemo(() => {
-        const bestCakes: Cake[] = formatCakes(bestCakesData)
-
-        return { bestCakes }
-    }, [bestCakesData])
-
-    const { categories } = useMemo(() => {
-        const categories: Category[] = categoriesData?.map(category => {
-            return { ...category, cakes: formatCakes(category.cakes) }
-        })
-
-        return { categories }
-    }, [categoriesData])
+    const [categories, setCategories] = useState<Category[]>([])
 
     return (
         <Provider
             value={{
                 cakes,
-                bestCakes,
                 categories,
-                formatCakes
+                setCakes,
+                setCategories
             }}
         >
             {children}

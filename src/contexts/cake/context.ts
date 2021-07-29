@@ -1,6 +1,50 @@
-import { createContext } from 'react'
-type Photos = {
+import { Dispatch, SetStateAction } from 'react'
+import { createContext } from 'use-context-selector'
+
+type Photo = {
+    id: string
     url: string
+}
+
+type Ingredient = {
+    id: string
+    name: string
+}
+
+type Avatar = Photo & {}
+type User = {
+    id: string
+    name: string
+    surname: string
+    avatar: Avatar
+}
+
+type CakeRating = {
+    id: string
+    title: string
+    description: string
+    user: User
+    stars: Star
+}
+
+type Cake = {
+    id: string
+    price: string
+    slug: string
+    name: string
+    description: string
+    photos: Photo[]
+    ingredients: Ingredient[]
+    ratings: CakeRating[]
+    category: string
+    starsAverage: Star
+}
+
+type Category = {
+    id: string
+    name: string
+    slug: string
+    cakes: Cake[]
 }
 
 type Star = {
@@ -11,34 +55,11 @@ type Star = {
     length: number
 }
 
-type Ingredient = {
-    id: string
-    name: string
-}
-
-type Cake = {
-    id: string
-    price: string
-    name: string
-    description: string
-    slug: string
-    photos: Photos[]
-    stars: Star
-    ingredients: Ingredient[]
-}
-
-type Category = {
-    id: string
-    name: string
-    slug: string
-    cakes: Cake[]
-}
-
 interface CakeContextProps {
     cakes: Cake[]
-    bestCakes: Cake[]
     categories: Category[]
-    formatCakes: (cakes: any) => Cake[]
+    setCakes: Dispatch<SetStateAction<Cake[]>>
+    setCategories: Dispatch<SetStateAction<Category[]>>
 }
 
 const CakeContext = createContext({} as CakeContextProps)

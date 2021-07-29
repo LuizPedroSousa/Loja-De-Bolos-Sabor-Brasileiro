@@ -29,16 +29,33 @@ type Ingredient = {
     id: string
     name: string
 }
+type Avatar = Photo & {}
+type User = {
+    id: string
+    name: string
+    surname: string
+    avatar: Avatar
+}
+
+type CakeRating = {
+    id: string
+    title: string
+    description: string
+    user: User
+    stars: Star
+}
 
 type Cake = {
     id: string
     price: string
+    slug: string
     name: string
     description: string
-    slug: string
     photos: Photo[]
-    stars: Star
     ingredients: Ingredient[]
+    ratings: CakeRating[]
+    category: string
+    starsAverage: Star
 }
 
 interface CakeListProps {

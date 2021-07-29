@@ -1,9 +1,11 @@
 import { v4 as uuid } from 'uuid'
 
-type Photos = {
+type Photo = {
     id: string
     url: string
 }
+
+type Avatar = Photo & {}
 
 type Star = {
     toMap: {
@@ -24,10 +26,34 @@ type Cake = {
     slug: string
     name: string
     description: string
-    photos: Photos[]
-    stars: Star
+    photos: Photo[]
     ingredients: Ingredient[]
+    ratings: CakeRating[]
     category: string
+    starsAverage: Star
+}
+
+type User = {
+    id: string
+    name: string
+    surname: string
+    avatar: Avatar
+}
+
+type CakeRatingFromApi = {
+    id: string
+    stars: number
+    title: string
+    description: string
+    user: User
+}
+
+type CakeRating = {
+    id: string
+    title: string
+    description: string
+    user: User
+    stars: Star
 }
 
 type CakeFromApi = {
@@ -35,37 +61,52 @@ type CakeFromApi = {
     price: string
     slug: string
     name: string
+    ratings: CakeRatingFromApi[]
     description: string
-    photos: Photos[]
-    stars: number
+    photos: Photo[]
     ingredients: Ingredient[]
     category: string
 }
 
-function formatStars(cake: CakeFromApi): { stars: Star } {
-    const stars = []
-    for (let i = 0; i < cake.stars; i++) {
-        stars.push({ hasStar: true, key: uuid() })
+function formatStars(stars: number): { stars: Star } {
+    const starsArr = []
+    if (stars) {
+        for (let i = 0; i < stars; i++) {
+            starsArr.push({ haStar: true, key: uuid() })
+        }
     }
-    if (cake.stars < 5) {
-        for (let i = stars.length; i < 5; i++) {
-            stars.push({ hasStar: false, key: uuid() })
+    if (stars < 5) {
+        for (let i = starsArr.length; i < 5; i++) {
+            starsArr.push({ hasStar: false, key: uuid() })
         }
     }
 
-    return { stars: { length: cake.stars, toMap: stars } }
+    return { stars: { length: stars, toMap: starsArr } }
+}
+
+function formatCake(cake: CakeFromApi): Cake {
+    const ratings = cake.ratings.map(rating => {
+        const { stars } = formatStars(rating.stars)
+        return { ...rating, stars }
+    })
+    let ratingStars = 0
+    ratings.forEach(rating => (ratingStars += rating.stars.length))
+
+    let starsAverage = 0
+    if (ratingStars && ratings.length) {
+        starsAverage = ratingStars / ratings.length
+    }
+
+    const { stars } = formatStars(starsAverage)
+
+    return { ...cake, starsAverage: stars, ratings }
 }
 
 function formatCakes(cakes: CakeFromApi[]): Cake[] {
     return cakes?.map(cake => {
-        const { stars } = formatStars(cake)
-        return { ...cake, stars }
+        const cakeFormatted = formatCake(cake)
+        return { ...cakeFormatted }
     })
-}
-
-function formatCake(cake: CakeFromApi): Cake {
-    const { stars } = formatStars(cake)
-    return { ...cake, stars }
 }
 
 export { formatCakes, formatCake }

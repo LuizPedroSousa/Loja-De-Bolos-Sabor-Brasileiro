@@ -33,15 +33,33 @@ type Ingredient = {
     name: string
 }
 
+type Avatar = Photo & {}
+type User = {
+    id: string
+    name: string
+    surname: string
+    avatar: Avatar
+}
+
+type CakeRating = {
+    id: string
+    title: string
+    description: string
+    user: User
+    stars: Star
+}
+
 type Cake = {
     id: string
     price: string
+    slug: string
     name: string
     description: string
-    slug: string
     photos: Photo[]
-    stars: Star
     ingredients: Ingredient[]
+    ratings: CakeRating[]
+    category: string
+    starsAverage: Star
 }
 
 interface CakeHideInfoProps {
@@ -99,20 +117,20 @@ const CakeHideInfo: React.FC<CakeHideInfoProps> = ({ cake }) => {
                     />
                 </Thumb>
                 <Stars>
-                    {cake.stars.toMap.map(({ key, hasStar }) => {
+                    {cake.starsAverage.toMap.map(({ key, hasStar }) => {
                         return (
                             <AiFillStar
                                 key={key}
                                 size={12}
                                 color={
-                                    hasStar
+                                    hasStar === undefined
                                         ? theme`colors.orange.500`
                                         : lighten(0.1, theme`colors.orange.100`)
                                 }
                             />
                         )
                     })}
-                    <span>({cake.stars.length})</span>
+                    <span>({cake.ratings.length})</span>
                 </Stars>
             </header>
 
