@@ -1,5 +1,5 @@
 /// <reference types="cypress" />
-import { defaultTestSolicitation } from '../../support/test-constants'
+import { defaultTestSolicitation } from '../../../support/test-constants'
 
 describe('FAQ Solicitation', () => {
     it('should successfully loads', () => {
@@ -20,6 +20,62 @@ describe('FAQ Solicitation', () => {
                 expect(location.href).to.eq(
                     'http://localhost:3000/faq/requests/new'
                 )
+            )
+        })
+
+        it('should render a page with correct seo meta tags', () => {
+            const seo = {
+                title: 'Enviar uma solicitação | FAQ | Sabor Brasileiro',
+                description:
+                    'Envie uma solicitação com informações sobre sugestões, problemas ou duvidas. Sabor Brasileiro | O melhor sempre!',
+                url: 'http://localhost:3000/faq/requests/new',
+                thumb: 'http://localhost:3000/images/thumbs/solicitation.png'
+            }
+            cy.get('title').should('have.text', seo.title)
+            cy.get('meta[name="description"]').should(
+                'have.attr',
+                'content',
+                seo.description
+            )
+            cy.get('meta[property="og:type"]').should(
+                'have.attr',
+                'content',
+                'website'
+            )
+            cy.get('meta[property="og:title"]').should(
+                'have.attr',
+                'content',
+                seo.title
+            )
+            cy.get('meta[property="og:image"]').should(
+                'have.attr',
+                'content',
+                seo.thumb
+            )
+            cy.get('meta[property="twitter:title"]').should(
+                'have.attr',
+                'content',
+                seo.title
+            )
+            cy.get('meta[property="twitter:card"]').should(
+                'have.attr',
+                'content',
+                'summary_large_image'
+            )
+            cy.get('meta[property="twitter:description"]').should(
+                'have.attr',
+                'content',
+                seo.description
+            )
+            cy.get('meta[property="og:url"]').should(
+                'have.attr',
+                'content',
+                seo.url
+            )
+            cy.get('meta[property="twitter:url"]').should(
+                'have.attr',
+                'content',
+                seo.url
             )
         })
 

@@ -5,5 +5,6 @@ module.exports = {
       "inline-react-svg",
       "babel-plugin-macros",
       "@babel/plugin-transform-react-jsx",
+      "istanbul"
     ]
   }
