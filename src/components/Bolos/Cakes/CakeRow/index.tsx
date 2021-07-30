@@ -17,14 +17,6 @@ type Photo = {
     url: string
 }
 
-type Star = {
-    toMap: {
-        key: string
-        hasStar: boolean
-    }[]
-    length: number
-}
-
 type Ingredient = {
     id: string
     name: string
@@ -42,7 +34,7 @@ type CakeRating = {
     title: string
     description: string
     user: User
-    stars: Star
+    stars: number
 }
 
 type Cake = {
@@ -55,7 +47,7 @@ type Cake = {
     ingredients: Ingredient[]
     ratings: CakeRating[]
     category: string
-    starsAverage: Star
+    starsAverage: number
 }
 
 interface CakeListProps {

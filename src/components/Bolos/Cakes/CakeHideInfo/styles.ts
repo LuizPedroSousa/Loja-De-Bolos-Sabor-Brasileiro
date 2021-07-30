@@ -64,10 +64,10 @@ export const Stars = styled.div`
         flex items-center justify-between
         mt-2 mr-auto
     `};
-    span {
+    p {
         ${tw`
-            text-gray-800 font-medium font-inter
-            ml-1
+            text-gray-700 font-medium font-inter
+            ml-1 tracking-wider
         `};
     }
 `

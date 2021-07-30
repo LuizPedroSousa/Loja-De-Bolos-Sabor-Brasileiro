@@ -86,8 +86,7 @@ export const Container = styled(motion.div)<ContainerProps>`
             `};
             span {
                 ${tw`
-                    ml-2 text-gray-800 font-roboto
-                    font-medium
+                    text-sm
                 `};
             }
         }

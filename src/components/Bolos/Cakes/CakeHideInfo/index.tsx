@@ -4,9 +4,6 @@ import Image from 'next/image'
 import { Container, Thumb, Info, AddToCart, Stars } from './styles'
 import CakeModal from '../../../Modals/CakeModal'
 import { useDisclosure } from '@chakra-ui/react'
-import { AiFillStar } from 'react-icons/ai'
-import { theme } from 'twin.macro'
-import { lighten } from 'polished'
 import { ImCart } from 'react-icons/im'
 import { FiShoppingCart } from 'react-icons/fi'
 import useCart from '../../../../hooks/useCart'
@@ -14,18 +11,11 @@ import { useRouter } from 'next/router'
 import useCustomRipple from '../../../../hooks/useCustomRipple'
 import CakeDrawer from 'components/Drawers/CakeDrawer'
 import useBreakPoint from 'hooks/useBreakPoint'
+import Rating from '@material-ui/lab/Rating'
 
 type Photo = {
     id: string
     url: string
-}
-
-type Star = {
-    toMap: {
-        key: string
-        hasStar: boolean
-    }[]
-    length: number
 }
 
 type Ingredient = {
@@ -46,7 +36,7 @@ type CakeRating = {
     title: string
     description: string
     user: User
-    stars: Star
+    stars: number
 }
 
 type Cake = {
@@ -59,7 +49,7 @@ type Cake = {
     ingredients: Ingredient[]
     ratings: CakeRating[]
     category: string
-    starsAverage: Star
+    starsAverage: number
 }
 
 interface CakeHideInfoProps {
@@ -117,20 +107,8 @@ const CakeHideInfo: React.FC<CakeHideInfoProps> = ({ cake }) => {
                     />
                 </Thumb>
                 <Stars>
-                    {cake.starsAverage.toMap.map(({ key, hasStar }) => {
-                        return (
-                            <AiFillStar
-                                key={key}
-                                size={12}
-                                color={
-                                    hasStar === undefined
-                                        ? theme`colors.orange.500`
-                                        : lighten(0.1, theme`colors.orange.100`)
-                                }
-                            />
-                        )
-                    })}
-                    <span>({cake.ratings.length})</span>
+                    <Rating readOnly value={cake.starsAverage} />
+                    <p>({cake.ratings.length})</p>
                 </Stars>
             </header>
 
