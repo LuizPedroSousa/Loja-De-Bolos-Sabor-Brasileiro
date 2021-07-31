@@ -5,7 +5,6 @@ import {
     AccordionItem,
     AccordionPanel,
     Drawer,
-    DrawerHeader,
     DrawerOverlay,
     useDisclosure
 } from '@chakra-ui/react'
@@ -21,6 +20,7 @@ import { BsTrash } from 'react-icons/bs'
 import { IoMdClose } from 'react-icons/io'
 import { MdRemoveShoppingCart } from 'react-icons/md'
 import { theme } from 'twin.macro'
+import DefaultDrawerHeaderTitle from '../DefaultDrawerHeaderTitle'
 
 import * as S from './styles'
 
@@ -50,16 +50,14 @@ const MiniCartDrawer: React.FC<MiniCartDrawerProps> = ({ isOpen, onClose }) => {
             <Drawer size="sm" isOpen={isOpen} onClose={onClose}>
                 <DrawerOverlay />
                 <S.DrawerContent>
-                    <DrawerHeader>
-                        <strong>Meu carrinho</strong>
-                        <S.ExitButton
-                            name="Fechar mini cart"
-                            onClick={onClose}
-                            whileHover={{ scale: [1, 0.9] }}
-                        >
-                            <IoMdClose />
-                        </S.ExitButton>
-                    </DrawerHeader>
+                    <DefaultDrawerHeaderTitle
+                        title="Meu carrinho"
+                        buttonProps={{
+                            name: 'Fechar mini cart',
+                            type: 'button',
+                            onClick: onClose
+                        }}
+                    />
                     <S.DrawerBody>
                         {!hasItems ? (
                             <S.AnyItems>
