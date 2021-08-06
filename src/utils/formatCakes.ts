@@ -1,19 +1,11 @@
-import { v4 as uuid } from 'uuid'
-
+import { formatDistance, parseISO } from 'date-fns'
+import ptBR from 'date-fns/locale/pt-BR'
 type Photo = {
     id: string
     url: string
 }
 
 type Avatar = Photo & {}
-
-type Star = {
-    toMap: {
-        key: string
-        hasStar: boolean
-    }[]
-    length: number
-}
 
 type Ingredient = {
     id: string
@@ -30,7 +22,7 @@ type Cake = {
     ingredients: Ingredient[]
     ratings: CakeRating[]
     category: string
-    starsAverage: Star
+    starsAverage: number
 }
 
 type User = {
@@ -46,6 +38,8 @@ type CakeRatingFromApi = {
     title: string
     description: string
     user: User
+    // eslint-disable-next-line camelcase
+    inserted_at: string
 }
 
 type CakeRating = {
@@ -53,7 +47,8 @@ type CakeRating = {
     title: string
     description: string
     user: User
-    stars: Star
+    insertedAt: string
+    stars: number
 }
 
 type CakeFromApi = {
@@ -68,38 +63,28 @@ type CakeFromApi = {
     category: string
 }
 
-function formatStars(stars: number): { stars: Star } {
-    const starsArr = []
-    if (stars) {
-        for (let i = 0; i < stars; i++) {
-            starsArr.push({ haStar: true, key: uuid() })
-        }
-    }
-    if (stars < 5) {
-        for (let i = starsArr.length; i < 5; i++) {
-            starsArr.push({ hasStar: false, key: uuid() })
-        }
-    }
-
-    return { stars: { length: stars, toMap: starsArr } }
-}
-
 function formatCake(cake: CakeFromApi): Cake {
-    const ratings = cake.ratings.map(rating => {
-        const { stars } = formatStars(rating.stars)
-        return { ...rating, stars }
-    })
     let ratingStars = 0
-    ratings.forEach(rating => (ratingStars += rating.stars.length))
+    const ratings = cake.ratings.map(rating => {
+        ratingStars += rating.stars
+        return {
+            ...rating,
+            insertedAt: formatDistance(
+                parseISO(rating.inserted_at),
+                new Date(),
+                {
+                    locale: ptBR
+                }
+            )
+        }
+    })
 
     let starsAverage = 0
-    if (ratingStars && ratings.length) {
-        starsAverage = ratingStars / ratings.length
+    if (ratingStars && cake.ratings.length) {
+        starsAverage = ratingStars / cake.ratings.length
     }
 
-    const { stars } = formatStars(starsAverage)
-
-    return { ...cake, starsAverage: stars, ratings }
+    return { ...cake, starsAverage, ratings }
 }
 
 function formatCakes(cakes: CakeFromApi[]): Cake[] {
