@@ -96,7 +96,6 @@ const IntroductionCarousel: React.FC = () => {
     useCustomRipple([{ ref: previousRef }, { ref: nextRef }])
 
     const paginate = (newDirection: number) => {
-        console.log(newDirection)
         setPage([page + newDirection, newDirection])
     }
 
