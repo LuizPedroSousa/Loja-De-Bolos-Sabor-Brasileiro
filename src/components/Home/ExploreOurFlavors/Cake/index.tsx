@@ -7,27 +7,43 @@ import useCart from '../../../../hooks/useCart'
 import useCustomRipple from '../../../../hooks/useCustomRipple'
 import CakeModal from '../../../Modals/CakeModal'
 import { Container, CakeInfo, Header, Footer } from './styles'
-
 type Photo = {
+    id: string
     url: string
 }
 
-type Star = {
-    toMap: {
-        key: string
-        hasStar: boolean
-    }[]
-    length: number
+type Ingredient = {
+    id: string
+    name: string
+}
+
+type Avatar = Photo & {}
+type User = {
+    id: string
+    name: string
+    surname: string
+    avatar: Avatar
+}
+
+type CakeRating = {
+    id: string
+    title: string
+    description: string
+    user: User
+    stars: number
 }
 
 type CakeType = {
     id: string
     price: string
+    slug: string
     name: string
     description: string
     photos: Photo[]
-    slug: string
-    stars: Star
+    ingredients: Ingredient[]
+    ratings: CakeRating[]
+    category: string
+    starsAverage: number
 }
 
 interface CakeCardProps {
