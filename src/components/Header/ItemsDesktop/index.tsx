@@ -1,12 +1,14 @@
 import Link from 'next/link'
 import React, { useRef } from 'react'
-import { AiOutlineShoppingCart } from 'react-icons/ai'
+import { AiOutlineShoppingCart, AiOutlineUser } from 'react-icons/ai'
 
 import { useDisclosure } from '@chakra-ui/react'
 import useCart from '../../../hooks/useCart'
-import { UnorderedList, List, Cart, SendSolicitation } from './styles'
+import * as S from './styles'
 import useCustomRipple from '../../../hooks/useCustomRipple'
 import MiniCartDrawer from 'components/Drawers/MiniCartDrawer'
+import AccountDrawer from 'components/Drawers/AccountDrawer'
+import { useUser } from 'hooks/useUser'
 
 export type ActiveHrefType =
     | '/'
@@ -34,41 +36,80 @@ const ItemsDesktop: React.FC<ItemsDesktopProps> = ({
     useCustomRipple([{ ref: sendSolicitationRef }])
 
     const {
-        isOpen: isDrawerOpen,
-        onClose: onDrawerClose,
-        onOpen: onDrawerOpen
+        isOpen: isMiniCartDrawerOpen,
+        onClose: onMiniCartDrawerClose,
+        onOpen: onMiniCartDrawerOpen
+    } = useDisclosure()
+
+    const {
+        isOpen: isAccountDrawerOpen,
+        onClose: onAccountDrawerClose,
+        onOpen: onAccountDrawerOpen
     } = useDisclosure()
 
     const { itemsLength } = useCart()
+    const { isLoggedIn, user } = useUser()
     return (
         <>
-            <UnorderedList activePage={activePage} role="list">
+            <S.UnorderedList activePage={activePage} role="list">
                 {navigationLinks.map(({ href, label }, index) => (
-                    <List hasActivePage={activePage === href} key={index}>
+                    <S.List hasActivePage={activePage === href} key={index}>
                         <Link href={href}>
                             <a>{label}</a>
                         </Link>
-                    </List>
+                    </S.List>
                 ))}
-            </UnorderedList>
+            </S.UnorderedList>
             {activePage === '/faq' ? (
                 <Link href="/faq/requests/new">
-                    <SendSolicitation ref={sendSolicitationRef}>
+                    <S.SendSolicitation ref={sendSolicitationRef}>
                         {' '}
                         Enviar Solicitação
-                    </SendSolicitation>
+                    </S.SendSolicitation>
                 </Link>
             ) : (
-                <Cart onClick={onDrawerOpen} activePage={activePage}>
-                    <span>
-                        <AiOutlineShoppingCart
-                            size={activePage !== '/' ? 60 : 70}
-                        />
-                        <p>{itemsLength}</p>
-                    </span>
-                </Cart>
+                <S.ButtonDrawersContainer>
+                    <S.UserAccount
+                        type="button"
+                        onClick={onAccountDrawerOpen}
+                        activePage={activePage}
+                        name="Abrir drawer de usuário"
+                    >
+                        <span>
+                            <AiOutlineUser
+                                size={activePage !== '/' ? 60 : 70}
+                            />
+                        </span>
+                        <p>
+                            {isLoggedIn ? 'Olá, ' + user?.name : 'Minha conta'}
+                            <br />
+                            <strong>meus pedidos</strong>
+                        </p>
+                    </S.UserAccount>
+                    <S.Cart
+                        onClick={onMiniCartDrawerOpen}
+                        type="button"
+                        name="Abrir drawer de mini cart"
+                        activePage={activePage}
+                    >
+                        <span>
+                            <AiOutlineShoppingCart
+                                size={activePage !== '/' ? 60 : 65}
+                            />
+                            <p>{itemsLength}</p>
+                        </span>
+                    </S.Cart>
+                </S.ButtonDrawersContainer>
             )}
-            <MiniCartDrawer isOpen={isDrawerOpen} onClose={onDrawerClose} />
+            <MiniCartDrawer
+                isOpen={isMiniCartDrawerOpen}
+                onClose={onMiniCartDrawerClose}
+            />
+            <AccountDrawer
+                onOpen={onAccountDrawerOpen}
+                isOpen={isAccountDrawerOpen}
+                onClose={onAccountDrawerClose}
+            />
         </>
     )
 }

@@ -9,9 +9,8 @@ interface CartProps {
     activePage: ActiveHrefType
 }
 
-interface UnorderedListProps {
-    activePage: ActiveHrefType
-}
+type UserAccountProps = CartProps & {}
+type UnorderedListProps = CartProps & {}
 
 export const UnorderedList = styled.ul<UnorderedListProps>`
     ${tw`
@@ -66,16 +65,56 @@ export const List = styled.li<ListProps>`
     }
 `
 
+export const ButtonDrawersContainer = styled.div`
+    ${tw`
+        flex items-center justify-center
+        ml-auto
+    `};
+`
+
+export const UserAccount = styled.button<UserAccountProps>`
+    ${tw`
+       flex items-center justify-start
+       hover:(opacity-50)
+    `};
+
+    p {
+        ${tw`
+            text-left leading-4 transition-colors
+        `};
+
+        color: ${({ activePage }) =>
+            activePage !== '/' ? theme`colors.gray.700` : theme`colors.white`};
+    }
+
+    span {
+        ${tw`
+            text-md w-12 h-12 transition-colors
+            flex items-center justify-center
+        `};
+        color: ${({ activePage }) =>
+            activePage !== '/'
+                ? theme`colors.orange.100`
+                : shade(0.05, theme`colors.white`)};
+    }
+
+    :hover {
+        span {
+            color: ${shade(0.2, theme`colors.white`)};
+        }
+    }
+`
+
 export const Cart = styled.button<CartProps>`
     color: ${shade(0.05, theme`colors.white`)};
     ${tw`
         font-sans text-md flex
-        items-center justify-center ml-auto
-        bg-transparent mb-2
+        items-center justify-center
+        bg-transparent mb-3 ml-4
     `};
     span {
         ${tw`
-            w-16 h-16 relative transition-colors
+            w-14 h-14 relative transition-colors
         `};
         color: ${({ activePage }) =>
             activePage !== '/'
