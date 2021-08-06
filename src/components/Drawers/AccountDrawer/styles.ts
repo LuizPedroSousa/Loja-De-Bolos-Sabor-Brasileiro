@@ -55,6 +55,16 @@ export const ServiceListItem = styled(motion.li)`
         w-full h-14 hover:(text-orange-500 border-orange-100)
         cursor-pointer
     `};
+
+    :first-of-type {
+        ${tw`bg-orange-100 cursor-default h-12`};
+        strong {
+            ${tw`
+                text-white text-lg w-full h-full flex
+                items-center justify-start pl-4
+            `};
+        }
+    }
     & + & {
         ${tw`border-t-2 border-gray-500`};
         border-top-width: 1px;
@@ -72,3 +82,18 @@ export const ServiceListItem = styled(motion.li)`
         }
     }
 `
+
+export const UserLogged = styled.div`
+    ${tw`mt-2 flex justify-start items-center`};
+    div {
+        ${tw`ml-3 flex items-start justify-start flex-col mb-auto mt-1`};
+        strong {
+            ${tw`text-xl font-semibold leading-6`};
+        }
+    }
+`
+
+export const AccountServices = styled(ServiceList)`
+    height: max-content;
+`
+export const AccountServiceListItem = styled(ServiceListItem)``
