@@ -29,6 +29,8 @@ type CakeRatingFromApi = {
     title: string
     description: string
     user: User
+    // eslint-disable-next-line camelcase
+    inserted_at: string
 }
 type CakeFromApi = {
     id: string
@@ -81,13 +83,31 @@ function getCakeCategoriesQuery() {
     } = useQuery(['cakeCategories'], () => getCakeCategories())
 
     const { categories } = useMemo(() => {
-        const categories = categoriesData.map(category => {
-            return { ...category, cakes: formatCakes(category.cakes) }
+        const categories = categoriesData?.map(category => {
+            return { ...category, cakes: formatCakes(category?.cakes) }
         })
         return { categories }
     }, [categoriesData])
 
     return { categories, isLoading, isFetching, isError }
+}
+
+function getRelatedCakesQuery({ categoryName }: { categoryName: string }) {
+    const {
+        data: cakesData,
+        isLoading,
+        isError,
+        isFetching
+    } = useQuery(['relatedCakes', { category_name: categoryName }], () =>
+        getCakes({ params: { category_name: categoryName } })
+    )
+
+    const { relatedCakes } = useMemo(() => {
+        const relatedCakes = formatCakes(cakesData)
+        return { relatedCakes }
+    }, [cakesData])
+
+    return { relatedCakes, isLoading, isFetching, isError }
 }
 
 function getCakeQuery({ slug }: { slug: string }) {
@@ -121,11 +141,14 @@ function getCakesQueryWithFilter({
             'cakes',
             {
                 search: search || '',
-                category: category || '',
+                category_slug: category || '',
                 price: price || ''
             }
         ],
-        () => getCakes({ params: { name: search, category, price } })
+        () =>
+            getCakes({
+                params: { name: search, category_slug: category, price }
+            })
     )
 
     const { cakes } = useMemo(() => {
@@ -155,6 +178,7 @@ export {
     getCakesQueryWithFilter,
     getCakeQuery,
     getCakeCategoriesQuery,
+    getRelatedCakesQuery,
     useCakes,
     useCakeCategories
 }

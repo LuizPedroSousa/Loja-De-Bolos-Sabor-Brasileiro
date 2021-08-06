@@ -20,13 +20,13 @@ type User = {
     surname: string
     avatar: Avatar
 }
-
 type CakeRating = {
     id: string
     title: string
     description: string
     user: User
-    stars: Star
+    stars: number
+    insertedAt: string
 }
 
 type Cake = {
@@ -39,7 +39,7 @@ type Cake = {
     ingredients: Ingredient[]
     ratings: CakeRating[]
     category: string
-    starsAverage: Star
+    starsAverage: number
 }
 
 type Category = {
@@ -47,14 +47,6 @@ type Category = {
     name: string
     slug: string
     cakes: Cake[]
-}
-
-type Star = {
-    toMap: {
-        key: string
-        hasStar: boolean
-    }[]
-    length: number
 }
 
 const CakeProvider: React.FC = ({ children }) => {
