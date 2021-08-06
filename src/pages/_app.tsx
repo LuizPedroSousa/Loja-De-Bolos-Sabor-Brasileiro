@@ -7,6 +7,7 @@ import CakeProvider from '../contexts/cake/provider'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { Hydrate } from 'react-query/hydration'
 import { FavoriteProvider } from 'contexts/favorite/provider'
+import { UserProvider } from 'contexts/user/provider'
 function MyApp({ Component, pageProps }) {
     const [queryClient] = useState(() => new QueryClient())
     return (
@@ -16,8 +17,10 @@ function MyApp({ Component, pageProps }) {
                     <CakeProvider>
                         <FavoriteProvider>
                             <CartProvider>
-                                <GlobalStyles />
-                                <Component {...pageProps} />
+                                <UserProvider>
+                                    <GlobalStyles />
+                                    <Component {...pageProps} />
+                                </UserProvider>
                             </CartProvider>
                         </FavoriteProvider>
                     </CakeProvider>
