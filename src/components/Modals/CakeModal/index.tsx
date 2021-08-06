@@ -11,49 +11,54 @@ import {
     useEditableControls
 } from '@chakra-ui/react'
 
-import {
-    ModalContent,
-    ExitButton,
-    Thumb,
-    Info,
-    PriceFixed,
-    AddToCart,
-    AmountControls,
-    SeeCake,
-    CakePrice,
-    Stars
-} from './styles'
+import * as S from './styles'
 import { BiX } from 'react-icons/bi'
 import Image from 'next/image'
 import useCart from '../../../hooks/useCart'
 import { theme } from 'twin.macro'
 import useCustomRipple from '../../../hooks/useCustomRipple'
-import { AiFillStar, AiOutlineLine, AiOutlinePlus } from 'react-icons/ai'
-import { lighten } from 'polished'
+import { AiOutlineLine, AiOutlinePlus } from 'react-icons/ai'
 import Link from 'next/dist/client/link'
-import useBreakPoint from '../../../hooks/useBreakPoint'
 import BestCakeStar from '../../../../public/images/best-cake-star.svg'
 import { motion } from 'framer-motion'
-type Photos = {
+import IngredientIcon from 'components/AnimatedSvgs/IngredientIcon'
+import Rating from '@material-ui/lab/Rating'
+type Photo = {
     url: string
 }
 
-type Star = {
-    toMap: {
-        key: string
-        hasStar: boolean
-    }[]
-    length: number
+type Ingredient = {
+    id: string
+    name: string
+}
+
+type Avatar = Photo & {}
+type User = {
+    id: string
+    name: string
+    surname: string
+    avatar: Avatar
+}
+
+type CakeRating = {
+    id: string
+    title: string
+    description: string
+    user: User
+    stars: number
 }
 
 type Cake = {
     id: string
     price: string
+    slug: string
     name: string
     description: string
-    slug: string
-    photos: Photos[]
-    stars: Star
+    photos: Photo[]
+    ingredients: Ingredient[]
+    ratings: CakeRating[]
+    category: string
+    starsAverage: number
 }
 
 interface CartItem {
@@ -78,7 +83,6 @@ const CakeModal: React.FC<CakeModalProps> = ({ onClose, isOpen, cake }) => {
         { ref: mobalUpAmountRef, color: theme`colors.green.400` }
     ])
 
-    const { md } = useBreakPoint()
     const [item, setItem] = useState<CartItem>({ cake, amount: 1 })
 
     function EditableControls() {
@@ -132,14 +136,14 @@ const CakeModal: React.FC<CakeModalProps> = ({ onClose, isOpen, cake }) => {
             id={cake.id}
         >
             <ModalOverlay backdropFilter="blur(8px)" />
-            <ModalContent>
+            <S.ModalContent>
                 <ModalHeader>
-                    <ExitButton onClick={onClose}>
+                    <S.ExitButton onClick={onClose}>
                         <BiX />
-                    </ExitButton>
+                    </S.ExitButton>
                 </ModalHeader>
                 <ModalBody p="0">
-                    <Thumb>
+                    <S.Thumb>
                         <Image
                             width={600}
                             height={600}
@@ -147,7 +151,7 @@ const CakeModal: React.FC<CakeModalProps> = ({ onClose, isOpen, cake }) => {
                             src={cake.photos[0].url}
                             alt={cake.name}
                         />
-                        {cake.stars.length >= 4 && (
+                        {cake.starsAverage >= 4 && (
                             <motion.span
                                 animate={{
                                     y: [30, 20, 10, 0],
@@ -157,162 +161,82 @@ const CakeModal: React.FC<CakeModalProps> = ({ onClose, isOpen, cake }) => {
                                 <BestCakeStar />
                             </motion.span>
                         )}
-                    </Thumb>
-                    <Info>
+                    </S.Thumb>
+                    <S.Info>
                         <strong>{cake.name}</strong>
                         <p>{cake.description}</p>
-                        {md && (
-                            <>
-                                <Stars>
-                                    {cake.stars.toMap.map(
-                                        ({ key, hasStar }) => {
-                                            return (
-                                                <AiFillStar
-                                                    key={key}
-                                                    size={20}
-                                                    color={
-                                                        hasStar
-                                                            ? theme`colors.orange.500`
-                                                            : lighten(
-                                                                  0.1,
-                                                                  theme`colors.orange.100`
-                                                              )
-                                                    }
-                                                />
-                                            )
-                                        }
-                                    )}{' '}
-                                    <span>({cake.stars.length})</span>
-                                </Stars>
-                                <CakePrice>R$ {cake.price}</CakePrice>
-                            </>
-                        )}
-                    </Info>
+                        <S.CakePrice>
+                            <strong>R$ {cake.price}</strong>
+                        </S.CakePrice>
+                        <S.Stars>
+                            <Rating readOnly value={cake.starsAverage} />
+                            <p>({cake.ratings.length})</p>
+                        </S.Stars>
+                        <S.CakeIngredients>
+                            <strong>Principais Ingredientes</strong>
+                            <ul>
+                                {cake.ingredients.map(ingredient => (
+                                    <motion.li
+                                        key={'ingredient_' + ingredient.id}
+                                    >
+                                        <span>
+                                            <IngredientIcon />
+                                        </span>
+                                        <p>{ingredient.name}</p>
+                                    </motion.li>
+                                ))}
+                            </ul>
+                        </S.CakeIngredients>
+                    </S.Info>
                 </ModalBody>
                 <ModalFooter px="0">
-                    {!md && (
-                        <>
-                            <Stars>
-                                {cake.stars.toMap.map(({ key, hasStar }) => {
-                                    return (
-                                        <AiFillStar
-                                            key={key}
-                                            size={20}
-                                            color={
-                                                hasStar
-                                                    ? theme`colors.orange.500`
-                                                    : lighten(
-                                                          0.1,
-                                                          theme`colors.orange.100`
-                                                      )
-                                            }
-                                        />
-                                    )
-                                })}{' '}
-                                <span>({cake.stars.length})</span>
-                            </Stars>
-                            <CakePrice>R$ {cake.price}</CakePrice>
-                            <SeeCake>
-                                <Link href={`/bolos/${cake.slug}`}>
-                                    <a>Ver bolo</a>
-                                </Link>
-                            </SeeCake>
-                        </>
-                    )}
-                    {md && (
-                        <>
-                            <PriceFixed>
-                                <AmountControls>
-                                    <button
-                                        onClick={downAmount}
-                                        type="button"
-                                        name="Remover um bolo"
-                                        ref={mobalDownAmountRef}
-                                    >
-                                        <AiOutlineLine />
-                                    </button>
+                    <S.PriceFixed>
+                        <S.AmountControls>
+                            <button
+                                onClick={downAmount}
+                                type="button"
+                                name="Remover um bolo"
+                                ref={mobalDownAmountRef}
+                            >
+                                <AiOutlineLine />
+                            </button>
 
-                                    <Editable
-                                        defaultValue={String(item.amount)}
-                                        value={String(item.amount)}
-                                    >
-                                        <EditableInput
-                                            type="number"
-                                            onChange={editAmount as any}
-                                        />
-                                        <EditableControls />
-                                    </Editable>
-                                    <button
-                                        onClick={upAmount}
-                                        type="button"
-                                        name="Adicionar um bolo"
-                                        ref={mobalUpAmountRef}
-                                    >
-                                        <AiOutlinePlus />
-                                    </button>
-                                </AmountControls>
-                                <AddToCart
-                                    onClick={handleAddToCart}
-                                    type="button"
-                                    ref={mobalCartRef}
-                                >
-                                    <p>
-                                        Adicionar{' '}
-                                        <span>R$ {item.cake.price}</span>
-                                    </p>
-                                </AddToCart>
-                            </PriceFixed>
-                            <SeeCake>
-                                <Link href={`/bolos/${cake.slug}`}>
-                                    <a>Ver bolo</a>
-                                </Link>
-                            </SeeCake>
-                        </>
-                    )}
+                            <Editable
+                                defaultValue={String(item.amount)}
+                                value={String(item.amount)}
+                            >
+                                <EditableInput
+                                    type="number"
+                                    onChange={editAmount as any}
+                                />
+                                <EditableControls />
+                            </Editable>
+                            <button
+                                onClick={upAmount}
+                                type="button"
+                                name="Adicionar um bolo"
+                                ref={mobalUpAmountRef}
+                            >
+                                <AiOutlinePlus />
+                            </button>
+                        </S.AmountControls>
+                        <S.AddToCart
+                            onClick={handleAddToCart}
+                            type="button"
+                            ref={mobalCartRef}
+                        >
+                            <p>
+                                Adicionar <span>R$ {item.cake.price}</span>
+                            </p>
+                        </S.AddToCart>
+                    </S.PriceFixed>
+                    <S.SeeCake>
+                        <Link href={`/bolos/${cake.slug}`}>
+                            <a>Ver bolo</a>
+                        </Link>
+                    </S.SeeCake>
                 </ModalFooter>
-            </ModalContent>
-            {!md && (
-                <PriceFixed>
-                    <AmountControls>
-                        <button
-                            onClick={downAmount}
-                            type="button"
-                            name="Remover um bolo"
-                            ref={mobalDownAmountRef}
-                        >
-                            <AiOutlineLine />
-                        </button>
-
-                        <Editable
-                            defaultValue={String(item.amount)}
-                            value={String(item.amount)}
-                        >
-                            <EditableInput
-                                type="number"
-                                onChange={editAmount as any}
-                            />
-                            <EditableControls />
-                        </Editable>
-                        <button
-                            onClick={upAmount}
-                            type="button"
-                            name="Adicionar um bolo"
-                            ref={mobalUpAmountRef}
-                        >
-                            <AiOutlinePlus />
-                        </button>
-                    </AmountControls>
-                    <AddToCart
-                        onClick={handleAddToCart}
-                        type="button"
-                        ref={mobalCartRef}
-                    >
-                        <p>
-                            Adicionar <span>R$ {item.cake.price}</span>
-                        </p>
-                    </AddToCart>
-                </PriceFixed>
-            )}
+            </S.ModalContent>
         </Modal>
     )
 }
