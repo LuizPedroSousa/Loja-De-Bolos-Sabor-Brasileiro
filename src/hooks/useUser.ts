@@ -3,6 +3,8 @@ import { useContextSelector } from 'use-context-selector'
 import { useState } from 'react'
 import api from 'services/api'
 import Cookies from 'js-cookie'
+import { GetServerSidePropsContext } from 'next'
+import { QueryClient } from 'react-query'
 
 type CreateUser = {
     name: string
@@ -240,6 +242,27 @@ async function getUserShow({ accessToken, refreshToken }: GetUserShowProps) {
     return data.user as User
 }
 
+async function prefetchUserShow({
+    ctx,
+    queryClient
+}: {
+    ctx: GetServerSidePropsContext
+    queryClient: QueryClient
+}) {
+    const refreshToken = ctx.req.cookies['refresh-token']
+    const accessToken = ctx.req.cookies['access-token']
+    if (refreshToken && accessToken) {
+        await queryClient.prefetchQuery(
+            ['user', { refreshToken, accessToken }],
+            () => getUserShow({ refreshToken, accessToken }),
+            {
+                retry: false,
+                staleTime: 14 * 60
+            }
+        )
+    }
+}
+
 function useUser() {
     const isLoggedIn = useContextSelector(UserContext, v => v.isLoggedIn)
     const setIsLoggedIn = useContextSelector(UserContext, v => v.setIsLoggedIn)
@@ -249,4 +272,11 @@ function useUser() {
     return { isLoggedIn, user, setUser, setIsLoggedIn }
 }
 
-export { createUser, authUser, checkAvailableNickname, useUser, getUserShow }
+export {
+    createUser,
+    authUser,
+    checkAvailableNickname,
+    useUser,
+    getUserShow,
+    prefetchUserShow
+}

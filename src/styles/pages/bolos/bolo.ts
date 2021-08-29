@@ -3,6 +3,7 @@ import tw, { theme } from 'twin.macro'
 import { Spinner as ChakraSpinner } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 
+import Select from 'react-select'
 interface DeliveryOptionsReceiveAtHomeProps {
     isError: boolean
     isSuccess: boolean
@@ -12,14 +13,17 @@ export const Container = styled.div`
     ${tw`
         relative mb-10 w-full mt-8
         sm:(grid items-baseline gap-x-4)
-        xs:px-4 md-3:px-0 grid l:mt-10
+        xs:px-4 md-3:px-0 grid l:mt-16
     `};
 
     @media ${({ theme: { bp } }) => bp.sm} {
         grid-template-columns: 1.25fr 1fr;
+        grid-template-rows: max-content max-content 1fr max-content;
         grid-template-areas:
             'cake-photos cake-info'
-            'cake-photos delivery-options';
+            'cake-relations cake-info'
+            'cake-relations delivery-options'
+            'cake-ratings cake-ratings';
     }
 
     @media ${({ theme: { bp } }) => bp.md} {
@@ -68,25 +72,36 @@ export const CakeInfoSection = styled.section`
 export const CakeInfoTitle = styled.div`
     ${tw`
         flex flex-col items-start justify-center
-        w-full mt-2 border-b-2 border-gray-700 border-opacity-25
-        pb-2
+        w-full mt-2
+        sm:(mt-0)
     `}
     border-bottom-width: 1px;
     strong {
         ${tw`
-            text-xl text-gray-800
+            text-xl text-blueVariant-800
+            font-medium
+            l:(text-4xl leading-7 mb-2)
         `}
+    }
+    p {
+        ${tw`
+            font-medium text-lg leading-6
+            text-blue-100
+        `};
     }
 `
 export const Stars = styled.div`
     ${tw`
-        flex items-center justify-center my-1
+        flex items-center justify-center mt-2
     `}
     svg {
         ${tw`text-lg`}
     }
-    span {
-        ${tw`ml-2 text-gray-600`}
+    p {
+        ${tw`
+            ml-1 leading-3 text-sm text-blueVariant-600
+            tracking-wider
+        `}
     }
 `
 
@@ -110,68 +125,37 @@ export const CakeInfoBest = styled.div`
 export const CakeInfoPrice = styled.div`
     ${tw`
         items-center justify-center
-        flex-col mt-1
+        flex-col
     `}
     p {
         ${tw`
-            font-sans text-md text-center
-            text-gray-800 capitalize mt-2
+            font-sans text-md text-left
+            text-blue-100 mt-2 md:(text-lg)
         `}
         strong {
             ${tw`
-                text-orange-500 font-roboto sm:text-2xl
+                text-orange-500 font-medium sm:text-2xl
             `}
         }
-    }
-`
-
-export const CakeInfoShop = styled.div`
-    ${tw`
-        w-full grid
-        h-14 gap-x-2 my-4
-        sm:gap-x-3 l:gap-x-4
-        l:(mb-6)
-    `}
-    border-bottom-width: 1px;
-    grid-template-columns: 0.25fr 1fr;
-    button {
-        ${tw`
-            w-full h-full flex items-center justify-center
-            border-2 text-xl rounded-md font-medium text-white py-3.5
-            font-sans duration-100 sm:py-2.5 md:py-4 l:py-3
-        `}
-        :nth-of-type(1) {
+        span {
             ${tw`
-                border-red-400 bg-red-400 text-2xl
-                hover:(border-red-100 bg-red-500)
-                focus:(bg-white text-red-500 ring-2 border-0 ring-red-500)
-
-            `}
-        }
-        :nth-of-type(2) {
-            ${tw`
-                bg-orange-500 hover:(bg-orange-700 border-orange-100)
-                focus:(ring-2 border-0 bg-white text-orange-500 ring-orange-500)
+                text-blueVariant-600
             `};
         }
     }
-    @media ${({ theme: { bp } }) => bp.md} {
-        grid-template-columns: 0.22fr 1fr;
-    }
-    @media ${({ theme: { bp } }) => bp.l} {
-        grid-template-columns: 4rem 1fr;
-    }
 `
+
+export const CakeInfoShop = styled.div``
 
 export const CakeInfoIngredients = styled.div`
     ${tw`
-        w-full mt-2.5  border-t-2 border-gray-700 border-opacity-25
+        w-full mt-2.5
         pt-2
     `}
-    border-top-width: 1px;
     strong {
         ${tw`
-            text-xl text-gray-800
+            text-xl text-blueVariant-800 font-medium
+            md:(text-2xl)
         `}
     }
     ul {
@@ -182,12 +166,17 @@ export const CakeInfoIngredients = styled.div`
                 ${tw`mt-1.5 sm:mt-2`}
             }
             span {
-                ${tw`w-4 h-4 flex items-center justify-center mr-2 text-orange-500 l:mb-1`}
+                ${tw`
+                    w-4 h-4 flex items-center justify-center mr-2
+                    text-orange-500
+                    l:(mb-1 w-6 h-6)
+                `}
             }
             p {
                 ${tw`
-                    text-md capitalize font-description-variant
-                    font-semibold text-gray-700
+                    text-md capitalize font-sans
+                    font-medium text-blueVariant-600
+                    sm:text-lg
                 `}
                 max-width: 90%;
             }
@@ -216,9 +205,8 @@ export const CakeInfoIngredients = styled.div`
 
 export const CakeDeliveryOptionsSection = styled.section`
     ${tw`
-        w-full mx-auto mt-4 border-t-2 border-gray-700
-        border-opacity-25
-        pt-2
+        w-full mx-auto mt-4 border-t-2 border-orange-500
+        pt-3 sm:(mt-0) relative bottom-6
     `}
     border-top-width: 1px;
     max-width: 94%;
@@ -228,7 +216,8 @@ export const CakeDeliveryOptionsSection = styled.section`
     > strong {
         ${tw`
             mt-2
-            text-xl text-gray-800 font-sans
+            text-xl text-blueVariant-800 font-sans
+            font-medium
         `}
     }
 `
@@ -237,8 +226,7 @@ export const DeliveryOptionsPickUpAtStore = styled.div`
     ${tw`
         w-full flex items-center justify-between
         mt-2 relative mb-4
-        after:(content absolute -bottom-3 bg-gray-700 bg-opacity-25)
-
+        after:(content absolute -bottom-3 bg-orange-500)
     `}
     :after {
         height: 1px;
@@ -250,17 +238,17 @@ export const DeliveryOptionsPickUpAtStore = styled.div`
         max-width: 58%;
         > strong {
             ${tw`
-                text-gray-800 text-md font-semibold
+                text-blueVariant-600 text-md font-semibold
                 font-sans
             `};
         }
         p {
             ${tw`
-                text-gray-700 font-medium font-sans
+                text-blue-100 font-medium font-sans
             `}
             line-height: 140%;
             strong {
-                ${tw`font-bold text-gray-800`}
+                ${tw`font-bold text-blueVariant-600`}
             }
         }
     }
@@ -378,9 +366,37 @@ export const ConsultError = styled(ConsultSuccess)`
     `}
 `
 
+export const CakeRelationsSection = styled.section`
+    ${tw`
+        w-full px-3 mt-6 h-full
+        sm:(px-0 mt-8)
+    `};
+    > h2 {
+        ${tw`
+            text-lg text-blueVariant-600 capitalize
+            font-medium mb-1 block mr-auto
+            sm:(text-xl)
+        `};
+    }
+    @media ${({ theme: { bp } }) => bp.sm} {
+        grid-area: cake-relations;
+    }
+`
+
+export const CakeRelations = styled.div`
+    ${tw`
+        grid grid-cols-2 mt-2 gap-x-2
+        gap-y-6 sm:(grid-cols-3 mt-3)
+        md:(gap-y-6 gap-x-2)
+    `};
+`
+
 export const CakeRatingSection = styled.section`
-    ${tw`w-full mt-6 mx-auto`};
+    ${tw`w-full mt-6 mx-auto l:mt-10`};
     max-width: 94%;
+    @media ${({ theme: { bp } }) => bp.sm} {
+        grid-area: cake-ratings;
+    }
 `
 
 export const CakeRatingTitle = styled.div`
@@ -395,10 +411,11 @@ export const CakeRatingTitle = styled.div`
             after:(left-0)
             before:(right-0)
             font-bold w-full text-center
+            l:text-2xl
         `};
         :after,
         :before {
-            ${tw`content absolute bg-gray-600`};
+            ${tw`content absolute bg-opacity-75 bg-gray-700`};
             top: 50%;
             height: 1px;
             transform: translateY(-50%);
@@ -407,27 +424,107 @@ export const CakeRatingTitle = styled.div`
     }
     > div {
         ${tw`
+            sm:(flex justify-between w-full items-baseline mx-auto my-3)
+            md:(my-10)
+            l:(my-14)
+        `};
+        > div {
+            ${tw`
                 flex items-center justify-center
                 flex-col mt-2
             `}
-        > strong {
-            ${tw`
+            > strong {
+                ${tw`
                 text-3xl font-bold uppercase
-                text-center
+                text-center sm:text-5xl md:text-6xl
             `};
-        }
-        > p {
-            ${tw`mt-2`};
-        }
-        & + div {
-            ${tw`
+            }
+            > p {
+                ${tw`
+                    mt-2 text-center
+                    md:text-md
+                `};
+            }
+            & + div {
+                ${tw`
                 mt-2
             `};
-        }
-        :last-of-type {
-            ${tw`
+            }
+            :last-of-type {
+                ${tw`
                 leading-5 mt-4
+                sm:mt-0
             `};
+                p {
+                    ${tw`font-medium mt-6 md:(max-w-full mt-8)`};
+                }
+            }
+        }
+    }
+
+    @media ${({ theme: { bp } }) => bp.xs} {
+        h2 {
+            :after,
+            :before {
+                width: 18%;
+            }
+        }
+    }
+
+    @media ${({ theme: { bp } }) => bp.sm} {
+        h2 {
+            :after,
+            :before {
+                width: 28%;
+            }
+        }
+        > div {
+            max-width: 27rem;
+            > div {
+                :last-of-type {
+                    p {
+                        max-width: 70%;
+                    }
+                }
+            }
+        }
+    }
+
+    @media ${({ theme: { bp } }) => bp.md} {
+        h2 {
+            :after,
+            :before {
+                width: 32%;
+            }
+        }
+        > div {
+            ${tw`
+                max-w-xl
+            `};
+            > div {
+                :first-of-type {
+                    > strong {
+                        line-height: 4rem;
+                    }
+                }
+            }
+            > strong {
+                line-height: 9rem;
+            }
+        }
+    }
+
+    @media ${({ theme: { bp } }) => bp.l} {
+        > div {
+            > div {
+                :first-of-type {
+                    > strong {
+                    }
+                }
+                > strong {
+                    font-size: 5rem;
+                }
+            }
         }
     }
 `
@@ -435,7 +532,30 @@ export const CakeRatingTitle = styled.div`
 export const CakeRatingsStars = styled.div`
     ${tw`
         flex items-center justify-center
-        w-full
+        w-full md:mt-1 l:mt-2
     `};
     height: max-content;
+`
+
+export const CakeRatings = styled.div`
+    ${tw`
+        w-full flex flex-col mt-6
+
+    `};
+`
+
+export const CakeRatingsOrder = styled.div`
+    ${tw`
+        w-full flex items-baseline
+        justify-between
+    `};
+    > strong {
+        ${tw`text-md`};
+    }
+`
+
+export const OrderSelect = styled(Select).attrs({})`
+    ${tw`
+        w-36
+    `};
 `

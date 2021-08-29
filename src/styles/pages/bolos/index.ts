@@ -13,10 +13,63 @@ interface CakesSectionProps {
     cakeNotFound: boolean
 }
 
+export const HeaderTitle = styled.header`
+    ${tw`
+        flex items-center bg-orange-500
+        justify-center
+        h-24 md-3:(h-44 pb-16)
+        w-full l:(h-48)
+    `};
+    > div {
+        ${tw`
+            px-2 flex items-center justify-center flex-col-reverse
+            md-3:(flex-row justify-between w-full)
+        `};
+        h2 {
+            ${tw`text-white font-semibold text-2xl sm:text-3xl md-3:text-4xl`};
+        }
+    }
+    @media ${({ theme: { bp } }) => bp['3md']} {
+        > div {
+            max-width: 94%;
+            ${tw`
+                mx-auto px-4
+            `};
+        }
+    }
+    @media ${({ theme: { bp } }) => bp.l} {
+        > div {
+            max-width: 1360px;
+        }
+    }
+`
+
+export const Breadcrumb = styled.div`
+    ${tw`
+        flex items-center justify-center text-white
+    `};
+    a {
+        ${tw`flex items-center justify-center text-md`};
+        span {
+            ${tw`mr-1 text-md
+                flex items-center justify-center
+            `};
+        }
+    }
+    > span {
+        :first-of-type {
+            ${tw`mx-1`};
+        }
+        :last-of-type {
+            ${tw`text-gray-300 text-md`};
+        }
+    }
+`
+
 export const Container = styled.div`
     ${tw`
-        relative mb-10 w-full mt-8 l:mt-4
-        xs:px-4 md-3:px-0 grid
+        relative mb-10 w-full mt-3
+        xs:px-4 md-3:px-0 grid md-3:(bottom-20 mt-0)
     `};
 
     grid-template-rows: max-content max-content 1fr;

@@ -17,7 +17,7 @@ const MobalCategories: React.FC = () => {
                         Todos
                     </button>
                 </Category>
-                {categories.map(category => (
+                {categories?.map(category => (
                     <CategoryList key={category.id} category={category} />
                 ))}
             </ul>

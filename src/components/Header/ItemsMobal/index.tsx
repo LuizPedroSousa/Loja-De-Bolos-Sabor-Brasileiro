@@ -158,7 +158,7 @@ const ItemsMobal: React.FC<ItemsMobalProps> = ({
                                                             Todos
                                                         </FilterCheckbox>
                                                     </FilterItem>
-                                                    {categories.map(
+                                                    {categories?.map(
                                                         category => (
                                                             <FilterItem
                                                                 key={
@@ -183,32 +183,7 @@ const ItemsMobal: React.FC<ItemsMobalProps> = ({
                                                     </AccordionButton>
                                                 </h2>
                                                 <AccordionPanel>
-                                                    {categories.map(
-                                                        category => (
-                                                            <FilterItem
-                                                                key={
-                                                                    category.id
-                                                                }
-                                                            >
-                                                                <FilterCheckbox>
-                                                                    {
-                                                                        category.name
-                                                                    }
-                                                                </FilterCheckbox>
-                                                            </FilterItem>
-                                                        )
-                                                    )}
-                                                </AccordionPanel>
-                                            </AccordionItem>
-                                            <AccordionItem>
-                                                <h2>
-                                                    <AccordionButton>
-                                                        <p>Descontos</p>
-                                                        <AccordionIcon />
-                                                    </AccordionButton>
-                                                </h2>
-                                                <AccordionPanel>
-                                                    {categories.map(
+                                                    {categories?.map(
                                                         category => (
                                                             <FilterItem
                                                                 key={

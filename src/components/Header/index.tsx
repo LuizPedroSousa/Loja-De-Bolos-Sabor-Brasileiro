@@ -5,8 +5,10 @@ import Image from 'next/image'
 import { Container, Logo, Nav, PageLinks } from './styles'
 
 import useBreakPoint from '../../hooks/useBreakPoint'
-import ItemsDesktop from './ItemsDesktop'
-import ItemsMobal from './ItemsMobal'
+
+import dynamic from 'next/dynamic'
+const ItemsMobal = dynamic(() => import('./ItemsMobal'))
+const ItemsDesktop = dynamic(() => import('./ItemsDesktop'))
 
 export type ActiveHrefType =
     | '/'

@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react'
-import Head from 'next/head'
 import DefaultLayout from '../../../components/Layout/DefaultLayout'
 import Header from '../../../components/Header'
 import Footer from '../../../components/Footer'
@@ -20,6 +19,7 @@ import * as Yup from 'yup'
 import { useRouter } from 'next/router'
 import Cookies from 'js-cookie'
 import SolicitationModal from '../../../components/Modals/SolicitationModal'
+import Seo from 'components/Seo'
 type ReasonType = {
     name: string
 }
@@ -100,9 +100,11 @@ export default function Solicitação() {
 
     return (
         <DefaultLayout>
-            <Head>
-                <title>Enviar uma solicitação | FAQ | Sabor Brasileiro</title>
-            </Head>
+            <Seo
+                thumb={`${process.env.NEXT_PUBLIC_URL}/images/thumbs/solicitation.png`}
+                description="Envie uma solicitação com informações sobre sugestões, problemas ou duvidas. Sabor Brasileiro | O melhor sempre!"
+                title="Enviar uma solicitação | FAQ"
+            />
             <Header activePage="/faq" />
             <main>
                 <Container hasErrors={!isValid}>

@@ -1,10 +1,10 @@
-import React, { FormEvent, useEffect, useRef, useState } from 'react'
+import React, { FormEvent, useEffect, useMemo, useRef, useState } from 'react'
 import dynamic from 'next/dynamic'
 import * as S from 'styles/pages/home'
 import Header from '../components/Header'
-import { GetStaticProps } from 'next'
-import { QueryClient } from 'react-query'
-import { getCakes } from '../hooks/useCake'
+import { GetServerSideProps } from 'next'
+import { QueryClient, useQuery } from 'react-query'
+import { getCakes, useCakes } from '../hooks/useCake'
 import { getConfectioners } from '../hooks/useConfectioners'
 import { dehydrate } from 'react-query/hydration'
 import Seo from '../components/Seo'
@@ -13,6 +13,8 @@ import useBreakPoint from 'hooks/useBreakPoint'
 import useCustomRipple from 'hooks/useCustomRipple'
 import { lighten } from 'polished'
 import { theme } from 'twin.macro'
+import { formatCakes } from 'utils/formatCakes'
+import { getUserShow } from 'hooks/useUser'
 const IntroductionCarousel = dynamic(
     () => import('components/Home/Introduction/Carousel')
 )
@@ -28,7 +30,7 @@ const OurServices = dynamic(() => import('../components/Home/OurServices'))
 const ScheduleOrder = dynamic(() => import('../components/Home/ScheduleOrder'))
 const SomeFlavors = dynamic(() => import('../components/Home/SomeFlavors'))
 
-export default function Home() {
+export default function Home({ isLoggedIn }) {
     const { xs } = useBreakPoint()
 
     const goRef = useRef<HTMLButtonElement>(null)
@@ -37,10 +39,22 @@ export default function Home() {
     const introductionSectionRef = useRef<HTMLTableSectionElement>(null)
     const [backgroundHeight, setBackgroundHeight] = useState('140vh')
 
+    const { data: cakesData } = useQuery(
+        ['cakes', 6],
+        async () => await getCakes({ params: { _limit: 6 } })
+    )
+
+    const { cakes } = useMemo(() => {
+        const cakes = formatCakes(cakesData)
+        return { cakes }
+    }, [])
+    const { setCakes } = useCakes()
+
     useEffect(() => {
         const introductionSectionHeight = `${introductionSectionRef?.current.offsetHeight}px`
         const height = `calc(100vh + ${introductionSectionHeight})`
         setBackgroundHeight(height)
+        setCakes(cakes)
     }, [])
 
     useCustomRipple([
@@ -110,7 +124,7 @@ export default function Home() {
     )
 }
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
     const queryClient = new QueryClient()
     await queryClient.prefetchQuery(['cakes', 6], () =>
         getCakes({ params: { _limit: 6 } })
@@ -124,10 +138,21 @@ export const getStaticProps: GetStaticProps = async () => {
         getConfectioners({ params: { _limit: 4 } })
     )
 
+    const refreshToken = req.cookies['refresh-token']
+    const accessToken = req.cookies['access-token']
+    if (refreshToken && accessToken) {
+        await queryClient.prefetchQuery(
+            ['user', { refreshToken, accessToken }],
+            () => getUserShow({ refreshToken, accessToken }),
+            {
+                retry: false,
+                staleTime: 14 * 60
+            }
+        )
+    }
     return {
         props: {
             dehydratedState: dehydrate(queryClient)
-        },
-        revalidate: 60 * 60 * 5
+        }
     }
 }

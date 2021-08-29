@@ -13,22 +13,28 @@ import { AiOutlineClose } from 'react-icons/ai'
 
 import * as S from './styles'
 
-type Photos = {
-    id: string
+type Photo = {
     url: string
 }
-
-type Star = {
-    toMap: {
-        key: string
-        hasStar: boolean
-    }[]
-    length: number
-}
-
 type Ingredient = {
     id: string
     name: string
+}
+
+type Avatar = Photo & {}
+type User = {
+    id: string
+    name: string
+    surname: string
+    avatar: Avatar
+}
+
+type CakeRating = {
+    id: string
+    title: string
+    description: string
+    user: User
+    stars: number
 }
 
 type Cake = {
@@ -37,10 +43,11 @@ type Cake = {
     slug: string
     name: string
     description: string
-    photos: Photos[]
-    stars: Star
+    photos: Photo[]
     ingredients: Ingredient[]
+    ratings: CakeRating[]
     category: string
+    starsAverage: number
 }
 
 interface BuyCakeModalProps {

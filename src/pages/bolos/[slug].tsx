@@ -6,13 +6,21 @@ import Footer from 'components/Footer'
 import Header from 'components/Header'
 import DefaultLayout from 'components/Layout/DefaultLayout'
 import Seo from 'components/Seo'
-import { getCakes, getCake, getCakeQuery } from 'hooks/useCake'
+import {
+    getCakes,
+    getCake,
+    getCakeQuery,
+    getRelatedCakesQuery
+} from 'hooks/useCake'
 import useBreakPoint from 'hooks/useBreakPoint'
 import * as Yup from 'yup'
-import { AiFillStar, AiOutlineCheck, AiOutlineHeart } from 'react-icons/ai'
+import {
+    AiOutlineCheck,
+    AiOutlineHeart,
+    AiOutlineLine,
+    AiOutlinePlus
+} from 'react-icons/ai'
 import { IoMdHeartDislike } from 'react-icons/io'
-import { theme } from 'twin.macro'
-import { lighten } from 'polished'
 import MobalSlider from 'components/Bolos/Bolo/MobalSlider'
 import DesktopImagesPreview from 'components/Bolos/Bolo/DesktopImagesPreview'
 import { motion } from 'framer-motion'
@@ -30,8 +38,11 @@ import {
 } from 'hooks/useFavoriteCakes'
 import { useAddToCart } from 'hooks/useCart'
 import BuyCakeModal from 'components/Modals/BuyCakeModal'
-import { useDisclosure } from '@chakra-ui/react'
+import { Editable, EditableInput, useDisclosure } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
+import UserRating from 'components/Bolos/Bolo/UserRating'
+import Rating from '@material-ui/lab/Rating'
+import RelatedCake from 'components/Bolos/Bolo/RelatedCake'
 
 type Photo = {
     id: string
@@ -49,9 +60,9 @@ type CakeFromApi = {
     name: string
     slug: string
     description: string
+    category: string
     photos: Photo[]
     ingredients: Ingredient[]
-    stars: number
 }
 
 type Address = {
@@ -91,6 +102,10 @@ export default function Bolo({ slug }: BoloProps) {
     const { favoriteCakes } = useFavorites()
     const { toggleFavoriteCake } = useToggleFavoriteCake()
     const { hasCakeInFavorites } = useHasInFavorite()
+
+    const { relatedCakes } = getRelatedCakesQuery({
+        categoryName: cake.category
+    })
     useEffect(() => {
         setHasInFavorites(hasCakeInFavorites(cake))
     }, [favoriteCakes])
@@ -196,7 +211,6 @@ export default function Bolo({ slug }: BoloProps) {
                 thumb={cake.photos[0].url}
                 title={cake.name}
             />
-            <BuyCakeModal isOpen={isOpen} onClose={onClose} cake={cake} />
             <main>
                 <Header activePage="/bolos/bolo" />
                 <S.Container>
@@ -209,24 +223,10 @@ export default function Bolo({ slug }: BoloProps) {
                             <strong>{cake.name}</strong>
                             <p>{cake.description}</p>
                             <S.Stars>
-                                {cake.stars.toMap.map(({ key, hasStar }) => {
-                                    return (
-                                        <AiFillStar
-                                            key={key}
-                                            color={
-                                                hasStar
-                                                    ? theme`colors.orange.500`
-                                                    : lighten(
-                                                          0.1,
-                                                          theme`colors.orange.100`
-                                                      )
-                                            }
-                                        />
-                                    )
-                                })}{' '}
-                                <span>({cake.stars.length})</span>
+                                <Rating readOnly value={cake.starsAverage} />
+                                <p>({cake.ratings.length})</p>
                             </S.Stars>
-                            {cake.stars.length >= 4 && (
+                            {cake.starsAverage >= 4 && (
                                 <S.CakeInfoBest>
                                     <strong>Prove o melhor Sabor</strong>
                                 </S.CakeInfoBest>
@@ -234,30 +234,15 @@ export default function Bolo({ slug }: BoloProps) {
 
                             <S.CakeInfoPrice>
                                 <p>
-                                    por <strong>R$ {cake.price}</strong>
+                                    Por <strong>R$ {cake.price}</strong> <br />
+                                    em dinheiro ou avista <span>
+                                        sem juros
+                                    </span>{' '}
+                                    cartão!
                                 </p>
                             </S.CakeInfoPrice>
                         </S.CakeInfoTitle>
-                        <S.CakeInfoShop>
-                            <button
-                                type="button"
-                                onClick={() => toggleFavoriteCake(cake)}
-                                name="Favoritar"
-                            >
-                                {hasInFavorites ? (
-                                    <AiOutlineHeart />
-                                ) : (
-                                    <IoMdHeartDislike />
-                                )}
-                            </button>
-                            <button
-                                onClick={handleAddToCart}
-                                type="button"
-                                name="Comprar"
-                            >
-                                {hasInCart ? 'Finalizar Compra' : 'Comprar'}
-                            </button>
-                        </S.CakeInfoShop>
+                        <S.CakeInfoShop></S.CakeInfoShop>
                         <S.CakeInfoIngredients>
                             <strong>Principais Ingredientes</strong>
                             <ul>
@@ -393,6 +378,70 @@ export default function Bolo({ slug }: BoloProps) {
                             </a>
                         </S.DeliveryOptionsReceiveAtHome>
                     </S.CakeDeliveryOptionsSection>
+                    <S.CakeRelationsSection>
+                        <h2>Veja também</h2>
+                        <S.CakeRelations>
+                            {relatedCakes?.map(cake => (
+                                <RelatedCake
+                                    key={cake.id + '_related_cake'}
+                                    cake={cake}
+                                />
+                            ))}
+                        </S.CakeRelations>
+                    </S.CakeRelationsSection>
+                    <S.CakeRatingSection>
+                        <S.CakeRatingTitle>
+                            <h2>opiniões de quem já comprou</h2>
+                            <div>
+                                <div>
+                                    <strong>{cake.starsAverage}</strong>
+                                    <S.CakeRatingsStars>
+                                        <Rating
+                                            readOnly
+                                            value={cake.starsAverage}
+                                        />
+                                    </S.CakeRatingsStars>
+                                    <p>
+                                        <strong>
+                                            Baseado em {cake.ratings.length}{' '}
+                                            {cake.ratings?.length > 1
+                                                ? 'avaliações'
+                                                : 'avaliação'}
+                                        </strong>
+                                    </p>
+                                </div>
+                                <div>
+                                    <strong>98%</strong>
+                                    <p>dos clientes recomendam este produto!</p>
+                                </div>
+                            </div>
+                        </S.CakeRatingTitle>
+                        <S.CakeRatings>
+                            <S.CakeRatingsOrder>
+                                <strong>Avaliações mais recentes</strong>
+                                <S.OrderSelect
+                                    defaultValue="recent"
+                                    options={[
+                                        {
+                                            value: 'recent',
+                                            label: 'Mais Recente'
+                                        },
+                                        {
+                                            value: 'relevant',
+                                            label: 'Mais Relevante'
+                                        },
+                                        {
+                                            value: 'negative',
+                                            label: 'Negativo'
+                                        }
+                                    ]}
+                                ></S.OrderSelect>
+                            </S.CakeRatingsOrder>
+                            {cake.ratings?.map(rating => (
+                                <UserRating key={rating.id} rating={rating} />
+                            ))}
+                        </S.CakeRatings>
+                    </S.CakeRatingSection>
                 </S.Container>
                 <Footer />
             </main>
@@ -428,6 +477,14 @@ export const getStaticProps: GetStaticProps = async ({ params: { slug } }) => {
     await queryClient.prefetchQuery(['cake', slug], () =>
         getCake({ slug: slug as string })
     )
+
+    const cake = queryClient.getQueryData<CakeFromApi>(['cake', slug])
+
+    await queryClient.prefetchQuery(
+        ['relatedCakes', { category_name: cake.category }],
+        () => getCakes({ params: { category_name: cake.category } })
+    )
+
     await queryClient.refetchQueries({ active: true })
     return {
         props: {

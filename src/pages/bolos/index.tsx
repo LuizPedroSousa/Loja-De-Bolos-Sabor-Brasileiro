@@ -1,13 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { GetServerSideProps } from 'next'
-import Head from 'next/head'
-import Header from '../../components/Header'
-import DefaultLayout from '../../components/Layout/DefaultLayout'
+import Header from 'components/Header'
+import DefaultLayout from 'components/Layout/DefaultLayout'
 import {
     getCakes,
     getCakeCategories,
     getCakesQueryWithFilter,
-    useCake
+    useCakeCategories,
+    getCakeCategoriesQuery
 } from '../../hooks/useCake'
 import { QueryClient } from 'react-query'
 import { dehydrate } from 'react-query/hydration'
@@ -16,24 +16,12 @@ import Footer from '../../components/Footer'
 import MobalCategories from '../../components/MobalCategories'
 import { BsFillGridFill, BsSearch } from 'react-icons/bs'
 import { MdGridOff } from 'react-icons/md'
-import { AiOutlineUnorderedList } from 'react-icons/ai'
 import {
-    Container,
-    SearchBar,
-    SearchTitle,
-    SearchLayoutControls,
-    InputSearch,
-    CakesSection,
-    CakesNotFound,
-    AsideFilters,
-    CategoriesFilters,
-    CategoryItemFilters,
-    Checkbox,
-    ContentFilters,
-    PriceFilters,
-    PriceItemFilters,
-    InputPriceFilter
-} from '../../styles/pages/bolos/index'
+    AiOutlineHome,
+    AiOutlineRight,
+    AiOutlineUnorderedList
+} from 'react-icons/ai'
+import * as S from 'styles/pages/bolos/index'
 import CakeRow from '../../components/Bolos/Cakes/CakeRow'
 import CakeColumn from '../../components/Bolos/Cakes/CakeColumn'
 import CakeHideInfo from '../../components/Bolos/Cakes/CakeHideInfo'
@@ -41,8 +29,9 @@ import { useRouter } from 'next/router'
 import { Skeleton } from '@chakra-ui/react'
 import { useFormik } from 'formik'
 import useCustomRipple from '../../hooks/useCustomRipple'
-import Lottie from 'react-lottie'
-import CakeAnim from '../../../public/lottie/cake-not-found-anim.json'
+import Seo from 'components/Seo'
+import Link from 'next/link'
+import { getUserShow } from 'hooks/useUser'
 type ViewLayout = 'column' | 'column-hide-info' | 'row'
 
 interface BolosProps {
@@ -68,11 +57,12 @@ interface Query {
 export default function Bolos({ search, price, category }: BolosProps) {
     const { xsDown, xs, '3md': md3 } = useBreakPoint()
     const [viewLayout, setViewLayout] = useState<ViewLayout>('column')
-    const { categories } = useCake()
+    const { categories, setCategories } = useCakeCategories()
+    const { categories: categoriesData } = getCakeCategoriesQuery()
 
     const goRef = useRef<HTMLButtonElement>(null)
     useCustomRipple([{ ref: goRef }])
-    const { cakes, isLoading, isError } = getCakesQueryWithFilter({
+    const { cakes, isError } = getCakesQueryWithFilter({
         search,
         price,
         category
@@ -93,6 +83,10 @@ export default function Bolos({ search, price, category }: BolosProps) {
     const router = useRouter()
 
     useEffect(() => {
+        setCategories(categoriesData)
+    }, [])
+
+    useEffect(() => {
         router.push(
             `/bolos?search=${query.name}${
                 query.price && '&price=' + query.price
@@ -108,20 +102,42 @@ export default function Bolos({ search, price, category }: BolosProps) {
     })
     return (
         <DefaultLayout>
-            <Head>
-                <title>Sabor Brasileiro | Bolos</title>
-            </Head>
+            <Seo
+                description="Sabor brasileiros | Os melhores sabores sempre"
+                thumb={`${process.env.NEXT_PUBLIC_URL}/images/thumbs/bolos.png`}
+                title="Bolos"
+            />
             <main>
                 <Header activePage="/bolos" />
-                <Container>
+                <S.HeaderTitle>
+                    <div>
+                        <h2>Nosso sabores</h2>
+                        <S.Breadcrumb>
+                            <Link href="">
+                                <a>
+                                    <span>
+                                        <AiOutlineHome />
+                                    </span>
+                                    Home
+                                </a>
+                            </Link>
+                            <span>
+                                <AiOutlineRight />
+                            </span>
+
+                            <span>Bolos</span>
+                        </S.Breadcrumb>
+                    </div>
+                </S.HeaderTitle>
+                <S.Container>
                     {md3 && (
-                        <AsideFilters>
-                            <ContentFilters>
-                                <CategoriesFilters>
+                        <S.AsideFilters>
+                            <S.ContentFilters>
+                                <S.CategoriesFilters>
                                     <strong>Categorias</strong>
-                                    {categories.map(({ id, slug, name }) => (
-                                        <CategoryItemFilters key={id}>
-                                            <Checkbox
+                                    {categories?.map(({ id, slug, name }) => (
+                                        <S.CategoryItemFilters key={id}>
+                                            <S.Checkbox
                                                 colorScheme="orange"
                                                 size="md"
                                                 isChecked={
@@ -142,16 +158,16 @@ export default function Bolos({ search, price, category }: BolosProps) {
                                                 }
                                             >
                                                 {name}
-                                            </Checkbox>
-                                        </CategoryItemFilters>
+                                            </S.Checkbox>
+                                        </S.CategoryItemFilters>
                                     ))}
-                                </CategoriesFilters>
+                                </S.CategoriesFilters>
 
-                                <PriceFilters>
+                                <S.PriceFilters>
                                     <strong>Filtrar por preço</strong>
                                     {priceFilters.map(({ label, value }) => (
-                                        <PriceItemFilters key={label + value}>
-                                            <Checkbox
+                                        <S.PriceItemFilters key={label + value}>
+                                            <S.Checkbox
                                                 isChecked={
                                                     value === query.price
                                                 }
@@ -168,10 +184,10 @@ export default function Bolos({ search, price, category }: BolosProps) {
                                                 colorScheme="pink"
                                             >
                                                 {label}
-                                            </Checkbox>
-                                        </PriceItemFilters>
+                                            </S.Checkbox>
+                                        </S.PriceItemFilters>
                                     ))}
-                                    <InputPriceFilter onSubmit={handleSubmit}>
+                                    <S.InputPriceFilter onSubmit={handleSubmit}>
                                         <input
                                             type="number"
                                             name="Preço"
@@ -185,14 +201,14 @@ export default function Bolos({ search, price, category }: BolosProps) {
                                         >
                                             GO
                                         </button>
-                                    </InputPriceFilter>
-                                </PriceFilters>
-                            </ContentFilters>
-                        </AsideFilters>
+                                    </S.InputPriceFilter>
+                                </S.PriceFilters>
+                            </S.ContentFilters>
+                        </S.AsideFilters>
                     )}
                     {xsDown && !md3 && <MobalCategories />}
-                    <SearchBar>
-                        <SearchTitle>
+                    <S.SearchBar>
+                        <S.SearchTitle>
                             <strong>
                                 {query.category.name
                                     ? query.category.name
@@ -202,8 +218,8 @@ export default function Bolos({ search, price, category }: BolosProps) {
                                 {cakes?.length || '0'} resultados{' '}
                                 {xs && ' relacionados'}
                             </p>
-                        </SearchTitle>
-                        <InputSearch>
+                        </S.SearchTitle>
+                        <S.InputSearch>
                             <span>
                                 <BsSearch />
                             </span>
@@ -213,8 +229,8 @@ export default function Bolos({ search, price, category }: BolosProps) {
                                 }
                                 name="buscar"
                             />
-                        </InputSearch>
-                        <SearchLayoutControls viewLayout={viewLayout}>
+                        </S.InputSearch>
+                        <S.SearchLayoutControls viewLayout={viewLayout}>
                             <button
                                 type="button"
                                 name="layout de coluna"
@@ -238,26 +254,13 @@ export default function Bolos({ search, price, category }: BolosProps) {
                             >
                                 <AiOutlineUnorderedList />
                             </button>
-                        </SearchLayoutControls>
-                    </SearchBar>
-                    <CakesSection
+                        </S.SearchLayoutControls>
+                    </S.SearchBar>
+                    <S.CakesSection
                         cakeNotFound={isError}
                         viewLayout={viewLayout}
                     >
-                        {isError && (
-                            <CakesNotFound>
-                                <Lottie
-                                    options={{
-                                        autoplay: true,
-                                        loop: true,
-                                        animationData: CakeAnim
-                                    }}
-                                />
-                                <strong>Nenhum bolo encontrado</strong>
-                                <p>Tente buscar por outro termo.</p>
-                            </CakesNotFound>
-                        )}
-                        {isLoading ? (
+                        {!cakes?.length ? (
                             <>
                                 <Skeleton
                                     mx={{ base: 'auto' }}
@@ -329,8 +332,8 @@ export default function Bolos({ search, price, category }: BolosProps) {
                                 }
                             })
                         )}
-                    </CakesSection>
-                </Container>
+                    </S.CakesSection>
+                </S.Container>
                 <Footer />
             </main>
         </DefaultLayout>
@@ -338,7 +341,8 @@ export default function Bolos({ search, price, category }: BolosProps) {
 }
 
 export const getServerSideProps: GetServerSideProps = async ({
-    query: { search, price, category }
+    query: { search, price, category },
+    req
 }) => {
     const queryClient = new QueryClient()
 
@@ -347,14 +351,29 @@ export const getServerSideProps: GetServerSideProps = async ({
             'cakes',
             {
                 search: search || '',
-                category: category || '',
+                category_slug: category || '',
                 price: price || ''
             }
         ],
-        () => getCakes({ params: { name: search, category, price } })
+        () =>
+            getCakes({
+                params: { name: search, category_slug: category, price }
+            })
     )
     await queryClient.prefetchQuery('cakeCategories', () => getCakeCategories())
     await queryClient.refetchQueries({ active: true })
+    const refreshToken = req.cookies['refresh-token']
+    const accessToken = req.cookies['access-token']
+    if (refreshToken && accessToken) {
+        await queryClient.prefetchQuery(
+            ['user', { refreshToken, accessToken }],
+            () => getUserShow({ refreshToken, accessToken }),
+            {
+                retry: false,
+                staleTime: 14 * 60
+            }
+        )
+    }
     return {
         props: {
             dehydratedState: dehydrate(queryClient),
